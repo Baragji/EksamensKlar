@@ -922,12 +922,12 @@ function calculateDays() {
     window.onboarding.calculateDays();
 }
 
-function startLearning() {
-    window.onboarding.startLearning();
+async function startLearning() {
+    await window.onboarding.startLearning();
 }
 
-function viewDashboard() {
-    window.onboarding.viewDashboard();
+async function viewDashboard() {
+    await window.onboarding.viewDashboard();
 }
 
 // Initialize when DOM is loaded
