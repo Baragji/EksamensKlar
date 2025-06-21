@@ -1,0 +1,36 @@
+{
+  "name": "examklar-platform",
+  "version": "0.5.0",
+  "description": "Personlig eksamen app med flashcards, quiz og AI assistance",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8080",
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "install-playwright": "npx playwright install"
+  },
+  "keywords": [
+    "education",
+    "flashcards", 
+    "quiz",
+    "pwa",
+    "vanilla-js"
+  ],
+  "author": "ExamKlar Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.40.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/examklar"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/examklar/issues"
+  },
+  "homepage": "https://yourusername.github.io/examklar"
+}
