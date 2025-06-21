@@ -132,12 +132,16 @@
     transition: all var(--transition-normal);
     position: relative;
     overflow: hidden;
+    text-decoration: none; /* Remove link underline */
+    color: inherit; /* Inherit text color */
+    display: block; /* Make links behave like block elements */
 }
 
 .module-card:hover {
     box-shadow: var(--shadow-lg);
     transform: translateY(-4px);
     border-color: var(--primary-color);
+    text-decoration: none; /* Ensure no underline on hover */
 }
 
 .module-card:active {

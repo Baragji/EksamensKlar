@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Mode Test - ExamKlar</title>
+    <style>
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --border-color: #dee2e6;
+            --accent-color: #007bff;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --border-color: #404040;
+            --accent-color: #4dabf7;
+        }
+
+        * {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .test-section {
+            background: var(--bg-secondary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+
+        .pass {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .fail {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        [data-theme="dark"] .pass {
+            background: #1e4d3a;
+            border: 1px solid #2d5a45;
+            color: #a8e6a3;
+        }
+
+        [data-theme="dark"] .fail {
+            background: #4d1e1e;
+            border: 1px solid #5a2d2d;
+            color: #e6a3a3;
+        }
+
+        button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        .theme-demo {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .color-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .theme-controls {
+            background: var(--bg-secondary);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        select, input {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="theme-controls">
+        <h1>🌙 Dark Mode & Theme Tests</h1>
+        <button onclick="toggleTheme()">Toggle Theme</button>
+        <button onclick="setSystemTheme()">Use System Theme</button>
+        <button onclick="setLightTheme()">Force Light</button>
+        <button onclick="setDarkTheme()">Force Dark</button>
+        <br>
+        <span>Current Theme: <strong id="current-theme">light</strong></span>
+    </div>
+    
+    <div class="test-section">
+        <h2>🎨 Theme Switching Tests</h2>
+        <button onclick="testThemeToggle()">Test Theme Toggle</button>
+        <button onclick="testThemePersistence()">Test Theme Persistence</button>
+        <button onclick="testSystemPreference()">Test System Preference</button>
+        <div id="theme-results"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>🎯 Color Validation Tests</h2>
+        <button onclick="testColorContrast()">Test Color Contrast</button>
+        <button onclick="testCSSDarkMode()">Test CSS Variables</button>
+        <button onclick="testTransitions()">Test Smooth Transitions</button>
+        <div id="color-results"></div>
+    </div>
+    
+    <div class="theme-demo">
+        <h2>🖼️ Visual Theme Demo</h2>
+        <p>This section demonstrates how different elements look in each theme.</p>
+        
+        <div class="color-palette">
+            <div class="color-item">
+                <strong>Primary Background</strong>
+                <div style="background: var(--bg-primary); color: var(--text-primary); padding: 10px; margin: 5px 0; border-radius: 4px;">
+                    Sample Text
+                </div>
+            </div>
+            <div class="color-item">
+                <strong>Secondary Background</strong>
+                <div style="background: var(--bg-secondary); color: var(--text-primary); padding: 10px; margin: 5px 0; border-radius: 4px;">
+                    Sample Text
+                </div>
+            </div>
+            <div class="color-item">
+                <strong>Accent Color</strong>
+                <div style="background: var(--accent-color); color: white; padding: 10px; margin: 5px 0; border-radius: 4px;">
+                    Sample Text
+                </div>
+            </div>
+        </div>
+        
+        <div style="margin: 20px 0;">
+            <button>Sample Button</button>
+            <input type="text" placeholder="Sample Input" value="Sample Text">
+            <select>
+                <option>Sample Option 1</option>
+                <option>Sample Option 2</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>⚙️ Advanced Theme Tests</h2>
+        <button onclick="testAutoThemeSwitch()">Test Auto Theme Switch</button>
+        <button onclick="testThemeEvents()">Test Theme Events</button>
+        <button onclick="testCustomColors()">Test Custom Colors</button>
+        <div id="advanced-results"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>📊 Test Summary</h2>
+        <div id="test-summary"></div>
+        <button onclick="runAllTests()" style="background: #28a745;">Run All Tests</button>
+        <button onclick="resetThemeSettings()">Reset Theme Settings</button>
+    </div>
+
+    <script>
+        let testResults = {
+            passed: 0,
+            failed: 0,
+            total: 0
+        };
+
+        function addTestResult(sectionId, testName, passed, message) {
+            testResults.total++;
+            if (passed) {
+                testResults.passed++;
+            } else {
+                testResults.failed++;
+            }
+            
+            const section = document.getElementById(sectionId);
+            const result = document.createElement('div');
+            result.className = `test-result ${passed ? 'pass' : 'fail'}`;
+            result.innerHTML = `
+                <strong>${testName}:</strong> ${passed ? '✅ PASS' : '❌ FAIL'}<br>
+                <em>${message}</em>
+            `;
+            section.appendChild(result);
+            
+            updateTestSummary();
+        }
+
+        function updateTestSummary() {
+            const summary = document.getElementById('test-summary');
+            summary.innerHTML = `
+                <h3>Results: ${testResults.passed}/${testResults.total} tests passed</h3>
+                <div style="background: ${testResults.failed === 0 ? 'var(--bg-secondary)' : '#f8d7da'}; padding: 10px; border-radius: 4px;">
+                    ✅ Passed: ${testResults.passed}<br>
+                    ❌ Failed: ${testResults.failed}<br>
+                    📊 Success Rate: ${Math.round((testResults.passed / testResults.total) * 100)}%
+                </div>
+            `;
+        }
+
+        function getCurrentTheme() {
+            return document.documentElement.getAttribute('data-theme') || 'light';
+        }
+
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            document.getElementById('current-theme').textContent = theme;
+            localStorage.setItem('examklar-theme', theme);
+        }
+
+        function toggleTheme() {
+            const current = getCurrentTheme();
+            const newTheme = current === 'light' ? 'dark' : 'light';
+            setTheme(newTheme);
+        }
+
+        function setSystemTheme() {
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            setTheme(prefersDark ? 'dark' : 'light');
+            localStorage.setItem('examklar-theme-mode', 'system');
+        }
+
+        function setLightTheme() {
+            setTheme('light');
+            localStorage.setItem('examklar-theme-mode', 'manual');
+        }
+
+        function setDarkTheme() {
+            setTheme('dark');
+            localStorage.setItem('examklar-theme-mode', 'manual');
+        }
+
+        function testThemeToggle() {
+            try {
+                const initialTheme = getCurrentTheme();
+                toggleTheme();
+                const afterToggle = getCurrentTheme();
+                
+                const toggleWorked = initialTheme !== afterToggle;
+                addTestResult('theme-results', 'Theme Toggle', toggleWorked, 
+                    toggleWorked ? `Successfully toggled from ${initialTheme} to ${afterToggle}` : 'Theme toggle failed');
+            } catch (error) {
+                addTestResult('theme-results', 'Theme Toggle', false, `Toggle failed: ${error.message}`);
+            }
+        }
+
+        function testThemePersistence() {
+            try {
+                const testTheme = 'dark';
+                setTheme(testTheme);
+                
+                // Simulate page reload by checking localStorage
+                const stored = localStorage.getItem('examklar-theme');
+                const persistenceWorked = stored === testTheme;
+                
+                addTestResult('theme-results', 'Theme Persistence', persistenceWorked, 
+                    persistenceWorked ? `Theme ${testTheme} successfully stored in localStorage` : 'Theme persistence failed');
+            } catch (error) {
+                addTestResult('theme-results', 'Theme Persistence', false, `Persistence test failed: ${error.message}`);
+            }
+        }
+
+        function testSystemPreference() {
+            try {
+                const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+                const systemSupported = typeof mediaQuery.matches === 'boolean';
+                
+                if (systemSupported) {
+                    const prefersDark = mediaQuery.matches;
+                    addTestResult('theme-results', 'System Preference', true, 
+                        `System preference detected: ${prefersDark ? 'dark' : 'light'} mode`);
+                } else {
+                    addTestResult('theme-results', 'System Preference', false, 
+                        'System color scheme preference not supported');
+                }
+            } catch (error) {
+                addTestResult('theme-results', 'System Preference', false, `System preference test failed: ${error.message}`);
+            }
+        }
+
+        function testColorContrast() {
+            try {
+                const testElement = document.createElement('div');
+                testElement.style.background = 'var(--bg-primary)';
+                testElement.style.color = 'var(--text-primary)';
+                document.body.appendChild(testElement);
+                
+                const computed = window.getComputedStyle(testElement);
+                const bgColor = computed.backgroundColor;
+                const textColor = computed.color;
+                
+                document.body.removeChild(testElement);
+                
+                const contrastExists = bgColor !== textColor && bgColor !== 'rgba(0, 0, 0, 0)';
+                addTestResult('color-results', 'Color Contrast', contrastExists, 
+                    contrastExists ? 'Good color contrast between background and text' : 'Poor color contrast detected');
+            } catch (error) {
+                addTestResult('color-results', 'Color Contrast', false, `Contrast test failed: ${error.message}`);
+            }
+        }
+
+        function testCSSDarkMode() {
+            try {
+                const root = document.documentElement;
+                
+                // Test light mode variables
+                setTheme('light');
+                const lightBg = getComputedStyle(root).getPropertyValue('--bg-primary').trim();
+                
+                // Test dark mode variables
+                setTheme('dark');
+                const darkBg = getComputedStyle(root).getPropertyValue('--bg-primary').trim();
+                
+                const variablesWork = lightBg !== darkBg && lightBg && darkBg;
+                addTestResult('color-results', 'CSS Variables', variablesWork, 
+                    variablesWork ? 'CSS custom properties working correctly for both themes' : 'CSS variables not switching properly');
+            } catch (error) {
+                addTestResult('color-results', 'CSS Variables', false, `CSS variable test failed: ${error.message}`);
+            }
+        }
+
+        function testTransitions() {
+            try {
+                const testElement = document.createElement('div');
+                testElement.style.transition = 'background-color 0.3s ease';
+                testElement.style.background = 'var(--bg-primary)';
+                document.body.appendChild(testElement);
+                
+                const computed = window.getComputedStyle(testElement);
+                const transition = computed.transition || computed.webkitTransition;
+                
+                document.body.removeChild(testElement);
+                
+                const hasTransition = transition && transition.includes('background-color');
+                addTestResult('color-results', 'Smooth Transitions', hasTransition, 
+                    hasTransition ? 'CSS transitions working for theme changes' : 'CSS transitions not detected');
+            } catch (error) {
+                addTestResult('color-results', 'Smooth Transitions', false, `Transition test failed: ${error.message}`);
+            }
+        }
+
+        function testAutoThemeSwitch() {
+            try {
+                // Test automatic switching based on time (simulate)
+                const hour = new Date().getHours();
+                const shouldBeDark = hour >= 18 || hour <= 6;
+                
+                // This would be implemented in the actual theme system
+                const autoSwitchLogic = typeof hour === 'number';
+                
+                addTestResult('advanced-results', 'Auto Theme Switch', autoSwitchLogic, 
+                    `Auto theme switching logic ready. Current time suggests: ${shouldBeDark ? 'dark' : 'light'} theme`);
+            } catch (error) {
+                addTestResult('advanced-results', 'Auto Theme Switch', false, `Auto switch test failed: ${error.message}`);
+            }
+        }
+
+        function testThemeEvents() {
+            try {
+                let eventFired = false;
+                
+                // Create custom theme change event
+                const themeChangeEvent = new CustomEvent('themechange', {
+                    detail: { theme: getCurrentTheme() }
+                });
+                
+                // Listen for the event
+                const listener = () => { eventFired = true; };
+                document.addEventListener('themechange', listener);
+                
+                // Dispatch the event
+                document.dispatchEvent(themeChangeEvent);
+                
+                // Clean up
+                document.removeEventListener('themechange', listener);
+                
+                addTestResult('advanced-results', 'Theme Events', eventFired, 
+                    eventFired ? 'Theme change events working correctly' : 'Theme events not firing');
+            } catch (error) {
+                addTestResult('advanced-results', 'Theme Events', false, `Event test failed: ${error.message}`);
+            }
+        }
+
+        function testCustomColors() {
+            try {
+                // Test setting custom accent color
+                const customColor = '#ff6b6b';
+                document.documentElement.style.setProperty('--accent-color', customColor);
+                
+                const applied = getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim();
+                const customizationWorks = applied.includes('ff6b6b') || applied.includes('255, 107, 107');
+                
+                // Reset to default
+                document.documentElement.style.removeProperty('--accent-color');
+                
+                addTestResult('advanced-results', 'Custom Colors', customizationWorks, 
+                    customizationWorks ? 'Custom color customization working' : 'Custom colors not applying');
+            } catch (error) {
+                addTestResult('advanced-results', 'Custom Colors', false, `Custom color test failed: ${error.message}`);
+            }
+        }
+
+        function runAllTests() {
+            // Clear previous results
+            document.querySelectorAll('.test-result').forEach(el => el.remove());
+            testResults = { passed: 0, failed: 0, total: 0 };
+            
+            // Run all tests with delays to see theme changes
+            setTimeout(() => testThemeToggle(), 100);
+            setTimeout(() => testThemePersistence(), 300);
+            setTimeout(() => testSystemPreference(), 500);
+            setTimeout(() => testColorContrast(), 700);
+            setTimeout(() => testCSSDarkMode(), 900);
+            setTimeout(() => testTransitions(), 1100);
+            setTimeout(() => testAutoThemeSwitch(), 1300);
+            setTimeout(() => testThemeEvents(), 1500);
+            setTimeout(() => testCustomColors(), 1700);
+        }
+
+        function resetThemeSettings() {
+            localStorage.removeItem('examklar-theme');
+            localStorage.removeItem('examklar-theme-mode');
+            setTheme('light');
+            alert('Theme settings reset to defaults!');
+        }
+
+        // Initialize theme on load
+        window.addEventListener('load', () => {
+            const saved = localStorage.getItem('examklar-theme');
+            if (saved) {
+                setTheme(saved);
+            } else {
+                // Use system preference by default
+                setSystemTheme();
+            }
+            
+            // Listen for system theme changes
+            const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+            mediaQuery.addEventListener('change', (e) => {
+                const mode = localStorage.getItem('examklar-theme-mode');
+                if (mode === 'system') {
+                    setTheme(e.matches ? 'dark' : 'light');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

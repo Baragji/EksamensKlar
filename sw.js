@@ -3,9 +3,9 @@
  * Provides offline functionality and PWA features
  */
 
-const CACHE_NAME = 'examklar-v1.0.0';
-const CACHE_STATIC_NAME = 'examklar-static-v1.0.0';
-const CACHE_DYNAMIC_NAME = 'examklar-dynamic-v1.0.0';
+const CACHE_NAME = 'examklar-v1.3.0';
+const CACHE_STATIC_NAME = 'examklar-static-v1.3.0';
+const CACHE_DYNAMIC_NAME = 'examklar-dynamic-v1.3.0';
 
 // Files to cache for offline functionality
 const STATIC_CACHE_FILES = [
@@ -16,7 +16,45 @@ const STATIC_CACHE_FILES = [
     './styles/components.css',
     './core/utils.js',
     './core/storage.js',
-    './core/app.js'
+    './core/app.js',
+    './core/performance.js',
+    './core/accessibility.js',
+    './core/mobile-gestures.js',
+    './core/pwa-installer.js',
+    './core/browser-compatibility.js',
+    // Module files for offline access
+    './modules/content/index.html',
+    './modules/content/content.js',
+    './modules/content/content.css',
+    './modules/flashcards/index.html',
+    './modules/flashcards/flashcards.js',
+    './modules/flashcards/flashcards.css',
+    './modules/flashcards/player.html',
+    './modules/quiz/index.html',
+    './modules/quiz/quiz.js',
+    './modules/dashboard/index.html',
+    './modules/dashboard/dashboard.js',
+    './modules/dashboard/dashboard.css',
+    './modules/dashboard/components/progress-chart.js',
+    './modules/dashboard/components/streak-counter.js',
+    './modules/dashboard/components/achievements.js',
+    // Advanced features
+    './modules/advanced/index.html',
+    './modules/advanced/advanced.js',
+    './modules/advanced/advanced.css',
+    './modules/advanced/tests/export-test.html',
+    './modules/advanced/tests/darkmode-test.html',
+    './modules/advanced/tests/search-test.html',
+    // AI Assistant module
+    './modules/ai-assistant/index.html',
+    './modules/ai-assistant/ai-assistant.js',
+    './modules/ai-assistant/ai-assistant.css',
+    './modules/ai-assistant/tests/chat-test.html',
+    './modules/ai-assistant/tests/ai-test.html',
+    './modules/ai-assistant/tests/feedback-test.html',
+    './modules/ai-assistant/tests/fallback-test.html',
+    // Test pages
+    './comprehensive-test.html'
 ];
 
 // Dynamic cache patterns

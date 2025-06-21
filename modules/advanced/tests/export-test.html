@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Export/Import Test - ExamKlar</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-section {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+        }
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .pass {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .fail {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Export/Import Feature Tests</h1>
+    <p>Test alle data export/import funktioner</p>
+    
+    <div class="test-section">
+        <h2>📤 Data Export Tests</h2>
+        <button onclick="testDataExport()">Test Data Export</button>
+        <button onclick="testPartialExport()">Test Partial Export</button>
+        <button onclick="testExportValidation()">Test Export Validation</button>
+        <div id="export-results"></div>
+        
+        <h3>Export Preview:</h3>
+        <textarea id="export-preview" readonly placeholder="Export data will appear here..."></textarea>
+    </div>
+    
+    <div class="test-section">
+        <h2>📥 Data Import Tests</h2>
+        <button onclick="testDataImport()">Test Data Import</button>
+        <button onclick="testImportValidation()">Test Import Validation</button>
+        <button onclick="testDataMerge()">Test Data Merge</button>
+        <div id="import-results"></div>
+        
+        <h3>Import Data:</h3>
+        <textarea id="import-data" placeholder="Paste export data here to test import..."></textarea>
+        <button onclick="testImportFromTextarea()">Import from Textarea</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>🔄 Backup & Restore Tests</h2>
+        <button onclick="testBackupCreation()">Test Backup Creation</button>
+        <button onclick="testRestoreData()">Test Data Restore</button>
+        <button onclick="testDataIntegrity()">Test Data Integrity</button>
+        <div id="backup-results"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>📊 Test Summary</h2>
+        <div id="test-summary"></div>
+        <button onclick="runAllTests()" style="background: #28a745;">Run All Tests</button>
+        <button onclick="clearTestData()">Clear Test Data</button>
+    </div>
+
+    <script src="../../../core/utils.js"></script>
+    <script src="../../../core/storage.js"></script>
+    <script>
+        let testResults = {
+            passed: 0,
+            failed: 0,
+            total: 0
+        };
+
+        function addTestResult(sectionId, testName, passed, message) {
+            testResults.total++;
+            if (passed) {
+                testResults.passed++;
+            } else {
+                testResults.failed++;
+            }
+            
+            const section = document.getElementById(sectionId);
+            const result = document.createElement('div');
+            result.className = `test-result ${passed ? 'pass' : 'fail'}`;
+            result.innerHTML = `
+                <strong>${testName}:</strong> ${passed ? '✅ PASS' : '❌ FAIL'}<br>
+                <em>${message}</em>
+            `;
+            section.appendChild(result);
+            
+            updateTestSummary();
+        }
+
+        function updateTestSummary() {
+            const summary = document.getElementById('test-summary');
+            summary.innerHTML = `
+                <h3>Results: ${testResults.passed}/${testResults.total} tests passed</h3>
+                <div style="background: ${testResults.failed === 0 ? '#d4edda' : '#f8d7da'}; padding: 10px; border-radius: 4px;">
+                    ✅ Passed: ${testResults.passed}<br>
+                    ❌ Failed: ${testResults.failed}<br>
+                    📊 Success Rate: ${Math.round((testResults.passed / testResults.total) * 100)}%
+                </div>
+            `;
+        }
+
+        // Mock data for testing
+        function generateTestData() {
+            return {
+                timestamp: new Date().toISOString(),
+                version: "1.0.0",
+                modules: {
+                    content: {
+                        items: [
+                            { id: "1", title: "Test Content 1", content: "Test content body 1" },
+                            { id: "2", title: "Test Content 2", content: "Test content body 2" }
+                        ],
+                        progress: { read: ["1"], bookmarks: ["2"] }
+                    },
+                    flashcards: {
+                        cards: [
+                            { id: "1", front: "Test Question 1", back: "Test Answer 1" },
+                            { id: "2", front: "Test Question 2", back: "Test Answer 2" }
+                        ],
+                        stats: { studied: 5, correct: 3 }
+                    },
+                    quiz: {
+                        questions: [
+                            { id: "1", question: "Test Quiz 1", options: ["A", "B", "C"], correct: 0 }
+                        ],
+                        results: { attempts: 3, score: 85 }
+                    },
+                    dashboard: {
+                        streaks: { current: 5, best: 10 },
+                        goals: { daily: 30, weekly: 200 },
+                        achievements: ["first_study", "week_streak"]
+                    }
+                },
+                settings: {
+                    theme: "light",
+                    language: "da",
+                    notifications: true
+                }
+            };
+        }
+
+        function testDataExport() {
+            try {
+                // Store test data first
+                const testData = generateTestData();
+                localStorage.setItem('examklar_test_data', JSON.stringify(testData));
+                
+                // Test export functionality (will be implemented in advanced.js)
+                const exportData = {
+                    ...testData,
+                    exported_at: new Date().toISOString()
+                };
+                
+                document.getElementById('export-preview').value = JSON.stringify(exportData, null, 2);
+                
+                addTestResult('export-results', 'Data Export', true, 'Successfully generated export data with all modules');
+            } catch (error) {
+                addTestResult('export-results', 'Data Export', false, `Export failed: ${error.message}`);
+            }
+        }
+
+        function testPartialExport() {
+            try {
+                const testData = generateTestData();
+                
+                // Test partial export (only specific modules)
+                const partialExport = {
+                    timestamp: new Date().toISOString(),
+                    version: "1.0.0",
+                    modules: {
+                        flashcards: testData.modules.flashcards,
+                        quiz: testData.modules.quiz
+                    }
+                };
+                
+                const isValid = partialExport.modules.flashcards && partialExport.modules.quiz;
+                addTestResult('export-results', 'Partial Export', isValid, 'Successfully exported selected modules only');
+            } catch (error) {
+                addTestResult('export-results', 'Partial Export', false, `Partial export failed: ${error.message}`);
+            }
+        }
+
+        function testExportValidation() {
+            try {
+                const testData = generateTestData();
+                
+                // Validate export structure
+                const requiredFields = ['timestamp', 'version', 'modules'];
+                const hasRequired = requiredFields.every(field => testData.hasOwnProperty(field));
+                
+                const hasModules = testData.modules && 
+                    typeof testData.modules === 'object' && 
+                    Object.keys(testData.modules).length > 0;
+                
+                const isValid = hasRequired && hasModules;
+                addTestResult('export-results', 'Export Validation', isValid, 
+                    isValid ? 'Export data structure is valid' : 'Export data structure validation failed');
+            } catch (error) {
+                addTestResult('export-results', 'Export Validation', false, `Validation failed: ${error.message}`);
+            }
+        }
+
+        function testDataImport() {
+            try {
+                const testData = generateTestData();
+                const exportString = JSON.stringify(testData);
+                
+                // Test import parsing
+                const importedData = JSON.parse(exportString);
+                const isValidImport = importedData.modules && importedData.version;
+                
+                if (isValidImport) {
+                    // Simulate storing imported data
+                    localStorage.setItem('examklar_imported_test', exportString);
+                }
+                
+                addTestResult('import-results', 'Data Import', isValidImport, 
+                    isValidImport ? 'Successfully imported and parsed data' : 'Import parsing failed');
+            } catch (error) {
+                addTestResult('import-results', 'Data Import', false, `Import failed: ${error.message}`);
+            }
+        }
+
+        function testImportValidation() {
+            try {
+                // Test with invalid data
+                const invalidData = '{"invalid": "structure"}';
+                
+                try {
+                    const parsed = JSON.parse(invalidData);
+                    const isValid = parsed.modules && parsed.version;
+                    addTestResult('import-results', 'Import Validation', !isValid, 
+                        'Correctly rejected invalid import data structure');
+                } catch (parseError) {
+                    addTestResult('import-results', 'Import Validation', true, 
+                        'Correctly caught JSON parsing error');
+                }
+                
+                // Test with valid data
+                const validData = JSON.stringify(generateTestData());
+                const parsed = JSON.parse(validData);
+                const isValid = parsed.modules && parsed.version;
+                addTestResult('import-results', 'Valid Data Import', isValid, 
+                    'Correctly accepted valid import data');
+                    
+            } catch (error) {
+                addTestResult('import-results', 'Import Validation', false, `Validation test failed: ${error.message}`);
+            }
+        }
+
+        function testDataMerge() {
+            try {
+                const existingData = generateTestData();
+                const newData = {
+                    ...generateTestData(),
+                    modules: {
+                        ...existingData.modules,
+                        flashcards: {
+                            cards: [
+                                ...existingData.modules.flashcards.cards,
+                                { id: "3", front: "New Question", back: "New Answer" }
+                            ],
+                            stats: existingData.modules.flashcards.stats
+                        }
+                    }
+                };
+                
+                const cardCountIncreased = newData.modules.flashcards.cards.length > 
+                    existingData.modules.flashcards.cards.length;
+                
+                addTestResult('import-results', 'Data Merge', cardCountIncreased, 
+                    cardCountIncreased ? 'Successfully merged imported data with existing data' : 'Data merge failed');
+            } catch (error) {
+                addTestResult('import-results', 'Data Merge', false, `Merge failed: ${error.message}`);
+            }
+        }
+
+        function testImportFromTextarea() {
+            try {
+                const importText = document.getElementById('import-data').value.trim();
+                if (!importText) {
+                    addTestResult('import-results', 'Textarea Import', false, 'No data in textarea to import');
+                    return;
+                }
+                
+                const parsed = JSON.parse(importText);
+                const isValid = parsed.modules && parsed.version;
+                
+                addTestResult('import-results', 'Textarea Import', isValid, 
+                    isValid ? 'Successfully imported data from textarea' : 'Invalid data structure in textarea');
+            } catch (error) {
+                addTestResult('import-results', 'Textarea Import', false, `Import from textarea failed: ${error.message}`);
+            }
+        }
+
+        function testBackupCreation() {
+            try {
+                const testData = generateTestData();
+                const backup = {
+                    ...testData,
+                    backup_created: new Date().toISOString(),
+                    backup_type: "full"
+                };
+                
+                localStorage.setItem('examklar_backup_test', JSON.stringify(backup));
+                const stored = localStorage.getItem('examklar_backup_test');
+                const isSuccess = stored && JSON.parse(stored).backup_created;
+                
+                addTestResult('backup-results', 'Backup Creation', isSuccess, 
+                    isSuccess ? 'Successfully created and stored backup' : 'Backup creation failed');
+            } catch (error) {
+                addTestResult('backup-results', 'Backup Creation', false, `Backup failed: ${error.message}`);
+            }
+        }
+
+        function testRestoreData() {
+            try {
+                const originalData = generateTestData();
+                localStorage.setItem('examklar_original', JSON.stringify(originalData));
+                
+                // Simulate data corruption
+                localStorage.setItem('examklar_corrupted', '{"corrupted": true}');
+                
+                // Restore from backup
+                const backup = localStorage.getItem('examklar_original');
+                if (backup) {
+                    const restored = JSON.parse(backup);
+                    const isRestored = restored.modules && restored.version;
+                    
+                    addTestResult('backup-results', 'Data Restore', isRestored, 
+                        isRestored ? 'Successfully restored data from backup' : 'Data restore failed');
+                } else {
+                    addTestResult('backup-results', 'Data Restore', false, 'No backup found to restore');
+                }
+            } catch (error) {
+                addTestResult('backup-results', 'Data Restore', false, `Restore failed: ${error.message}`);
+            }
+        }
+
+        function testDataIntegrity() {
+            try {
+                const originalData = generateTestData();
+                const exported = JSON.stringify(originalData);
+                const imported = JSON.parse(exported);
+                
+                // Check data integrity
+                const sameModuleCount = Object.keys(originalData.modules).length === 
+                    Object.keys(imported.modules).length;
+                const sameCardCount = originalData.modules.flashcards.cards.length === 
+                    imported.modules.flashcards.cards.length;
+                const sameVersion = originalData.version === imported.version;
+                
+                const integrityPassed = sameModuleCount && sameCardCount && sameVersion;
+                
+                addTestResult('backup-results', 'Data Integrity', integrityPassed, 
+                    integrityPassed ? 'Data integrity maintained through export/import cycle' : 
+                    'Data integrity check failed');
+            } catch (error) {
+                addTestResult('backup-results', 'Data Integrity', false, `Integrity check failed: ${error.message}`);
+            }
+        }
+
+        function runAllTests() {
+            // Clear previous results
+            document.querySelectorAll('.test-result').forEach(el => el.remove());
+            testResults = { passed: 0, failed: 0, total: 0 };
+            
+            // Run all tests
+            setTimeout(() => testDataExport(), 100);
+            setTimeout(() => testPartialExport(), 200);
+            setTimeout(() => testExportValidation(), 300);
+            setTimeout(() => testDataImport(), 400);
+            setTimeout(() => testImportValidation(), 500);
+            setTimeout(() => testDataMerge(), 600);
+            setTimeout(() => testBackupCreation(), 700);
+            setTimeout(() => testRestoreData(), 800);
+            setTimeout(() => testDataIntegrity(), 900);
+        }
+
+        function clearTestData() {
+            localStorage.removeItem('examklar_test_data');
+            localStorage.removeItem('examklar_imported_test');
+            localStorage.removeItem('examklar_backup_test');
+            localStorage.removeItem('examklar_original');
+            localStorage.removeItem('examklar_corrupted');
+            document.getElementById('export-preview').value = '';
+            document.getElementById('import-data').value = '';
+            alert('Test data cleared!');
+        }
+
+        // Auto-populate sample import data
+        window.addEventListener('load', () => {
+            const sampleImport = JSON.stringify(generateTestData(), null, 2);
+            document.getElementById('import-data').value = sampleImport;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Features - ExamKlar</title>
+    <link rel="stylesheet" href="../../styles/global.css">
+    <link rel="stylesheet" href="advanced.css">
+    <style>
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --border-color: #dee2e6;
+            --accent-color: #007bff;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --border-color: #404040;
+            --accent-color: #4dabf7;
+            --success-color: #51cf66;
+            --warning-color: #ffd43b;
+            --danger-color: #ff6b6b;
+        }
+
+        * {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .feature-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.15);
+            border-color: var(--accent-color);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .feature-button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .feature-button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .modal-content {
+            background: var(--bg-primary);
+            border-radius: 12px;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            padding: 5px;
+        }
+
+        .close-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .search-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .search-filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .filter-chip {
+            background: var(--accent-color);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .filter-chip:hover {
+            opacity: 0.8;
+        }
+
+        .filter-chip.inactive {
+            background: var(--text-secondary);
+        }
+
+        .search-results {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-primary);
+        }
+
+        .search-result-item {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-result-item:hover {
+            background: var(--bg-secondary);
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-title {
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-bottom: 5px;
+        }
+
+        .result-snippet {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .export-section, .import-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 12px;
+            resize: vertical;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning-color);
+            color: #212529;
+        }
+
+        .btn-danger {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .status-message {
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin: 15px 0;
+            font-weight: 500;
+        }
+
+        .status-success {
+            background: rgba(40, 167, 69, 0.1);
+            border: 1px solid var(--success-color);
+            color: var(--success-color);
+        }
+
+        .status-error {
+            background: rgba(220, 53, 69, 0.1);
+            border: 1px solid var(--danger-color);
+            color: var(--danger-color);
+        }
+
+        .status-warning {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid var(--warning-color);
+            color: #856404;
+        }
+
+        @media (max-width: 768px) {
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                margin: 20px auto;
+                padding: 20px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+        🌙
+    </button>
+
+    <div class="container">
+        <header class="page-header">
+            <h1>🌟 Advanced Features</h1>
+            <p>Powerful tools and customization options for ExamKlar</p>
+            <a href="../../index.html" class="back-btn">← Back to Home</a>
+        </header>
+
+        <div class="feature-grid">
+            <div class="feature-card" onclick="openExportModal()">
+                <span class="feature-icon">📤</span>
+                <h3 class="feature-title">Export & Backup</h3>
+                <p class="feature-description">
+                    Export all your data for backup or sharing with others
+                </p>
+                <button class="feature-button">Export Data</button>
+            </div>
+
+            <div class="feature-card" onclick="openImportModal()">
+                <span class="feature-icon">📥</span>
+                <h3 class="feature-title">Import & Restore</h3>
+                <p class="feature-description">
+                    Import data from backup files or other sources
+                </p>
+                <button class="feature-button">Import Data</button>
+            </div>
+
+            <div class="feature-card" onclick="openSearchModal()">
+                <span class="feature-icon">🔍</span>
+                <h3 class="feature-title">Global Search</h3>
+                <p class="feature-description">
+                    Search across all your content, flashcards, and quizzes
+                </p>
+                <button class="feature-button">Open Search</button>
+            </div>
+
+            <div class="feature-card" onclick="openThemeModal()">
+                <span class="feature-icon">🎨</span>
+                <h3 class="feature-title">Theme & Appearance</h3>
+                <p class="feature-description">
+                    Customize colors, themes, and visual preferences
+                </p>
+                <button class="feature-button">Customize</button>
+            </div>
+
+            <div class="feature-card" onclick="openLanguageModal()">
+                <span class="feature-icon">🌍</span>
+                <h3 class="feature-title">Language Settings</h3>
+                <p class="feature-description">
+                    Switch between Danish and English interface
+                </p>
+                <button class="feature-button">Change Language</button>
+            </div>
+
+            <div class="feature-card" onclick="openAdvancedSettings()">
+                <span class="feature-icon">⚙️</span>
+                <h3 class="feature-title">Advanced Settings</h3>
+                <p class="feature-description">
+                    Configure advanced options and preferences
+                </p>
+                <button class="feature-button">Settings</button>
+            </div>
+        </div>
+
+        <div class="feature-section">
+            <h2>🧪 Test Advanced Features</h2>
+            <p>Use the links below to test all advanced functionality:</p>
+            <div class="test-links">
+                <a href="tests/export-test.html" class="test-link">📤 Export/Import Tests</a>
+                <a href="tests/darkmode-test.html" class="test-link">🌙 Dark Mode Tests</a>
+                <a href="tests/search-test.html" class="test-link">🔍 Search Tests</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Modal -->
+    <div id="exportModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">📤 Export Data</h2>
+                <button class="close-btn" onclick="closeModal('exportModal')">&times;</button>
+            </div>
+            
+            <div class="export-section">
+                <h3>Select Data to Export</h3>
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="exportAllData()">Export All Data</button>
+                    <button class="btn btn-primary" onclick="exportContent()">Content Only</button>
+                    <button class="btn btn-primary" onclick="exportFlashcards()">Flashcards Only</button>
+                    <button class="btn btn-primary" onclick="exportQuizzes()">Quizzes Only</button>
+                </div>
+                
+                <div id="exportStatus"></div>
+                
+                <h3>Export Preview</h3>
+                <textarea id="exportData" readonly placeholder="Export data will appear here..."></textarea>
+                
+                <div class="button-group">
+                    <button class="btn btn-success" onclick="downloadExport()">Download as File</button>
+                    <button class="btn btn-primary" onclick="copyToClipboard('exportData')">Copy to Clipboard</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import Modal -->
+    <div id="importModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">📥 Import Data</h2>
+                <button class="close-btn" onclick="closeModal('importModal')">&times;</button>
+            </div>
+            
+            <div class="import-section">
+                <h3>Import from File</h3>
+                <input type="file" id="importFile" accept=".json" onchange="handleFileImport(event)">
+                
+                <h3>Or Paste Data</h3>
+                <textarea id="importData" placeholder="Paste your export data here..."></textarea>
+                
+                <div id="importStatus"></div>
+                
+                <div class="button-group">
+                    <button class="btn btn-success" onclick="importData()">Import Data</button>
+                    <button class="btn btn-warning" onclick="validateImportData()">Validate Data</button>
+                    <button class="btn btn-danger" onclick="clearImportData()">Clear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div id="searchModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">🔍 Global Search</h2>
+                <button class="close-btn" onclick="closeModal('searchModal')">&times;</button>
+            </div>
+            
+            <div class="search-section">
+                <input type="text" class="search-input" id="globalSearchInput" 
+                       placeholder="Search across all content..." 
+                       oninput="performGlobalSearch(this.value)">
+                
+                <div class="search-filters">
+                    <button class="filter-chip" id="filter-all" onclick="toggleFilter('all')">All</button>
+                    <button class="filter-chip" id="filter-content" onclick="toggleFilter('content')">Content</button>
+                    <button class="filter-chip" id="filter-flashcards" onclick="toggleFilter('flashcards')">Flashcards</button>
+                    <button class="filter-chip" id="filter-quiz" onclick="toggleFilter('quiz')">Quizzes</button>
+                    <button class="filter-chip" id="filter-notes" onclick="toggleFilter('notes')">Notes</button>
+                </div>
+                
+                <div class="search-results" id="globalSearchResults">
+                    <div class="search-result-item">
+                        <div class="result-title">Start typing to search...</div>
+                        <div class="result-snippet">Search across all your ExamKlar content</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Theme Modal -->
+    <div id="themeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">🎨 Theme & Appearance</h2>
+                <button class="close-btn" onclick="closeModal('themeModal')">&times;</button>
+            </div>
+            
+            <div class="theme-section">
+                <h3>Theme Selection</h3>
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="setTheme('light')">☀️ Light Theme</button>
+                    <button class="btn btn-primary" onclick="setTheme('dark')">🌙 Dark Theme</button>
+                    <button class="btn btn-primary" onclick="setTheme('auto')">🔄 Auto (System)</button>
+                </div>
+                
+                <h3>Custom Colors</h3>
+                <div class="color-customization">
+                    <label>Accent Color:</label>
+                    <input type="color" id="accentColor" value="#007bff" onchange="setCustomAccentColor(this.value)">
+                    
+                    <button class="btn btn-warning" onclick="resetThemeSettings()">Reset to Default</button>
+                </div>
+                
+                <div id="themeStatus"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Language Modal -->
+    <div id="languageModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">🌍 Language Settings</h2>
+                <button class="close-btn" onclick="closeModal('languageModal')">&times;</button>
+            </div>
+            
+            <div class="language-section">
+                <h3>Select Language</h3>
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="setLanguage('da')">🇩🇰 Dansk</button>
+                    <button class="btn btn-primary" onclick="setLanguage('en')">🇺🇸 English</button>
+                </div>
+                
+                <div id="languageStatus"></div>
+                
+                <p><strong>Note:</strong> Language changes will take effect after page reload.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../core/utils.js"></script>
+    <script src="../../core/storage.js"></script>
+    <script src="advanced.js"></script>
+</body>
+</html>

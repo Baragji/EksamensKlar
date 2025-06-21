@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💬 AI Chat - ExamKlar</title>
+    <link rel="stylesheet" href="../../styles/global.css">
+    <link rel="stylesheet" href="ai-assistant.css">
+    <style>
+        .chat-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px 15px 0 0;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: var(--bg-color);
+            border-left: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .chat-input-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 0 0 15px 15px;
+            padding: 20px;
+            flex-shrink: 0;
+        }
+        
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            word-wrap: break-word;
+            line-height: 1.4;
+        }
+        
+        .message.user {
+            background: var(--primary-color);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 6px;
+        }
+        
+        .message.ai {
+            background: var(--card-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            align-self: flex-start;
+            border-bottom-left-radius: 6px;
+        }
+        
+        .message.system {
+            background: var(--info-color-light);
+            color: var(--info-color);
+            align-self: center;
+            border-radius: 25px;
+            font-size: 14px;
+            font-style: italic;
+            max-width: 90%;
+        }
+        
+        .typing-indicator {
+            align-self: flex-start;
+            max-width: 80%;
+            padding: 12px 16px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            border-bottom-left-radius: 6px;
+            color: var(--text-muted);
+            font-style: italic;
+            display: none;
+        }
+        
+        .typing-dots {
+            animation: typing 1.5s infinite;
+        }
+        
+        @keyframes typing {
+            0%, 20% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
+        
+        .chat-input-area {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+        
+        .chat-input {
+            flex: 1;
+            min-height: 44px;
+            max-height: 120px;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 22px;
+            font-size: 16px;
+            resize: none;
+            font-family: inherit;
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+        
+        .chat-input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        
+        .send-button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            cursor: pointer;
+            font-size: 18px;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .send-button:hover {
+            background: var(--primary-color-dark);
+            transform: scale(1.05);
+        }
+        
+        .send-button:disabled {
+            background: var(--text-muted);
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .quick-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .suggestion-chip {
+            background: var(--primary-color-light);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .suggestion-chip:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .ai-status {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        
+        .status-online {
+            color: var(--success-color);
+        }
+        
+        .status-offline {
+            color: var(--warning-color);
+        }
+        
+        .welcome-message {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        
+        .back-button:hover {
+            background: rgba(255,255,255,0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <button class="back-button" onclick="goBack()">←</button>
+            <h1>🤖 AI Protein Tutor</h1>
+            <p>Spørg mig om alt inden for protein purification!</p>
+            <div class="ai-status" id="ai-status">
+                <span class="status-online">🟢 AI Assistant Online</span>
+            </div>
+        </div>
+        
+        <div class="chat-messages" id="chat-messages">
+            <div class="welcome-message">
+                <h3>Velkommen til din AI Protein Tutor! 🧬</h3>
+                <p>Jeg kan hjælpe dig med:</p>
+                <ul style="text-align: left; margin: 10px 0;">
+                    <li>Protein struktur og funktion</li>
+                    <li>Kromatografi teknikker</li>
+                    <li>Troubleshooting af purification</li>
+                    <li>Buffer valg og pH optimering</li>
+                    <li>SDS-PAGE og protein analyse</li>
+                </ul>
+                <p><em>Stil dit første spørgsmål nedenfor!</em></p>
+            </div>
+            
+            <!-- Initial AI message -->
+            <div class="message ai">
+                👋 Hej! Jeg er din personlige protein tutor. Jeg kan hjælpe med alt fra basale proteinspørgsmål til advanced purification techniques. Hvad vil du gerne vide?
+            </div>
+            
+            <div class="typing-indicator" id="typing-indicator">
+                🤖 <span class="typing-dots">AI skriver</span>
+                <span class="typing-dots">.</span>
+                <span class="typing-dots">.</span>
+                <span class="typing-dots">.</span>
+            </div>
+        </div>
+        
+        <div class="chat-input-container">
+            <div class="quick-suggestions">
+                <span class="suggestion-chip" onclick="sendSuggestion('Hvad er proteiner?')">Hvad er proteiner?</span>
+                <span class="suggestion-chip" onclick="sendSuggestion('Hvordan renser jeg proteiner?')">Hvordan renser jeg proteiner?</span>
+                <span class="suggestion-chip" onclick="sendSuggestion('Ion exchange problemer')">Ion exchange problemer</span>
+                <span class="suggestion-chip" onclick="sendSuggestion('pH og pI forklaring')">pH og pI forklaring</span>
+            </div>
+            
+            <div class="chat-input-area">
+                <textarea class="chat-input" 
+                         id="chat-input" 
+                         placeholder="Skriv dit spørgsmål her..."
+                         rows="1"
+                         onkeypress="handleEnterKey(event)"
+                         oninput="autoResize()"></textarea>
+                <button class="send-button" id="send-button" onclick="sendMessage()">
+                    ➤
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="ai-assistant.js"></script>
+    <script>
+        let chatAI;
+        let chatHistory = [];
+        
+        // Initialize chat when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof AIAssistant !== 'undefined') {
+                chatAI = new AIAssistant();
+                updateAIStatus();
+                loadChatHistory();
+            } else {
+                console.error('AI Assistant not loaded');
+                showSystemMessage('⚠️ AI Assistant ikke tilgængelig - using fallback mode');
+            }
+        });
+        
+        async function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Add user message to chat
+            addMessage(message, 'user');
+            input.value = '';
+            autoResize();
+            
+            // Disable input while processing
+            toggleInputs(false);
+            showTyping();
+            
+            try {
+                // Get AI response
+                const response = await getAIResponse(message);
+                hideTyping();
+                addMessage(response.text, 'ai');
+                
+                // Update status based on response source
+                updateStatusFromResponse(response);
+                
+            } catch (error) {
+                console.error('Chat error:', error);
+                hideTyping();
+                addMessage('Beklager, jeg kunne ikke behandle dit spørgsmål lige nu. Prøv igen senere.', 'ai');
+            } finally {
+                toggleInputs(true);
+            }
+        }
+        
+        async function getAIResponse(message) {
+            if (chatAI) {
+                return await chatAI.query(message, { context: 'chat' });
+            } else {
+                // Fallback response
+                return {
+                    text: 'AI Assistant er ikke tilgængelig. Besøg vores content moduler for detaljerede forklaringer.',
+                    source: 'fallback'
+                };
+            }
+        }
+        
+        function addMessage(text, sender) {
+            const messagesContainer = document.getElementById('chat-messages');
+            const messageElement = document.createElement('div');
+            messageElement.className = `message ${sender}`;
+            messageElement.textContent = text;
+            
+            messagesContainer.appendChild(messageElement);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            // Save to history
+            const messageData = {
+                text,
+                sender,
+                timestamp: new Date().toISOString()
+            };
+            chatHistory.push(messageData);
+            saveChatHistory();
+            
+            // Add to AI conversation history
+            if (chatAI && sender === 'user') {
+                chatAI.addToConversation('user', text);
+            } else if (chatAI && sender === 'ai') {
+                chatAI.addToConversation('assistant', text);
+            }
+        }
+        
+        function showSystemMessage(message) {
+            const messagesContainer = document.getElementById('chat-messages');
+            const messageElement = document.createElement('div');
+            messageElement.className = 'message system';
+            messageElement.textContent = message;
+            messagesContainer.appendChild(messageElement);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        
+        function sendSuggestion(suggestion) {
+            const input = document.getElementById('chat-input');
+            input.value = suggestion;
+            sendMessage();
+        }
+        
+        function showTyping() {
+            document.getElementById('typing-indicator').style.display = 'block';
+            const messagesContainer = document.getElementById('chat-messages');
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        
+        function hideTyping() {
+            document.getElementById('typing-indicator').style.display = 'none';
+        }
+        
+        function toggleInputs(enabled) {
+            const input = document.getElementById('chat-input');
+            const button = document.getElementById('send-button');
+            
+            input.disabled = !enabled;
+            button.disabled = !enabled;
+            
+            if (enabled) {
+                input.focus();
+            }
+        }
+        
+        function handleEnterKey(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+        
+        function autoResize() {
+            const textarea = document.getElementById('chat-input');
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+        }
+        
+        function updateAIStatus() {
+            const statusElement = document.getElementById('ai-status');
+            
+            if (!chatAI) {
+                statusElement.innerHTML = '<span class="status-offline">🔴 AI Assistant Unavailable</span>';
+                return;
+            }
+            
+            if (chatAI.provider === 'disabled') {
+                statusElement.innerHTML = '<span class="status-offline">🚫 AI Disabled</span>';
+            } else if (!navigator.onLine) {
+                statusElement.innerHTML = '<span class="status-offline">📡 Offline - Backup Mode</span>';
+            } else {
+                statusElement.innerHTML = '<span class="status-online">🟢 AI Assistant Online</span>';
+            }
+        }
+        
+        function updateStatusFromResponse(response) {
+            const statusElement = document.getElementById('ai-status');
+            
+            switch(response.source) {
+                case 'openai':
+                    statusElement.innerHTML = '<span class="status-online">🌟 OpenAI Active</span>';
+                    break;
+                case 'local':
+                    statusElement.innerHTML = '<span class="status-online">🏠 Local AI Active</span>';
+                    break;
+                case 'backup':
+                case 'fallback':
+                    statusElement.innerHTML = '<span class="status-offline">🔄 Backup Mode</span>';
+                    break;
+                default:
+                    statusElement.innerHTML = '<span class="status-online">🟢 AI Assistant Online</span>';
+            }
+        }
+        
+        function saveChatHistory() {
+            localStorage.setItem('examklar-chat-history', JSON.stringify(chatHistory));
+        }
+        
+        function loadChatHistory() {
+            const saved = localStorage.getItem('examklar-chat-history');
+            if (saved) {
+                try {
+                    const history = JSON.parse(saved);
+                    // Only load recent messages (last 20)
+                    const recentHistory = history.slice(-20);
+                    
+                    recentHistory.forEach(msg => {
+                        if (msg.sender !== 'system') {
+                            const messagesContainer = document.getElementById('chat-messages');
+                            const messageElement = document.createElement('div');
+                            messageElement.className = `message ${msg.sender}`;
+                            messageElement.textContent = msg.text;
+                            messagesContainer.appendChild(messageElement);
+                        }
+                    });
+                    
+                    chatHistory = history;
+                    const messagesContainer = document.getElementById('chat-messages');
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                } catch (error) {
+                    console.error('Failed to load chat history:', error);
+                }
+            }
+        }
+        
+        function goBack() {
+            window.history.back();
+        }
+        
+        // Auto-focus input when page loads
+        window.addEventListener('load', function() {
+            document.getElementById('chat-input').focus();
+        });
+        
+        // Update status when online/offline
+        window.addEventListener('online', updateAIStatus);
+        window.addEventListener('offline', updateAIStatus);
+    </script>
+</body>
+</html>

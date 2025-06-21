@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ExamKlar - Mikrolæring til Proteinrensning</title>
-    <meta name="description" content="Lær proteinrensning gennem daglige mikrolærings-sessioner med flashcards, quizzer og spaced repetition">
+    <title>ExamKlar - Din Personlige Eksamen App</title>
+    <meta name="description" content="Lær hvilket som helst emne gennem daglige mikrolærings-sessioner med flashcards, quizzer og spaced repetition">
     
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#2563eb">
@@ -28,7 +28,7 @@
         <nav class="nav">
             <div class="nav-brand">
                 <h1 class="logo">📚 ExamKlar</h1>
-                <span class="tagline">Mikrolæring til Proteinrensning</span>
+                <span class="tagline">Din Personlige Eksamen App</span>
             </div>
             <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
                 <span></span>
@@ -43,18 +43,18 @@
         <!-- Landing Page Content -->
         <section class="hero">
             <div class="hero-content">
-                <h2 class="hero-title">Mester Proteinrensning på 7 Dage</h2>
+                <h2 class="hero-title">Mester Dit Eksamen på Din Måde</h2>
                 <p class="hero-subtitle">
-                    Lær gennem daglige mikro-sessioner med spaced repetition, 
-                    interaktive flashcards og praksis-orienterede quizzer.
+                    Skab dine egne kurser og lær gennem daglige mikro-sessioner med spaced repetition, 
+                    interaktive flashcards og personlige quizzer.
                 </p>
                 <div class="hero-actions">
-                    <button class="btn btn-primary" onclick="app.navigateTo('dashboard')">
-                        Start Læring 🚀
-                    </button>
-                    <button class="btn btn-secondary" onclick="app.navigateTo('content')">
-                        Se Indhold 📖
-                    </button>
+                    <a href="modules/dashboard/index.html" class="btn btn-primary">
+                        📊 Se Dashboard
+                    </a>
+                    <a href="comprehensive-test.html" class="btn btn-secondary">
+                        🧪 Test Alt
+                    </a>
                 </div>
             </div>
         </section>
@@ -82,82 +82,141 @@
             <h3 class="modules-title">Læringsmoduler</h3>
             <div class="modules-grid">
                 
-                <div class="module-card" onclick="app.navigateTo('content')">
+                <a href="modules/subjects/index.html" class="module-card featured">
+                    <div class="module-icon">📚</div>
+                    <h4 class="module-title">Mine Emner</h4>
+                    <p class="module-description">Opret og administrer dine egne læringsemner</p>
+                    <div class="module-status">
+                        <span class="status-badge premium">Ny</span>
+                    </div>
+                </a>
+                
+                <a href="modules/content/index.html" class="module-card">
                     <div class="module-icon">📖</div>
                     <h4 class="module-title">Dagligt Indhold</h4>
-                    <p class="module-description">7 dages struktureret læringsindhold om proteinrensning</p>
+                    <p class="module-description">Upload og læs læringsmaterialer med Markdown support</p>
                     <div class="module-progress">
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: 0%" id="contentProgress"></div>
                         </div>
-                        <span class="progress-text">0/7 dage</span>
+                        <span class="progress-text">User-generated content</span>
                     </div>
-                </div>
+                </a>
 
-                <div class="module-card" onclick="app.navigateTo('flashcards')">
+                <a href="modules/flashcards/index.html" class="module-card">
                     <div class="module-icon">🗂️</div>
                     <h4 class="module-title">Flashcards</h4>
-                    <p class="module-description">Interaktive kort til hurtig gentagelse og memorering</p>
+                    <p class="module-description">Opret og øv flashcards med spaced repetition</p>
                     <div class="module-progress">
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: 0%" id="flashcardsProgress"></div>
                         </div>
-                        <span class="progress-text">0/50 kort</span>
+                        <span class="progress-text">Med spaced repetition</span>
                     </div>
-                </div>
+                </a>
 
-                <div class="module-card" onclick="app.navigateTo('quiz')">
+                <a href="modules/quiz/index.html" class="module-card">
                     <div class="module-icon">❓</div>
                     <h4 class="module-title">Quiz</h4>
-                    <p class="module-description">Test din viden med multiple-choice spørgsmål</p>
+                    <p class="module-description">Opret og tag quizzer med adaptive scoring</p>
                     <div class="module-progress">
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: 0%" id="quizProgress"></div>
                         </div>
-                        <span class="progress-text">0/25 spørgsmål</span>
+                        <span class="progress-text">User-generated quizzes</span>
                     </div>
-                </div>
+                </a>
 
-                <div class="module-card" onclick="app.navigateTo('dashboard')">
+                <a href="modules/dashboard/index.html" class="module-card">
                     <div class="module-icon">📊</div>
                     <h4 class="module-title">Dashboard</h4>
-                    <p class="module-description">Oversigt over dit fremskridt og statistikker</p>
+                    <p class="module-description">Se fremskridt, streaks og achievements</p>
                     <div class="module-status">
                         <span class="status-badge">Aktiv</span>
                     </div>
-                </div>
+                </a>
 
+                <a href="modules/advanced/index.html" class="module-card">
+                    <div class="module-icon">🌟</div>
+                    <h4 class="module-title">Advanced Features</h4>
+                    <p class="module-description">Export/import, search, dark mode og mere</p>
+                    <div class="module-status">
+                        <span class="status-badge">Ny</span>
+                    </div>
+                </a>
+
+                <a href="modules/ai-assistant/index.html" class="module-card ai-featured">
+                    <div class="module-icon">🤖</div>
+                    <h4 class="module-title">AI Assistant</h4>
+                    <p class="module-description">Intelligent tutor der tilpasser sig dit emne med chat og smart feedback</p>
+                    <div class="module-status">
+                        <span class="status-badge premium">AI</span>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+
+        <!-- Advanced Features Quick Access -->
+        <section class="quick-actions">
+            <h3 class="modules-title">Hurtig Adgang</h3>
+            <div class="quick-actions-grid">
+                <button onclick="window.open('modules/advanced/index.html#search', '_blank')" class="quick-action">
+                    <span class="action-icon">🔍</span>
+                    <span class="action-label">Global Search</span>
+                </button>
+                <button onclick="toggleDarkMode()" class="quick-action">
+                    <span class="action-icon">🌙</span>
+                    <span class="action-label">Dark Mode</span>
+                </button>
+                <button onclick="window.open('modules/advanced/index.html#export', '_blank')" class="quick-action">
+                    <span class="action-icon">📤</span>
+                    <span class="action-label">Export Data</span>
+                </button>
+                <button onclick="window.open('modules/advanced/index.html#import', '_blank')" class="quick-action">
+                    <span class="action-icon">📥</span>
+                    <span class="action-label">Import Data</span>
+                </button>
             </div>
         </section>
     </main>
 
     <!-- Bottom Navigation (Mobile) -->
     <nav class="bottom-nav">
-        <button class="nav-item active" onclick="app.navigateTo('home')" data-nav="home">
+        <button class="nav-item active" onclick="window.location.reload()" data-nav="home">
             <span class="nav-icon">🏠</span>
             <span class="nav-label">Hjem</span>
         </button>
-        <button class="nav-item" onclick="app.navigateTo('content')" data-nav="content">
-            <span class="nav-icon">📖</span>
-            <span class="nav-label">Indhold</span>
-        </button>
-        <button class="nav-item" onclick="app.navigateTo('flashcards')" data-nav="flashcards">
+        <a href="modules/subjects/index.html" class="nav-item" data-nav="subjects">
+            <span class="nav-icon">�</span>
+            <span class="nav-label">Emner</span>
+        </a>
+        <a href="modules/flashcards/index.html" class="nav-item" data-nav="flashcards">
             <span class="nav-icon">🗂️</span>
             <span class="nav-label">Cards</span>
-        </button>
-        <button class="nav-item" onclick="app.navigateTo('quiz')" data-nav="quiz">
+        </a>
+        <a href="modules/quiz/index.html" class="nav-item" data-nav="quiz">
             <span class="nav-icon">❓</span>
             <span class="nav-label">Quiz</span>
-        </button>
-        <button class="nav-item" onclick="app.navigateTo('dashboard')" data-nav="dashboard">
+        </a>
+        <a href="modules/dashboard/index.html" class="nav-item" data-nav="dashboard">
             <span class="nav-icon">📊</span>
             <span class="nav-label">Fremskridt</span>
-        </button>
+        </a>
+        <a href="modules/ai-assistant/index.html" class="nav-item" data-nav="ai">
+            <span class="nav-icon">🤖</span>
+            <span class="nav-label">AI</span>
+        </a>
     </nav>
 
     <!-- Scripts -->
+    <script src="core/browser-compatibility.js"></script>
     <script src="core/utils.js"></script>
     <script src="core/storage.js"></script>
+    <script src="core/performance.js"></script>
+    <script src="core/accessibility.js"></script>
+    <script src="core/mobile-gestures.js"></script>
+    <script src="core/pwa-installer.js"></script>
     <script src="core/app.js"></script>
     
     <!-- Initialize App -->
@@ -178,7 +237,28 @@
         // Initialize app when DOM is ready
         document.addEventListener('DOMContentLoaded', () => {
             app.init();
+            initializeTheme();
         });
+
+        // Simple theme toggle function
+        function toggleDarkMode() {
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
+            const newTheme = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('examklar-theme', newTheme);
+        }
+
+        // Initialize theme on load
+        function initializeTheme() {
+            const savedTheme = localStorage.getItem('examklar-theme');
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            } else {
+                // Use system preference
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+            }
+        }
     </script>
 </body>
 </html>

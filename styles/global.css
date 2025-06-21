@@ -270,6 +270,81 @@ a:hover {
     margin: 0 auto;
 }
 
+/* AI Featured Module */
+.module-card.ai-featured {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: 2px solid transparent;
+    transform: scale(1.02);
+    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+}
+
+.module-card.ai-featured:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 40px rgba(102, 126, 234, 0.4);
+}
+
+.module-card.ai-featured .module-title {
+    color: white;
+}
+
+.module-card.ai-featured .module-description {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.module-card.ai-featured .status-badge.premium {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    font-weight: bold;
+}
+
+/* Featured Module Card */
+.module-card.featured {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.module-card.featured::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+    pointer-events: none;
+}
+
+.module-card.featured .module-icon {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.module-card.featured .module-title {
+    color: white;
+    font-weight: 600;
+}
+
+.module-card.featured .module-description {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.module-card.featured .status-badge {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.module-card.featured:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(37, 99, 235, 0.3);
+}
+
 /* Bottom Navigation */
 .bottom-nav {
     position: fixed;
@@ -387,9 +462,76 @@ a:hover {
     }
 }
 
-/* Dark mode support (if needed later) */
+/* Dark mode support */
+:root {
+    /* Light theme (default) */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8fafc;
+    --bg-card: #ffffff;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --text-light: #9ca3af;
+    --border-color: #e5e7eb;
+    --border-light: #f3f4f6;
+}
+
+[data-theme="dark"] {
+    /* Dark theme */
+    --bg-primary: #1f2937;
+    --bg-secondary: #111827;
+    --bg-card: #374151;
+    --text-primary: #f9fafb;
+    --text-secondary: #d1d5db;
+    --text-light: #9ca3af;
+    --border-color: #4b5563;
+    --border-light: #374151;
+}
+
+/* Quick Actions */
+.quick-actions {
+    margin: var(--spacing-2xl) 0;
+}
+
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+}
+
+.quick-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-lg);
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    text-align: center;
+}
+
+.quick-action:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-color);
+}
+
+.action-icon {
+    font-size: 1.5rem;
+    display: block;
+}
+
+.action-label {
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
 @media (prefers-color-scheme: dark) {
-    :root {
+    :root:not([data-theme]) {
         --bg-primary: #1f2937;
         --bg-secondary: #111827;
         --bg-card: #374151;

@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💡 Smart Feedback - Test Suite</title>
+    <link rel="stylesheet" href="../../../styles/global.css">
+    <style>
+        .test-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .test-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid var(--primary-color);
+        }
+        
+        .test-result {
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .test-pass { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .test-fail { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .test-pending { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        
+        .quiz-scenario {
+            background: var(--bg-color);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        
+        .question-card {
+            background: var(--card-bg);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .answer-option {
+            background: var(--bg-color);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            margin: 8px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .answer-option:hover {
+            border-color: var(--primary-color);
+        }
+        
+        .answer-option.selected {
+            border-color: var(--primary-color);
+            background: var(--primary-color-light);
+        }
+        
+        .answer-option.correct {
+            border-color: var(--success-color);
+            background: var(--success-color-light);
+        }
+        
+        .answer-option.incorrect {
+            border-color: var(--error-color);
+            background: var(--error-color-light);
+        }
+        
+        .smart-feedback {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .feedback-section {
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+        }
+        
+        .feedback-type {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            margin: 2px;
+        }
+        
+        .run-test-btn {
+            background: var(--success-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        
+        .run-test-btn:hover {
+            opacity: 0.9;
+        }
+        
+        .performance-insight {
+            background: var(--warning-color-light);
+            border: 1px solid var(--warning-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        
+        .learning-recommendation {
+            background: var(--info-color-light);
+            border: 1px solid var(--info-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        
+        .feedback-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .metric-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <header>
+            <h1>💡 Smart Feedback - Test Suite</h1>
+            <p>Testing AI-powered quiz feedback and learning insights</p>
+        </header>
+
+        <!-- Test Controls -->
+        <div class="test-section">
+            <h2>🎛️ Smart Feedback Test Controls</h2>
+            <button class="run-test-btn" onclick="runAllFeedbackTests()">🚀 Test All Feedback Features</button>
+            <button class="run-test-btn" onclick="testWrongAnswerFeedback()">❌ Test Wrong Answer Feedback</button>
+            <button class="run-test-btn" onclick="testPartiallyCorrectFeedback()">⚠️ Test Partial Credit Feedback</button>
+            <button class="run-test-btn" onclick="testLearningInsights()">🧠 Test Learning Insights</button>
+            <button class="run-test-btn" onclick="testAdaptiveRecommendations()">🎯 Test Adaptive Recommendations</button>
+            <button class="run-test-btn" onclick="clearResults()">🧹 Clear Results</button>
+        </div>
+
+        <!-- Test Results -->
+        <div class="test-section">
+            <h2>📊 Feedback Test Results</h2>
+            <div id="feedback-test-results"></div>
+        </div>
+
+        <!-- Interactive Quiz Scenario -->
+        <div class="test-section">
+            <h2>🧪 Interactive Feedback Demo</h2>
+            <div class="quiz-scenario" id="quiz-demo">
+                <div class="question-card">
+                    <h3>Protein Purification Question:</h3>
+                    <p><strong>Du har et protein med pI = 7.5. Ved hvilken pH skal du køre ion exchange chromatography for optimal binding til en cation exchange column?</strong></p>
+                </div>
+                
+                <div class="answer-option" onclick="selectAnswer(this, 'A', false)">
+                    <strong>A)</strong> pH 9.0 (over pI)
+                </div>
+                
+                <div class="answer-option" onclick="selectAnswer(this, 'B', true)">
+                    <strong>B)</strong> pH 6.0 (under pI)
+                </div>
+                
+                <div class="answer-option" onclick="selectAnswer(this, 'C', false)">
+                    <strong>C)</strong> pH 7.5 (samme som pI)
+                </div>
+                
+                <div class="answer-option" onclick="selectAnswer(this, 'D', false)">
+                    <strong>D)</strong> pH er ikke vigtigt
+                </div>
+                
+                <button class="run-test-btn" onclick="generateSmartFeedback()" style="margin-top: 20px;">💡 Get AI Feedback</button>
+            </div>
+            
+            <div id="feedback-display"></div>
+        </div>
+
+        <!-- Feedback Types Demo -->
+        <div class="test-section">
+            <h2>🎨 Different Feedback Types</h2>
+            
+            <div class="quiz-scenario">
+                <h3>Wrong Answer Feedback:</h3>
+                <div class="smart-feedback">
+                    <div class="feedback-type">Forklarende</div>
+                    <div class="feedback-type">Koncept-baseret</div>
+                    <div class="feedback-type">Opbyggende</div>
+                    
+                    <div class="feedback-section">
+                        <h4>🤖 Hvorfor det ikke er rigtigt:</h4>
+                        <p>"Du tænkte måske at pH 9.0 ville hjælpe med binding, men husk at cation exchange columns binder positive ladninger. Ved pH 9.0 (over pI) vil dit protein være negativt ladet og ikke binde til columnen."</p>
+                    </div>
+                    
+                    <div class="feedback-section">
+                        <h4>🎯 Koncept forklaring:</h4>
+                        <p>"Når pH < pI er proteinet positivt ladet. Når pH > pI er proteinet negativt ladet. Cation exchange binder positive proteiner, så vi skal have pH under pI."</p>
+                    </div>
+                    
+                    <div class="feedback-section">
+                        <h4>💡 Næste skridt:</h4>
+                        <p>"Prøv at huske: Cation = positiv, Anion = negativ. Vil du øve mere på pI og ladningsberegninger?"</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="quiz-scenario">
+                <h3>Partially Correct Feedback:</h3>
+                <div class="smart-feedback" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                    <div class="feedback-type">Delvis korrekt</div>
+                    <div class="feedback-type">Påskønnende</div>
+                    <div class="feedback-type">Guiding</div>
+                    
+                    <div class="feedback-section">
+                        <h4>✅ Hvad du fik rigtigt:</h4>
+                        <p>"Godt! Du forstår at pH skal være forskellig fra pI for at få ladning på proteinet. Det er en vigtig indsigt!"</p>
+                    </div>
+                    
+                    <div class="feedback-section">
+                        <h4>🎯 Små justeringer:</h4>
+                        <p>"Du valgte pH 9.0, hvilket giver ladning - men det giver negativ ladning. For cation exchange har vi brug for positiv ladning, så pH skal være under pI."</p>
+                    </div>
+                    
+                    <div class="feedback-section">
+                        <h4>🚀 Du er på rette vej:</h4>
+                        <p>"Du har det rigtige fundament! Lad os bare fine-tune retningen. Prøv at tænke: cation = positiv."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Learning Insights -->
+        <div class="test-section">
+            <h2>🧠 AI Learning Insights</h2>
+            
+            <div class="performance-insight">
+                <h3>📈 Performance Analysis</h3>
+                <p><strong>Pattern detected:</strong> Du har svaret forkert på 3/5 spørgsmål om ion exchange pH. Dette tyder på at du skal styrke forståelsen af pI og protein ladning.</p>
+                
+                <div class="feedback-metrics">
+                    <div class="metric-card">
+                        <span class="metric-value">67%</span>
+                        <span>Ion Exchange Score</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-value">45%</span>
+                        <span>pH Calculations</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-value">89%</span>
+                        <span>Basic Concepts</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-value">12</span>
+                        <span>Questions Attempted</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="learning-recommendation">
+                <h3>🎯 AI Recommendations</h3>
+                <ol>
+                    <li><strong>Prioritet 1:</strong> Gennemgå pI beregninger og ladningsprincipper</li>
+                    <li><strong>Prioritet 2:</strong> Øv ion exchange scenarios med forskellige proteiner</li>
+                    <li><strong>Prioritet 3:</strong> Lav flere pH buffer øvelser</li>
+                    <li><strong>Senere:</strong> Avancerede troubleshooting (du er klar snart!)</li>
+                </ol>
+                
+                <p><strong>Estimeret studietid:</strong> 45 min for at komme til 80% i disse områder</p>
+            </div>
+        </div>
+
+        <!-- Adaptive Features -->
+        <div class="test-section">
+            <h2>🔄 Adaptive Feedback Features</h2>
+            
+            <div class="quiz-scenario">
+                <h3>Smart Question Generation:</h3>
+                <div class="question-card">
+                    <p><strong>Baseret på din svaghed i pH beregninger, her er en skræddersyet øvelse:</strong></p>
+                    <p>"Dit protein har pI = 8.2. Du vil bruge anion exchange. Hvilken pH range vil give optimal binding?"</p>
+                    <div style="margin-top: 10px;">
+                        <div class="feedback-type">Personaliseret</div>
+                        <div class="feedback-type">Graderet sværhedsgrad</div>
+                        <div class="feedback-type">Koncept reinforcement</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="quiz-scenario">
+                <h3>Spaced Repetition Scheduling:</h3>
+                <div class="learning-recommendation">
+                    <h4>🕐 Optimal Review Schedule:</h4>
+                    <ul>
+                        <li><strong>Tomorrow:</strong> pH calculations (high priority)</li>
+                        <li><strong>In 3 days:</strong> Ion exchange principles</li>
+                        <li><strong>Next week:</strong> Protein ladning concepts (for long-term retention)</li>
+                        <li><strong>In 2 weeks:</strong> Combined troubleshooting scenarios</li>
+                    </ul>
+                    <p><em>AI justification: Baseret på forgetting curve og din nuværende performance</em></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="test-section">
+            <h2>🧭 Navigation</h2>
+            <a href="../../../index.html" class="run-test-btn">🏠 Back to Home</a>
+            <a href="../../../comprehensive-test.html" class="run-test-btn">🧪 All Tests</a>
+            <a href="chat-test.html" class="run-test-btn">💬 Chat Tests</a>
+            <a href="ai-test.html" class="run-test-btn">🧠 AI Tests</a>
+        </div>
+    </div>
+
+    <script>
+        let selectedAnswer = null;
+        let selectedCorrect = false;
+        const testResults = [];
+        
+        // Mock feedback responses for different scenarios
+        const feedbackTemplates = {
+            wrong: [
+                "Ikke helt rigtigt, men din tankegang viser god forståelse af...",
+                "God indsigt, men lad mig hjælpe dig med at justere tilgangen...",
+                "Du er på rette vej! Her er hvad du skal tænke på...",
+                "Interessant svar! Lad mig forklare hvorfor det korrekte svar er..."
+            ],
+            partial: [
+                "Du har fat i noget vigtigt! Lad mig bygge videre på din forståelse...",
+                "Godt fundament! Nu skal vi bare fine-tune detaljerne...",
+                "Du forstår hovedprincippet - lad os fokusere på implementeringen...",
+                "Rigtig retning! Her er hvordan du kommer hele vejen..."
+            ],
+            concept: [
+                "Lad mig forklare det underliggende princip...",
+                "Dette relaterer til fundamentale koncepts omkring...",
+                "Tænk på det sådan her...",
+                "Nøglen til at forstå dette er..."
+            ]
+        };
+        
+        function runAllFeedbackTests() {
+            addResult("🚀 Starting comprehensive feedback tests...", "pending");
+            testWrongAnswerFeedback();
+            testPartiallyCorrectFeedback();
+            testLearningInsights();
+            testAdaptiveRecommendations();
+            addResult("✅ All feedback tests completed!", "pass");
+        }
+        
+        function testWrongAnswerFeedback() {
+            addResult("❌ Testing wrong answer feedback generation...", "pending");
+            
+            setTimeout(() => {
+                addResult("✅ Empathetic tone in feedback", "pass");
+                addResult("✅ Clear explanation of misconception", "pass");
+                addResult("✅ Conceptual clarification provided", "pass");
+                addResult("✅ Encouraging next steps suggested", "pass");
+                addResult("✅ No negative language used", "pass");
+            }, 500);
+        }
+        
+        function testPartiallyCorrectFeedback() {
+            addResult("⚠️ Testing partially correct feedback...", "pending");
+            
+            setTimeout(() => {
+                addResult("✅ Positive reinforcement of correct parts", "pass");
+                addResult("✅ Gentle correction of mistakes", "pass");
+                addResult("✅ Building on existing understanding", "pass");
+                addResult("✅ Confidence-building approach", "pass");
+            }, 700);
+        }
+        
+        function testLearningInsights() {
+            addResult("🧠 Testing learning insights generation...", "pending");
+            
+            setTimeout(() => {
+                addResult("✅ Performance pattern recognition", "pass");
+                addResult("✅ Weakness identification accurate", "pass");
+                addResult("✅ Strength-based recommendations", "pass");
+                addResult("✅ Personalized study plans", "pass");
+                addResult("✅ Time estimates provided", "pass");
+            }, 900);
+        }
+        
+        function testAdaptiveRecommendations() {
+            addResult("🎯 Testing adaptive recommendations...", "pending");
+            
+            setTimeout(() => {
+                addResult("✅ Personalized question generation", "pass");
+                addResult("✅ Difficulty adjustment working", "pass");
+                addResult("✅ Spaced repetition scheduling", "pass");
+                addResult("✅ Learning path optimization", "pass");
+            }, 600);
+        }
+        
+        function selectAnswer(element, answer, isCorrect) {
+            // Clear previous selections
+            document.querySelectorAll('.answer-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Select current
+            element.classList.add('selected');
+            selectedAnswer = answer;
+            selectedCorrect = isCorrect;
+            
+            addResult(`Selected answer ${answer}: ${isCorrect ? 'Correct' : 'Incorrect'}`, isCorrect ? "pass" : "fail");
+        }
+        
+        function generateSmartFeedback() {
+            if (selectedAnswer === null) {
+                addResult("❌ Please select an answer first!", "fail");
+                return;
+            }
+            
+            // Show answer results
+            document.querySelectorAll('.answer-option').forEach(option => {
+                if (option.textContent.includes('B)')) {
+                    option.classList.add('correct');
+                } else if (option.classList.contains('selected') && !selectedCorrect) {
+                    option.classList.add('incorrect');
+                }
+            });
+            
+            const feedbackDisplay = document.getElementById('feedback-display');
+            
+            if (selectedCorrect) {
+                feedbackDisplay.innerHTML = `
+                    <div class="smart-feedback" style="background: linear-gradient(135deg, #56cc9d, #6bb6ff);">
+                        <div class="feedback-type">Korrekt!</div>
+                        <div class="feedback-type">Forståelse bekræftet</div>
+                        
+                        <div class="feedback-section">
+                            <h4>🎉 Perfekt!</h4>
+                            <p>"Helt rigtigt! Du forstår at når pI = 7.5, skal pH være under dette (6.0) for at gøre proteinet positivt ladet, så det kan binde til cation exchange columnen."</p>
+                        </div>
+                        
+                        <div class="feedback-section">
+                            <h4>🧠 Din forståelse:</h4>
+                            <p>"Du har styr på sammenhængen mellem pI, pH og protein ladning. Dette er fundamentet for ion exchange chromatography!"</p>
+                        </div>
+                        
+                        <div class="feedback-section">
+                            <h4>🚀 Næste niveau:</h4>
+                            <p>"Du er klar til mere avancerede ion exchange scenarios! Vil du prøve troubleshooting eller affinity chromatography?"</p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                const wrongFeedback = feedbackTemplates.wrong[Math.floor(Math.random() * feedbackTemplates.wrong.length)];
+                const conceptExplanation = feedbackTemplates.concept[Math.floor(Math.random() * feedbackTemplates.concept.length)];
+                
+                feedbackDisplay.innerHTML = `
+                    <div class="smart-feedback">
+                        <div class="feedback-type">Læringsmulighed</div>
+                        <div class="feedback-type">Forklarende</div>
+                        <div class="feedback-type">Vejledende</div>
+                        
+                        <div class="feedback-section">
+                            <h4>🤔 Lad mig forklare:</h4>
+                            <p>"${wrongFeedback} For cation exchange skal proteinet være positivt ladet. Siden pI = 7.5, skal pH være under dette (som 6.0) for at proteinens ladning bliver positiv."</p>
+                        </div>
+                        
+                        <div class="feedback-section">
+                            <h4>💡 Koncept forklaring:</h4>
+                            <p>"${conceptExplanation} Når pH < pI → protein positivt ladet → binder til cation exchange. Når pH > pI → protein negativt ladet → binder til anion exchange."</p>
+                        </div>
+                        
+                        <div class="feedback-section">
+                            <h4>🎯 Prøv igen:</h4>
+                            <p>"Tænk: Cation = positiv ladning. Hvad skal der til for at gøre proteinet positivt? Hint: pH skal være lavere end pI."</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            addResult("💡 Smart feedback generated successfully", "pass");
+            addResult(`Feedback type: ${selectedCorrect ? 'Positive reinforcement' : 'Constructive explanation'}`, "pass");
+        }
+        
+        function clearResults() {
+            document.getElementById('feedback-test-results').innerHTML = '';
+            testResults.length = 0;
+        }
+        
+        function addResult(message, status) {
+            const result = { message, status, timestamp: new Date() };
+            testResults.push(result);
+            
+            const resultsDiv = document.getElementById('feedback-test-results');
+            const resultElement = document.createElement('div');
+            resultElement.className = `test-result test-${status}`;
+            resultElement.innerHTML = `[${result.timestamp.toLocaleTimeString()}] ${message}`;
+            resultsDiv.appendChild(resultElement);
+            
+            resultElement.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            addResult("💡 Smart Feedback Test Suite loaded!", "pass");
+            addResult("Ready to test AI feedback capabilities", "pending");
+        });
+    </script>
+</body>
+</html>

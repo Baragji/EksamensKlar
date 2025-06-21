@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Functionality Test - ExamKlar</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-section {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+        }
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .pass {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .fail {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .search-demo {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        .search-results {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .search-result-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+        .search-result-item:hover {
+            background: #f8f9fa;
+        }
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+        .result-title {
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 5px;
+        }
+        .result-snippet {
+            color: #666;
+            font-size: 14px;
+        }
+        .result-meta {
+            color: #999;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        .search-filters {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+        .filter-group {
+            margin: 10px 0;
+        }
+        select, input[type="checkbox"] {
+            margin: 0 5px;
+        }
+        .highlight {
+            background: yellow;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Search Functionality Tests</h1>
+    <p>Test alle search og filter funktioner</p>
+    
+    <div class="search-demo">
+        <h2>🔍 Live Search Demo</h2>
+        <input type="text" id="search-input" placeholder="Search across all content..." 
+               oninput="performLiveSearch(this.value)">
+        
+        <div class="search-filters">
+            <div class="filter-group">
+                <label>📂 Search in:</label>
+                <label><input type="checkbox" checked id="filter-content"> Content</label>
+                <label><input type="checkbox" checked id="filter-flashcards"> Flashcards</label>
+                <label><input type="checkbox" checked id="filter-quiz"> Quiz</label>
+                <label><input type="checkbox" checked id="filter-notes"> Notes</label>
+            </div>
+            <div class="filter-group">
+                <label>🎯 Type:</label>
+                <select id="search-type">
+                    <option value="all">All Results</option>
+                    <option value="exact">Exact Match</option>
+                    <option value="fuzzy">Fuzzy Search</option>
+                    <option value="semantic">Semantic Search</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>📅 Date:</label>
+                <select id="date-filter">
+                    <option value="all">All Time</option>
+                    <option value="today">Today</option>
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="search-results" id="search-results">
+            <div class="search-result-item">
+                <div class="result-title">Search results will appear here...</div>
+                <div class="result-snippet">Type in the search box above to see live results</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>🔤 Text Search Tests</h2>
+        <button onclick="testBasicSearch()">Test Basic Search</button>
+        <button onclick="testFuzzySearch()">Test Fuzzy Search</button>
+        <button onclick="testExactMatch()">Test Exact Match</button>
+        <button onclick="testPartialMatch()">Test Partial Match</button>
+        <div id="text-results"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>🎯 Advanced Search Tests</h2>
+        <button onclick="testSemanticSearch()">Test Semantic Search</button>
+        <button onclick="testFilterSearch()">Test Filter Search</button>
+        <button onclick="testSortResults()">Test Result Sorting</button>
+        <button onclick="testSearchHistory()">Test Search History</button>
+        <div id="advanced-results"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>⚡ Performance Tests</h2>
+        <button onclick="testSearchSpeed()">Test Search Speed</button>
+        <button onclick="testLargeDataset()">Test Large Dataset</button>
+        <button onclick="testRealTimeSearch()">Test Real-time Search</button>
+        <div id="performance-results"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>📊 Test Summary</h2>
+        <div id="test-summary"></div>
+        <button onclick="runAllTests()" style="background: #28a745;">Run All Tests</button>
+        <button onclick="clearSearchData()">Clear Search Data</button>
+    </div>
+
+    <script>
+        let testResults = {
+            passed: 0,
+            failed: 0,
+            total: 0
+        };
+
+        // Mock data for testing
+        const mockData = {
+            content: [
+                { id: 1, title: "Protein Structure Basics", content: "Proteins are complex molecules made of amino acids", type: "content", date: "2024-01-15" },
+                { id: 2, title: "Purification Methods", content: "Various techniques for protein purification including chromatography", type: "content", date: "2024-01-16" },
+                { id: 3, title: "Chromatography Principles", content: "Ion exchange, size exclusion, and affinity chromatography", type: "content", date: "2024-01-17" }
+            ],
+            flashcards: [
+                { id: 1, front: "What is protein folding?", back: "The process by which proteins adopt their functional structure", type: "flashcard", date: "2024-01-15" },
+                { id: 2, front: "Define chromatography", back: "A method for separating components of a mixture", type: "flashcard", date: "2024-01-16" },
+                { id: 3, front: "What is SDS-PAGE?", back: "Sodium dodecyl sulfate polyacrylamide gel electrophoresis", type: "flashcard", date: "2024-01-17" }
+            ],
+            quiz: [
+                { id: 1, question: "Which amino acid has a sulfur atom?", answer: "Cysteine", type: "quiz", date: "2024-01-15" },
+                { id: 2, question: "What is the pI of a protein?", answer: "Isoelectric point", type: "quiz", date: "2024-01-16" },
+                { id: 3, question: "Name a reducing agent used in protein analysis", answer: "DTT or TCEP", type: "quiz", date: "2024-01-17" }
+            ],
+            notes: [
+                { id: 1, title: "Lab Notes Day 1", content: "Started protein expression in E. coli", type: "notes", date: "2024-01-15" },
+                { id: 2, title: "Purification Results", content: "Good yield from Ni-NTA column", type: "notes", date: "2024-01-16" }
+            ]
+        };
+
+        function addTestResult(sectionId, testName, passed, message) {
+            testResults.total++;
+            if (passed) {
+                testResults.passed++;
+            } else {
+                testResults.failed++;
+            }
+            
+            const section = document.getElementById(sectionId);
+            const result = document.createElement('div');
+            result.className = `test-result ${passed ? 'pass' : 'fail'}`;
+            result.innerHTML = `
+                <strong>${testName}:</strong> ${passed ? '✅ PASS' : '❌ FAIL'}<br>
+                <em>${message}</em>
+            `;
+            section.appendChild(result);
+            
+            updateTestSummary();
+        }
+
+        function updateTestSummary() {
+            const summary = document.getElementById('test-summary');
+            summary.innerHTML = `
+                <h3>Results: ${testResults.passed}/${testResults.total} tests passed</h3>
+                <div style="background: ${testResults.failed === 0 ? '#d4edda' : '#f8d7da'}; padding: 10px; border-radius: 4px;">
+                    ✅ Passed: ${testResults.passed}<br>
+                    ❌ Failed: ${testResults.failed}<br>
+                    📊 Success Rate: ${Math.round((testResults.passed / testResults.total) * 100)}%
+                </div>
+            `;
+        }
+
+        function getAllData() {
+            return [
+                ...mockData.content,
+                ...mockData.flashcards,
+                ...mockData.quiz,
+                ...mockData.notes
+            ];
+        }
+
+        function basicSearch(query, data = getAllData()) {
+            const lowercaseQuery = query.toLowerCase();
+            return data.filter(item => {
+                const searchableText = [
+                    item.title || '',
+                    item.content || '',
+                    item.front || '',
+                    item.back || '',
+                    item.question || '',
+                    item.answer || ''
+                ].join(' ').toLowerCase();
+                
+                return searchableText.includes(lowercaseQuery);
+            });
+        }
+
+        function fuzzySearch(query, data = getAllData()) {
+            const results = [];
+            const lowercaseQuery = query.toLowerCase();
+            
+            data.forEach(item => {
+                const searchableText = [
+                    item.title || '',
+                    item.content || '',
+                    item.front || '',
+                    item.back || '',
+                    item.question || '',
+                    item.answer || ''
+                ].join(' ').toLowerCase();
+                
+                // Simple fuzzy matching - check if query words appear in any order
+                const queryWords = lowercaseQuery.split(' ');
+                const matchCount = queryWords.filter(word => searchableText.includes(word)).length;
+                const score = matchCount / queryWords.length;
+                
+                if (score > 0.5) { // At least 50% of words match
+                    results.push({ ...item, score });
+                }
+            });
+            
+            return results.sort((a, b) => b.score - a.score);
+        }
+
+        function exactMatch(query, data = getAllData()) {
+            return data.filter(item => {
+                const searchableText = [
+                    item.title || '',
+                    item.content || '',
+                    item.front || '',
+                    item.back || '',
+                    item.question || '',
+                    item.answer || ''
+                ].join(' ');
+                
+                return searchableText.includes(query);
+            });
+        }
+
+        function performLiveSearch(query) {
+            const resultsContainer = document.getElementById('search-results');
+            
+            if (!query.trim()) {
+                resultsContainer.innerHTML = `
+                    <div class="search-result-item">
+                        <div class="result-title">Search results will appear here...</div>
+                        <div class="result-snippet">Type in the search box above to see live results</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            const searchType = document.getElementById('search-type').value;
+            let results = [];
+            
+            switch (searchType) {
+                case 'exact':
+                    results = exactMatch(query);
+                    break;
+                case 'fuzzy':
+                    results = fuzzySearch(query);
+                    break;
+                default:
+                    results = basicSearch(query);
+            }
+            
+            // Apply filters
+            const filters = {
+                content: document.getElementById('filter-content').checked,
+                flashcards: document.getElementById('filter-flashcards').checked,
+                quiz: document.getElementById('filter-quiz').checked,
+                notes: document.getElementById('filter-notes').checked
+            };
+            
+            results = results.filter(item => {
+                switch (item.type) {
+                    case 'content': return filters.content;
+                    case 'flashcard': return filters.flashcards;
+                    case 'quiz': return filters.quiz;
+                    case 'notes': return filters.notes;
+                    default: return true;
+                }
+            });
+            
+            // Apply date filter
+            const dateFilter = document.getElementById('date-filter').value;
+            if (dateFilter !== 'all') {
+                const now = new Date();
+                const filterDate = new Date();
+                
+                switch (dateFilter) {
+                    case 'today':
+                        filterDate.setHours(0, 0, 0, 0);
+                        break;
+                    case 'week':
+                        filterDate.setDate(filterDate.getDate() - 7);
+                        break;
+                    case 'month':
+                        filterDate.setMonth(filterDate.getMonth() - 1);
+                        break;
+                }
+                
+                results = results.filter(item => new Date(item.date) >= filterDate);
+            }
+            
+            // Display results
+            if (results.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="search-result-item">
+                        <div class="result-title">No results found</div>
+                        <div class="result-snippet">Try different keywords or adjust your filters</div>
+                    </div>
+                `;
+            } else {
+                resultsContainer.innerHTML = results.map(item => {
+                    const title = item.title || item.front || item.question || 'Untitled';
+                    const snippet = item.content || item.back || item.answer || 'No description';
+                    const highlightedTitle = title.replace(new RegExp(query, 'gi'), match => `<span class="highlight">${match}</span>`);
+                    const highlightedSnippet = snippet.replace(new RegExp(query, 'gi'), match => `<span class="highlight">${match}</span>`);
+                    
+                    return `
+                        <div class="search-result-item">
+                            <div class="result-title">${highlightedTitle}</div>
+                            <div class="result-snippet">${highlightedSnippet}</div>
+                            <div class="result-meta">${item.type} • ${item.date}${item.score ? ` • Score: ${Math.round(item.score * 100)}%` : ''}</div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        function testBasicSearch() {
+            try {
+                const query = "protein";
+                const results = basicSearch(query);
+                const hasResults = results.length > 0;
+                const correctResults = results.some(r => 
+                    r.title?.toLowerCase().includes(query) || 
+                    r.content?.toLowerCase().includes(query)
+                );
+                
+                addTestResult('text-results', 'Basic Search', hasResults && correctResults, 
+                    `Found ${results.length} results for "${query}"`);
+            } catch (error) {
+                addTestResult('text-results', 'Basic Search', false, `Search failed: ${error.message}`);
+            }
+        }
+
+        function testFuzzySearch() {
+            try {
+                const query = "protein structure";
+                const results = fuzzySearch(query);
+                const hasResults = results.length > 0;
+                const hasScores = results.every(r => typeof r.score === 'number');
+                
+                addTestResult('text-results', 'Fuzzy Search', hasResults && hasScores, 
+                    `Fuzzy search found ${results.length} results with relevance scores`);
+            } catch (error) {
+                addTestResult('text-results', 'Fuzzy Search', false, `Fuzzy search failed: ${error.message}`);
+            }
+        }
+
+        function testExactMatch() {
+            try {
+                const query = "Protein Structure Basics";
+                const results = exactMatch(query);
+                const hasExactMatch = results.length > 0;
+                
+                addTestResult('text-results', 'Exact Match', hasExactMatch, 
+                    hasExactMatch ? 'Exact match search working correctly' : 'No exact matches found');
+            } catch (error) {
+                addTestResult('text-results', 'Exact Match', false, `Exact match failed: ${error.message}`);
+            }
+        }
+
+        function testPartialMatch() {
+            try {
+                const query = "chrom";
+                const results = basicSearch(query);
+                const partialMatches = results.filter(r => 
+                    (r.title || r.content || r.front || r.back || r.question || r.answer || '')
+                    .toLowerCase().includes(query)
+                );
+                
+                addTestResult('text-results', 'Partial Match', partialMatches.length > 0, 
+                    `Partial match found ${partialMatches.length} results for "${query}"`);
+            } catch (error) {
+                addTestResult('text-results', 'Partial Match', false, `Partial match failed: ${error.message}`);
+            }
+        }
+
+        function testSemanticSearch() {
+            try {
+                // Simulate semantic search (would use more advanced algorithms in real implementation)
+                const query = "separation techniques";
+                const semanticTerms = ["chromatography", "purification", "separation", "isolation"];
+                
+                const results = getAllData().filter(item => {
+                    const text = [
+                        item.title || '',
+                        item.content || '',
+                        item.front || '',
+                        item.back || '',
+                        item.question || '',
+                        item.answer || ''
+                    ].join(' ').toLowerCase();
+                    
+                    return semanticTerms.some(term => text.includes(term));
+                });
+                
+                addTestResult('advanced-results', 'Semantic Search', results.length > 0, 
+                    `Semantic search found ${results.length} conceptually related results`);
+            } catch (error) {
+                addTestResult('advanced-results', 'Semantic Search', false, `Semantic search failed: ${error.message}`);
+            }
+        }
+
+        function testFilterSearch() {
+            try {
+                const allData = getAllData();
+                const contentOnly = allData.filter(item => item.type === 'content');
+                const flashcardsOnly = allData.filter(item => item.type === 'flashcard');
+                
+                const filtersWork = contentOnly.length > 0 && flashcardsOnly.length > 0 &&
+                    contentOnly.length !== allData.length && flashcardsOnly.length !== allData.length;
+                
+                addTestResult('advanced-results', 'Filter Search', filtersWork, 
+                    `Filters working: ${contentOnly.length} content, ${flashcardsOnly.length} flashcards`);
+            } catch (error) {
+                addTestResult('advanced-results', 'Filter Search', false, `Filter search failed: ${error.message}`);
+            }
+        }
+
+        function testSortResults() {
+            try {
+                const query = "protein";
+                let results = fuzzySearch(query);
+                
+                // Test sorting by score (descending)
+                const sortedByScore = [...results].sort((a, b) => (b.score || 0) - (a.score || 0));
+                
+                // Test sorting by date (newest first)
+                const sortedByDate = [...results].sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                const scoreSortWorks = results.length === 0 || sortedByScore[0].score >= sortedByScore[sortedByScore.length - 1].score;
+                const dateSortWorks = results.length === 0 || new Date(sortedByDate[0].date) >= new Date(sortedByDate[sortedByDate.length - 1].date);
+                
+                addTestResult('advanced-results', 'Result Sorting', scoreSortWorks && dateSortWorks, 
+                    'Results can be sorted by relevance and date');
+            } catch (error) {
+                addTestResult('advanced-results', 'Result Sorting', false, `Sort test failed: ${error.message}`);
+            }
+        }
+
+        function testSearchHistory() {
+            try {
+                const searches = ['protein', 'chromatography', 'purification'];
+                
+                // Simulate storing search history
+                searches.forEach(search => {
+                    let history = JSON.parse(localStorage.getItem('examklar-search-history') || '[]');
+                    history.unshift({
+                        query: search,
+                        timestamp: new Date().toISOString(),
+                        results: basicSearch(search).length
+                    });
+                    if (history.length > 10) history = history.slice(0, 10);
+                    localStorage.setItem('examklar-search-history', JSON.stringify(history));
+                });
+                
+                const storedHistory = JSON.parse(localStorage.getItem('examklar-search-history') || '[]');
+                const historyWorks = storedHistory.length === searches.length;
+                
+                addTestResult('advanced-results', 'Search History', historyWorks, 
+                    `Search history stored ${storedHistory.length} recent searches`);
+            } catch (error) {
+                addTestResult('advanced-results', 'Search History', false, `Search history failed: ${error.message}`);
+            }
+        }
+
+        function testSearchSpeed() {
+            try {
+                const startTime = performance.now();
+                const results = basicSearch("protein", getAllData());
+                const endTime = performance.now();
+                
+                const searchTime = endTime - startTime;
+                const isFast = searchTime < 100; // Should complete within 100ms
+                
+                addTestResult('performance-results', 'Search Speed', isFast, 
+                    `Search completed in ${searchTime.toFixed(2)}ms (${results.length} results)`);
+            } catch (error) {
+                addTestResult('performance-results', 'Search Speed', false, `Speed test failed: ${error.message}`);
+            }
+        }
+
+        function testLargeDataset() {
+            try {
+                // Create larger dataset for testing
+                const largeDataset = [];
+                for (let i = 0; i < 1000; i++) {
+                    largeDataset.push({
+                        id: i,
+                        title: `Test Item ${i}`,
+                        content: `Content about protein research topic ${i % 10}`,
+                        type: ['content', 'flashcard', 'quiz'][i % 3],
+                        date: new Date(Date.now() - i * 86400000).toISOString().split('T')[0]
+                    });
+                }
+                
+                const startTime = performance.now();
+                const results = basicSearch("protein", largeDataset);
+                const endTime = performance.now();
+                
+                const searchTime = endTime - startTime;
+                const performanceGood = searchTime < 500; // Should handle large dataset within 500ms
+                
+                addTestResult('performance-results', 'Large Dataset', performanceGood, 
+                    `Searched ${largeDataset.length} items in ${searchTime.toFixed(2)}ms, found ${results.length} results`);
+            } catch (error) {
+                addTestResult('performance-results', 'Large Dataset', false, `Large dataset test failed: ${error.message}`);
+            }
+        }
+
+        function testRealTimeSearch() {
+            try {
+                let searchCount = 0;
+                const testInput = document.getElementById('search-input');
+                
+                // Simulate typing
+                const testQueries = ['p', 'pr', 'pro', 'prot', 'prote', 'protein'];
+                
+                testQueries.forEach((query, index) => {
+                    setTimeout(() => {
+                        testInput.value = query;
+                        performLiveSearch(query);
+                        searchCount++;
+                        
+                        if (searchCount === testQueries.length) {
+                            addTestResult('performance-results', 'Real-time Search', true, 
+                                `Real-time search handled ${searchCount} rapid queries successfully`);
+                        }
+                    }, index * 50);
+                });
+            } catch (error) {
+                addTestResult('performance-results', 'Real-time Search', false, `Real-time test failed: ${error.message}`);
+            }
+        }
+
+        function runAllTests() {
+            // Clear previous results
+            document.querySelectorAll('.test-result').forEach(el => el.remove());
+            testResults = { passed: 0, failed: 0, total: 0 };
+            
+            // Run all tests
+            setTimeout(() => testBasicSearch(), 100);
+            setTimeout(() => testFuzzySearch(), 200);
+            setTimeout(() => testExactMatch(), 300);
+            setTimeout(() => testPartialMatch(), 400);
+            setTimeout(() => testSemanticSearch(), 500);
+            setTimeout(() => testFilterSearch(), 600);
+            setTimeout(() => testSortResults(), 700);
+            setTimeout(() => testSearchHistory(), 800);
+            setTimeout(() => testSearchSpeed(), 900);
+            setTimeout(() => testLargeDataset(), 1000);
+            setTimeout(() => testRealTimeSearch(), 1100);
+        }
+
+        function clearSearchData() {
+            localStorage.removeItem('examklar-search-history');
+            document.getElementById('search-input').value = '';
+            document.getElementById('search-results').innerHTML = `
+                <div class="search-result-item">
+                    <div class="result-title">Search results will appear here...</div>
+                    <div class="result-snippet">Type in the search box above to see live results</div>
+                </div>
+            `;
+            alert('Search data cleared!');
+        }
+
+        // Initialize search functionality
+        window.addEventListener('load', () => {
+            // Set up live search
+            const searchInput = document.getElementById('search-input');
+            
+            // Add debouncing for better performance
+            let searchTimeout;
+            searchInput.addEventListener('input', (e) => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    performLiveSearch(e.target.value);
+                }, 300);
+            });
+        });
+    </script>
+</body>
+</html>

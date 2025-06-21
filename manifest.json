@@ -1,7 +1,7 @@
 {
-  "name": "ExamKlar - Proteinrensning Mikrolæring",
+  "name": "ExamKlar - Din Personlige Eksamen App",
   "short_name": "ExamKlar",
-  "description": "Lær proteinrensning gennem daglige mikrolærings-sessioner med flashcards, quizzer og spaced repetition",
+  "description": "Skab dine egne kurser og lær gennem daglige mikrolærings-sessioner med flashcards, quizzer og spaced repetition",
   "version": "1.0.0",
   "start_url": "./index.html",
   "display": "standalone",

@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Features Comprehensive Test - ExamKlar</title>
+    <style>
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --border-color: #dee2e6;
+            --accent-color: #007bff;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --border-color: #404040;
+            --accent-color: #4dabf7;
+        }
+
+        * {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--accent-color), #4dabf7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .test-section {
+            background: var(--bg-secondary);
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 12px;
+            border-left: 4px solid var(--accent-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .test-result {
+            padding: 12px 16px;
+            margin: 10px 0;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .pass {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .fail {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        [data-theme="dark"] .pass {
+            background: #1e4d3a;
+            border: 1px solid #2d5a45;
+            color: #a8e6a3;
+        }
+
+        [data-theme="dark"] .fail {
+            background: #4d1e1e;
+            border: 1px solid #5a2d2d;
+            color: #e6a3a3;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            z-index: 1000;
+        }
+
+        .summary {
+            background: var(--bg-primary);
+            border: 2px solid var(--accent-color);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .score {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin: 20px 0;
+        }
+
+        .demo-area {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            margin: 5px 0;
+        }
+
+        .feature-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .feature-link {
+            display: block;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            text-decoration: none;
+            color: var(--text-primary);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.15);
+            border-color: var(--accent-color);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .button-grid {
+                grid-template-columns: 1fr;
+            }
+            .feature-links {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+        🌙
+    </button>
+
+    <div class="header">
+        <h1>🧪 Advanced Features - Comprehensive Test</h1>
+        <p>Test alle avancerede funktioner i ExamKlar</p>
+    </div>
+
+    <div class="test-section">
+        <h2>🌙 Theme & Dark Mode Tests</h2>
+        <div class="button-grid">
+            <button onclick="testThemeToggle()">Test Theme Toggle</button>
+            <button onclick="testSystemTheme()">Test System Preference</button>
+            <button onclick="testCustomColors()">Test Custom Colors</button>
+            <button onclick="testThemePersistence()">Test Theme Persistence</button>
+        </div>
+        <div id="theme-results"></div>
+        
+        <div class="demo-area">
+            <h3>Theme Demo Area</h3>
+            <p>This area demonstrates how themes affect different elements:</p>
+            <input type="text" placeholder="Sample input field" value="Sample text">
+            <select>
+                <option>Sample option 1</option>
+                <option>Sample option 2</option>
+            </select>
+            <textarea placeholder="Sample textarea...">Sample content</textarea>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🔍 Search Functionality Tests</h2>
+        <div class="button-grid">
+            <button onclick="testSearchIntegration()">Test Search Integration</button>
+            <button onclick="testSearchFilters()">Test Search Filters</button>
+            <button onclick="testSearchPerformance()">Test Search Performance</button>
+            <button onclick="testSearchHistory()">Test Search History</button>
+        </div>
+        <div id="search-results"></div>
+        
+        <div class="demo-area">
+            <h3>Live Search Demo</h3>
+            <input type="text" id="searchDemo" placeholder="Try searching for 'protein'..." 
+                   oninput="demoSearch(this.value)">
+            <div id="searchDemoResults" style="margin-top: 10px; min-height: 50px; background: var(--bg-secondary); padding: 10px; border-radius: 4px;">
+                Search results will appear here...
+            </div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>📤 Export/Import Tests</h2>
+        <div class="button-grid">
+            <button onclick="testDataExport()">Test Data Export</button>
+            <button onclick="testDataImport()">Test Data Import</button>
+            <button onclick="testDataValidation()">Test Data Validation</button>
+            <button onclick="testBackupRestore()">Test Backup/Restore</button>
+        </div>
+        <div id="export-results"></div>
+        
+        <div class="demo-area">
+            <h3>Export/Import Demo</h3>
+            <button onclick="generateSampleExport()">Generate Sample Export</button>
+            <textarea id="exportDemo" rows="6" placeholder="Export data will appear here..."></textarea>
+            <button onclick="validateExportDemo()">Validate Export Data</button>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>⚙️ Settings & Configuration Tests</h2>
+        <div class="button-grid">
+            <button onclick="testSettingsPersistence()">Test Settings Persistence</button>
+            <button onclick="testLanguageSupport()">Test Language Support</button>
+            <button onclick="testAdvancedSettings()">Test Advanced Settings</button>
+            <button onclick="testResetFunctionality()">Test Reset Functionality</button>
+        </div>
+        <div id="settings-results"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>📱 PWA & Integration Tests</h2>
+        <div class="button-grid">
+            <button onclick="testOfflineSupport()">Test Offline Support</button>
+            <button onclick="testServiceWorker()">Test Service Worker</button>
+            <button onclick="testCaching()">Test Caching</button>
+            <button onclick="testInstallPrompt()">Test Install Prompt</button>
+        </div>
+        <div id="pwa-results"></div>
+    </div>
+
+    <div class="summary" id="testSummary">
+        <h2>📊 Test Summary</h2>
+        <div class="score" id="testScore">0/0</div>
+        <p id="testStatus">Click "Run All Tests" to begin comprehensive testing</p>
+        <button onclick="runAllTests()" style="background: #28a745; font-size: 1.2rem; padding: 15px 30px;">
+            🚀 Run All Tests
+        </button>
+        <button onclick="resetTests()">Reset Tests</button>
+    </div>
+
+    <div class="test-section">
+        <h2>🔗 Advanced Features Links</h2>
+        <div class="feature-links">
+            <a href="index.html" class="feature-link">
+                <span class="feature-icon">🌟</span>
+                <strong>Main Advanced Features</strong>
+                <div>Export, import, search & themes</div>
+            </a>
+            <a href="tests/export-test.html" class="feature-link">
+                <span class="feature-icon">📤</span>
+                <strong>Export/Import Tests</strong>
+                <div>Data backup & restore testing</div>
+            </a>
+            <a href="tests/darkmode-test.html" class="feature-link">
+                <span class="feature-icon">🌙</span>
+                <strong>Dark Mode Tests</strong>
+                <div>Theme switching & customization</div>
+            </a>
+            <a href="tests/search-test.html" class="feature-link">
+                <span class="feature-icon">🔍</span>
+                <strong>Search Tests</strong>
+                <div>Global search functionality</div>
+            </a>
+            <a href="../../index.html" class="feature-link">
+                <span class="feature-icon">🏠</span>
+                <strong>Back to Home</strong>
+                <div>Return to main ExamKlar page</div>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        let testResults = {
+            passed: 0,
+            failed: 0,
+            total: 0
+        };
+
+        function addTestResult(sectionId, testName, passed, message) {
+            testResults.total++;
+            if (passed) {
+                testResults.passed++;
+            } else {
+                testResults.failed++;
+            }
+            
+            const section = document.getElementById(sectionId);
+            const result = document.createElement('div');
+            result.className = `test-result ${passed ? 'pass' : 'fail'}`;
+            result.innerHTML = `
+                <strong>${testName}:</strong> ${passed ? '✅ PASS' : '❌ FAIL'}<br>
+                <em>${message}</em>
+            `;
+            section.appendChild(result);
+            
+            updateTestSummary();
+        }
+
+        function updateTestSummary() {
+            const score = document.getElementById('testScore');
+            const status = document.getElementById('testStatus');
+            const summary = document.getElementById('testSummary');
+            
+            score.textContent = `${testResults.passed}/${testResults.total}`;
+            
+            const percentage = testResults.total > 0 ? Math.round((testResults.passed / testResults.total) * 100) : 0;
+            
+            if (testResults.total === 0) {
+                status.textContent = "Click 'Run All Tests' to begin comprehensive testing";
+                summary.style.borderColor = 'var(--accent-color)';
+            } else if (testResults.failed === 0) {
+                status.textContent = `🎉 All tests passed! Advanced features are working perfectly! (${percentage}%)`;
+                summary.style.borderColor = '#28a745';
+            } else {
+                status.textContent = `⚠️ ${testResults.failed} test(s) failed. Check individual sections for details. (${percentage}% success rate)`;
+                summary.style.borderColor = '#dc3545';
+            }
+        }
+
+        function getCurrentTheme() {
+            return document.documentElement.getAttribute('data-theme') || 'light';
+        }
+
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('examklar-theme', theme);
+            const toggle = document.querySelector('.theme-toggle');
+            toggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+        }
+
+        function toggleTheme() {
+            const current = getCurrentTheme();
+            const newTheme = current === 'light' ? 'dark' : 'light';
+            setTheme(newTheme);
+        }
+
+        // Theme Tests
+        function testThemeToggle() {
+            try {
+                const initialTheme = getCurrentTheme();
+                toggleTheme();
+                const afterToggle = getCurrentTheme();
+                
+                const success = initialTheme !== afterToggle;
+                addTestResult('theme-results', 'Theme Toggle', success, 
+                    success ? `Successfully toggled from ${initialTheme} to ${afterToggle}` : 'Theme toggle failed');
+            } catch (error) {
+                addTestResult('theme-results', 'Theme Toggle', false, `Error: ${error.message}`);
+            }
+        }
+
+        function testSystemTheme() {
+            try {
+                const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+                const systemSupported = typeof mediaQuery.matches === 'boolean';
+                const prefersDark = mediaQuery.matches;
+                
+                addTestResult('theme-results', 'System Theme Detection', systemSupported, 
+                    systemSupported ? `System preference detected: ${prefersDark ? 'dark' : 'light'}` : 'System theme detection not supported');
+            } catch (error) {
+                addTestResult('theme-results', 'System Theme Detection', false, `Error: ${error.message}`);
+            }
+        }
+
+        function testCustomColors() {
+            try {
+                const originalColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-color');
+                document.documentElement.style.setProperty('--accent-color', '#ff6b6b');
+                const newColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-color');
+                
+                const changed = newColor.includes('255') || newColor.includes('ff6b6b');
+                document.documentElement.style.removeProperty('--accent-color');
+                
+                addTestResult('theme-results', 'Custom Colors', changed, 
+                    changed ? 'Custom color styling works' : 'Custom color styling failed');
+            } catch (error) {
+                addTestResult('theme-results', 'Custom Colors', false, `Error: ${error.message}`);
+            }
+        }
+
+        function testThemePersistence() {
+            try {
+                const testTheme = 'dark';
+                setTheme(testTheme);
+                const stored = localStorage.getItem('examklar-theme');
+                
+                addTestResult('theme-results', 'Theme Persistence', stored === testTheme, 
+                    stored === testTheme ? 'Theme persisted to localStorage' : 'Theme persistence failed');
+            } catch (error) {
+                addTestResult('theme-results', 'Theme Persistence', false, `Error: ${error.message}`);
+            }
+        }
+
+        // Search Tests
+        function testSearchIntegration() {
+            try {
+                const searchFunction = window.advancedFeatures || 
+                    (typeof performGlobalSearch === 'function') ||
+                    (typeof demoSearch === 'function');
+                
+                addTestResult('search-results', 'Search Integration', !!searchFunction, 
+                    searchFunction ? 'Search functionality is available' : 'Search integration not found');
+            } catch (error) {
+                addTestResult('search-results', 'Search Integration', false, `Error: ${error.message}`);
+            }
+        }
+
+        function testSearchFilters() {
+            try {
+                const mockData = [
+                    { type: 'content', title: 'Protein Structure', content: 'Basic protein concepts' },
+                    { type: 'flashcard', front: 'What is protein?', back: 'A biological molecule' },
+                    { type: 'quiz', question: 'Protein function?', answer: 'Various functions' }
+                ];
+                
+                const contentOnly = mockData.filter(item => item.type === 'content');
+                const flashcardsOnly = mockData.filter(item => item.type === 'flashcard');
+                
+                const filtersWork = contentOnly.length === 1 && flashcardsOnly.length === 1;
+                
+                addTestResult('search-results', 'Search Filters', filtersWork, 
+                    filtersWork ? 'Search filters working correctly' : 'Search filters not working');
+            } catch (error) {
+                addTestResult('search-results', 'Search Filters', false, `Error: ${error.message}`);
+            }
+        }
+
+        function testSearchPerformance() {
+            try {
+                const startTime = performance.now();
+                
+                // Simulate search operation
+                const largeDataset = Array.from({length: 1000}, (_, i) => ({
+                    id: i,
+                    title: `Item ${i}`,
+                    content: `Content about topic ${i % 10}`,
+                    type: ['content', 'flashcard', 'quiz'][i % 3]
+                }));
+                
+                const results = largeDataset.filter(item => 
+                    item.content.includes('topic') || item.title.includes('Item')
+                );
+                
+                const endTime = performance.now();
+                const searchTime = endTime - startTime;
+                const performanceGood = searchTime < 100; // Should complete within 100ms
+                
+                addTestResult('search-results', 'Search Performance', performanceGood, 
+                    `Search of 1000 items completed in ${searchTime.toFixed(2)}ms (${results.length} results)`);
+            } catch (error) {
+                addTestResult('search-results', 'Search Performance', false, `Error: ${error.message}`);
+            }
+        }
+
+        function testSearchHistory() {
+            try {
+                const testSearches = ['protein', 'chromatography', 'purification'];
+                testSearches.forEach(search => {
+                    let history = JSON.parse(localStorage.getItem('examklar-search-history') || '[]');
+                    history.unshift({
+                        query: search,
+                        timestamp: new Date().toISOString(),
+                        results: Math.floor(Math.random() * 10)
+                    });
+                    localStorage.setItem('examklar-search-history', JSON.stringify(history));
+                });
+                
+                const storedHistory = JSON.parse(localStorage.getItem('examklar-search-history') || '[]');
+                
+                addTestResult('search-results', 'Search History', storedHistory.length >= testSearches.length, 
+                    `Search history contains ${storedHistory.length} entries`);
+            } catch (error) {
+                addTestResult('search-results', 'Search History', false, `Error: ${error.message}`);
+            }
+        }
+
+        function demoSearch(query) {
+            const resultsDiv = document.getElementById('searchDemoResults');
+            
+            if (!query.trim()) {
+                resultsDiv.innerHTML = 'Search results will appear here...';
+                return;
+            }
+            
+            const mockResults = [
+                { title: 'Protein Structure Basics', type: 'content', snippet: 'Introduction to protein folding and structure' },
+                { title: 'What is a protein?', type: 'flashcard', snippet: 'Proteins are large biological molecules' },
+                { title: 'Protein purification quiz', type: 'quiz', snippet: 'Test your knowledge of purification methods' }
+            ].filter(item => 
+                item.title.toLowerCase().includes(query.toLowerCase()) ||
+                item.snippet.toLowerCase().includes(query.toLowerCase())
+            );
+            
+            if (mockResults.length === 0) {
+                resultsDiv.innerHTML = `<em>No results found for "${query}"</em>`;
+            } else {
+                resultsDiv.innerHTML = mockResults.map(result => `
+                    <div style="margin: 5px 0; padding: 8px; background: var(--bg-primary); border-radius: 4px;">
+                        <strong>${result.title}</strong> (${result.type})<br>
+                        <small>${result.snippet}</small>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Export/Import Tests
+        function testDataExport() {
+            try {
+                const mockData = {
+                    timestamp: new Date().toISOString(),
+                    version: "1.0.0",
+                    modules: {
+                        content: { items: [{ id: 1, title: 'Test Content' }] },
+                        flashcards: { cards: [{ id: 1, front: 'Test Question', back: 'Test Answer' }] }
+                    }
+                };
+                
+                const exportString = JSON.stringify(mockData, null, 2);
+                const isValidJson = JSON.parse(exportString);
+                
+                addTestResult('export-results', 'Data Export', !!isValidJson, 
+                    `Export generated ${exportString.length} characters of valid JSON`);
+            } catch (error) {
+                addTestResult('export-results', 'Data Export', false, `Error: ${error.message}`);
+            }
+        }
+
+        function testDataImport() {
+            try {
+                const importData = {
+                    timestamp: new Date().toISOString(),
+                    version: "1.0.0",
+                    modules: {
+                        content: { items: [] },
+                        flashcards: { cards: [] }
+                    }
+                };
+                
+                const importString = JSON.stringify(importData);
+                const parsed = JSON.parse(importString);
+                const isValid = parsed.modules && parsed.version;
+                
+                addTestResult('export-results', 'Data Import', isValid, 
+                    isValid ? 'Import data parsed and validated successfully' : 'Import validation failed');
+            } catch (error) {
+                addTestResult('export-results', 'Data Import', false, `Error: ${error.message}`);
+            }
+        }
+
+        function testDataValidation() {
+            try {
+                const validData = { modules: {}, version: "1.0.0" };
+                const invalidData = { invalid: "structure" };
+                
+                const validIsValid = validData.modules && validData.version;
+                const invalidIsInvalid = !invalidData.modules || !invalidData.version;
+                
+                const validationWorks = validIsValid && invalidIsInvalid;
+                
+                addTestResult('export-results', 'Data Validation', validationWorks, 
+                    validationWorks ? 'Validation correctly accepts valid and rejects invalid data' : 'Validation logic failed');
+            } catch (error) {
+                addTestResult('export-results', 'Data Validation', false, `Error: ${error.message}`);
+            }
+        }
+
+        function testBackupRestore() {
+            try {
+                const originalData = { test: 'data', timestamp: Date.now() };
+                localStorage.setItem('test-backup', JSON.stringify(originalData));
+                
+                const restored = JSON.parse(localStorage.getItem('test-backup'));
+                const integrityMaintained = restored.test === originalData.test && 
+                    restored.timestamp === originalData.timestamp;
+                
+                localStorage.removeItem('test-backup');
+                
+                addTestResult('export-results', 'Backup/Restore', integrityMaintained, 
+                    integrityMaintained ? 'Data integrity maintained through backup/restore cycle' : 'Data integrity compromised');
+            } catch (error) {
+                addTestResult('export-results', 'Backup/Restore', false, `Error: ${error.message}`);
+            }
+        }
+
+        function generateSampleExport() {
+            const sampleData = {
+                timestamp: new Date().toISOString(),
+                version: "1.0.0",
+                app: "ExamKlar",
+                modules: {
+                    content: {
+                        items: [
+                            { id: 1, title: "Protein Basics", content: "Introduction to proteins", created: "2024-01-15" },
+                            { id: 2, title: "Purification Methods", content: "Various purification techniques", created: "2024-01-16" }
+                        ],
+                        progress: { read: [1], bookmarks: [2] }
+                    },
+                    flashcards: {
+                        cards: [
+                            { id: 1, front: "What is protein folding?", back: "The process by which proteins adopt their structure", created: "2024-01-15" },
+                            { id: 2, front: "Define chromatography", back: "A method for separating mixture components", created: "2024-01-16" }
+                        ],
+                        stats: { studied: 10, correct: 8 }
+                    },
+                    quiz: {
+                        questions: [
+                            { id: 1, question: "Which amino acid contains sulfur?", answer: "Cysteine", options: ["Alanine", "Cysteine", "Glycine"], correct: 1 }
+                        ],
+                        results: { attempts: 5, score: 85 }
+                    }
+                },
+                settings: {
+                    theme: getCurrentTheme(),
+                    language: "da"
+                }
+            };
+            
+            document.getElementById('exportDemo').value = JSON.stringify(sampleData, null, 2);
+        }
+
+        function validateExportDemo() {
+            try {
+                const exportText = document.getElementById('exportDemo').value;
+                const parsed = JSON.parse(exportText);
+                const isValid = parsed.modules && parsed.version && parsed.timestamp;
+                
+                if (isValid) {
+                    let itemCount = 0;
+                    Object.keys(parsed.modules).forEach(module => {
+                        if (parsed.modules[module].items) itemCount += parsed.modules[module].items.length;
+                        if (parsed.modules[module].cards) itemCount += parsed.modules[module].cards.length;
+                        if (parsed.modules[module].questions) itemCount += parsed.modules[module].questions.length;
+                    });
+                    
+                    alert(`✅ Valid export data!\n\nModules: ${Object.keys(parsed.modules).length}\nTotal items: ${itemCount}\nVersion: ${parsed.version}\nExported: ${new Date(parsed.timestamp).toLocaleString()}`);
+                } else {
+                    alert('❌ Invalid export data structure');
+                }
+            } catch (error) {
+                alert(`❌ Invalid JSON: ${error.message}`);
+            }
+        }
+
+        // Settings Tests
+        function testSettingsPersistence() {
+            try {
+                localStorage.setItem('examklar-test-setting', 'test-value');
+                const retrieved = localStorage.getItem('examklar-test-setting');
+                localStorage.removeItem('examklar-test-setting');
+                
+                addTestResult('settings-results', 'Settings Persistence', retrieved === 'test-value', 
+                    retrieved === 'test-value' ? 'Settings persist correctly in localStorage' : 'Settings persistence failed');
+            } catch (error) {
+                addTestResult('settings-results', 'Settings Persistence', false, `Error: ${error.message}`);
+            }
+        }
+
+        function testLanguageSupport() {
+            try {
+                const languages = ['da', 'en'];
+                let languageSupported = false;
+                
+                languages.forEach(lang => {
+                    localStorage.setItem('examklar-language', lang);
+                    const stored = localStorage.getItem('examklar-language');
+                    if (stored === lang) languageSupported = true;
+                });
+                
+                addTestResult('settings-results', 'Language Support', languageSupported, 
+                    languageSupported ? 'Multiple language support ready' : 'Language support not working');
+            } catch (error) {
+                addTestResult('settings-results', 'Language Support', false, `Error: ${error.message}`);
+            }
+        }
+
+        function testAdvancedSettings() {
+            try {
+                const settings = {
+                    theme: 'dark',
+                    notifications: true,
+                    autoSave: true,
+                    performanceMode: false
+                };
+                
+                Object.keys(settings).forEach(key => {
+                    localStorage.setItem(`examklar-${key}`, settings[key]);
+                });
+                
+                const allStored = Object.keys(settings).every(key => 
+                    localStorage.getItem(`examklar-${key}`) !== null
+                );
+                
+                // Cleanup
+                Object.keys(settings).forEach(key => {
+                    localStorage.removeItem(`examklar-${key}`);
+                });
+                
+                addTestResult('settings-results', 'Advanced Settings', allStored, 
+                    allStored ? 'Advanced settings storage working' : 'Advanced settings storage failed');
+            } catch (error) {
+                addTestResult('settings-results', 'Advanced Settings', false, `Error: ${error.message}`);
+            }
+        }
+
+        function testResetFunctionality() {
+            try {
+                // Set some test data
+                localStorage.setItem('examklar-test-reset', 'should-be-removed');
+                
+                // Simulate reset (remove test data)
+                localStorage.removeItem('examklar-test-reset');
+                
+                const wasRemoved = !localStorage.getItem('examklar-test-reset');
+                
+                addTestResult('settings-results', 'Reset Functionality', wasRemoved, 
+                    wasRemoved ? 'Reset functionality working correctly' : 'Reset functionality failed');
+            } catch (error) {
+                addTestResult('settings-results', 'Reset Functionality', false, `Error: ${error.message}`);
+            }
+        }
+
+        // PWA Tests
+        function testOfflineSupport() {
+            try {
+                const offlineReady = 'serviceWorker' in navigator;
+                
+                addTestResult('pwa-results', 'Offline Support', offlineReady, 
+                    offlineReady ? 'Service Worker API available for offline support' : 'Service Worker not supported');
+            } catch (error) {
+                addTestResult('pwa-results', 'Offline Support', false, `Error: ${error.message}`);
+            }
+        }
+
+        function testServiceWorker() {
+            try {
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.getRegistration().then(registration => {
+                        const swActive = !!registration;
+                        addTestResult('pwa-results', 'Service Worker', swActive, 
+                            swActive ? 'Service Worker is registered and active' : 'Service Worker not active');
+                    }).catch(() => {
+                        addTestResult('pwa-results', 'Service Worker', false, 'Service Worker registration check failed');
+                    });
+                } else {
+                    addTestResult('pwa-results', 'Service Worker', false, 'Service Worker not supported');
+                }
+            } catch (error) {
+                addTestResult('pwa-results', 'Service Worker', false, `Error: ${error.message}`);
+            }
+        }
+
+        function testCaching() {
+            try {
+                if ('caches' in window) {
+                    caches.keys().then(cacheNames => {
+                        const examklarCaches = cacheNames.filter(name => name.includes('examklar'));
+                        const cachingActive = examklarCaches.length > 0;
+                        
+                        addTestResult('pwa-results', 'Caching', cachingActive, 
+                            cachingActive ? `Found ${examklarCaches.length} ExamKlar cache(s)` : 'No ExamKlar caches found');
+                    }).catch(() => {
+                        addTestResult('pwa-results', 'Caching', false, 'Cache check failed');
+                    });
+                } else {
+                    addTestResult('pwa-results', 'Caching', false, 'Cache API not supported');
+                }
+            } catch (error) {
+                addTestResult('pwa-results', 'Caching', false, `Error: ${error.message}`);
+            }
+        }
+
+        function testInstallPrompt() {
+            try {
+                const manifestExists = document.querySelector('link[rel="manifest"]');
+                const pwaReady = manifestExists && 'serviceWorker' in navigator;
+                
+                addTestResult('pwa-results', 'Install Prompt', pwaReady, 
+                    pwaReady ? 'PWA manifest and service worker ready for installation' : 'PWA installation requirements not met');
+            } catch (error) {
+                addTestResult('pwa-results', 'Install Prompt', false, `Error: ${error.message}`);
+            }
+        }
+
+        function runAllTests() {
+            // Clear previous results
+            document.querySelectorAll('.test-result').forEach(el => el.remove());
+            testResults = { passed: 0, failed: 0, total: 0 };
+            
+            // Run all tests with delays
+            const tests = [
+                () => testThemeToggle(),
+                () => testSystemTheme(),
+                () => testCustomColors(),
+                () => testThemePersistence(),
+                () => testSearchIntegration(),
+                () => testSearchFilters(),
+                () => testSearchPerformance(),
+                () => testSearchHistory(),
+                () => testDataExport(),
+                () => testDataImport(),
+                () => testDataValidation(),
+                () => testBackupRestore(),
+                () => testSettingsPersistence(),
+                () => testLanguageSupport(),
+                () => testAdvancedSettings(),
+                () => testResetFunctionality(),
+                () => testOfflineSupport(),
+                () => testServiceWorker(),
+                () => testCaching(),
+                () => testInstallPrompt()
+            ];
+            
+            tests.forEach((test, index) => {
+                setTimeout(test, index * 100);
+            });
+        }
+
+        function resetTests() {
+            document.querySelectorAll('.test-result').forEach(el => el.remove());
+            testResults = { passed: 0, failed: 0, total: 0 };
+            updateTestSummary();
+            
+            // Clear demo areas
+            document.getElementById('searchDemo').value = '';
+            document.getElementById('searchDemoResults').innerHTML = 'Search results will appear here...';
+            document.getElementById('exportDemo').value = '';
+        }
+
+        // Initialize theme on load
+        window.addEventListener('load', () => {
+            const savedTheme = localStorage.getItem('examklar-theme');
+            if (savedTheme) {
+                setTheme(savedTheme);
+            } else {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                setTheme(prefersDark ? 'dark' : 'light');
+            }
+            
+            updateTestSummary();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤖 AI Assistant - ExamKlar</title>
+    <link rel="stylesheet" href="../../styles/global.css">
+    <link rel="stylesheet" href="ai-assistant.css">
+</head>
+<body>
+    <div class="ai-container">
+        <header class="ai-header">
+            <div class="header-content">
+                <h1>🤖 AI Assistant</h1>
+                <p>Din personlige protein purification tutor</p>
+                <div class="ai-status" id="ai-status">
+                    <span class="status-indicator online" id="status-indicator">🟢</span>
+                    <span id="status-text">AI Services Online</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Quick Actions -->
+        <section class="quick-actions">
+            <h2>⚡ Quick Actions</h2>
+            <div class="action-grid">
+                <button class="action-card" onclick="openChat()">
+                    <div class="action-icon">💬</div>
+                    <h3>Chat with AI</h3>
+                    <p>Ask questions about protein purification</p>
+                </button>
+                
+                <button class="action-card" onclick="getSmartFeedback()">
+                    <div class="action-icon">💡</div>
+                    <h3>Smart Feedback</h3>
+                    <p>Get AI explanations for quiz answers</p>
+                </button>
+                
+                <button class="action-card" onclick="getLearningPath()">
+                    <div class="action-icon">🎯</div>
+                    <h3>Learning Path</h3>
+                    <p>Get personalized study recommendations</p>
+                </button>
+                
+                <button class="action-card" onclick="getPerformanceInsights()">
+                    <div class="action-icon">📊</div>
+                    <h3>Performance Insights</h3>
+                    <p>Analyze your learning progress</p>
+                </button>
+            </div>
+        </section>
+
+        <!-- AI Features Overview -->
+        <section class="features-overview">
+            <h2>🧠 AI Capabilities</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🧬</div>
+                    <h3>Protein Expert</h3>
+                    <p>Deep knowledge of protein biochemistry, purification techniques, and troubleshooting</p>
+                    <ul>
+                        <li>Structural biology concepts</li>
+                        <li>Chromatography principles</li>
+                        <li>Troubleshooting guidance</li>
+                        <li>Method optimization</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🎓</div>
+                    <h3>Personal Tutor</h3>
+                    <p>Adaptive teaching that adjusts to your learning style and pace</p>
+                    <ul>
+                        <li>Personalized explanations</li>
+                        <li>Contextual feedback</li>
+                        <li>Difficulty adjustment</li>
+                        <li>Progress tracking</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔬</div>
+                    <h3>Lab Assistant</h3>
+                    <p>Practical help with experimental design and problem-solving</p>
+                    <ul>
+                        <li>Protocol suggestions</li>
+                        <li>Buffer calculations</li>
+                        <li>Troubleshooting steps</li>
+                        <li>Quality control tips</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3>Learning Analytics</h3>
+                    <p>Data-driven insights to optimize your study strategy</p>
+                    <ul>
+                        <li>Performance patterns</li>
+                        <li>Knowledge gaps</li>
+                        <li>Study recommendations</li>
+                        <li>Progress predictions</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Conversations -->
+        <section class="recent-conversations" id="recent-conversations" style="display: none;">
+            <h2>💬 Recent Conversations</h2>
+            <div class="conversation-list" id="conversation-list">
+                <!-- Conversations will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Settings -->
+        <section class="ai-settings">
+            <h2>⚙️ AI Settings</h2>
+            <div class="settings-grid">
+                <div class="setting-card">
+                    <h3>🔌 AI Provider</h3>
+                    <select id="ai-provider" onchange="updateAIProvider()">
+                        <option value="hybrid">🔄 Hybrid (Recommended)</option>
+                        <option value="openai">🌟 OpenAI GPT-4</option>
+                        <option value="local">🏠 Local AI (Free)</option>
+                        <option value="disabled">🚫 Disabled</option>
+                    </select>
+                    <p class="setting-description">Choose your preferred AI backend</p>
+                </div>
+                
+                <div class="setting-card">
+                    <h3>🎨 Response Style</h3>
+                    <select id="response-style" onchange="updateResponseStyle()">
+                        <option value="detailed">📚 Detailed & Educational</option>
+                        <option value="concise">⚡ Quick & Concise</option>
+                        <option value="conversational">💬 Conversational</option>
+                        <option value="technical">🔬 Technical & Precise</option>
+                    </select>
+                    <p class="setting-description">Adjust how AI responds to you</p>
+                </div>
+                
+                <div class="setting-card">
+                    <h3>💰 Usage Limits</h3>
+                    <input type="range" id="usage-limit" min="10" max="1000" value="100" onchange="updateUsageLimit()">
+                    <div class="limit-display">
+                        <span id="limit-value">100</span> requests/month
+                    </div>
+                    <p class="setting-description">Control AI usage costs</p>
+                </div>
+                
+                <div class="setting-card">
+                    <h3>🔒 Privacy Mode</h3>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="privacy-mode" onchange="updatePrivacyMode()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <p class="setting-description">Use only local AI processing</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- API Configuration (Hidden by default) -->
+        <section class="api-config" id="api-config" style="display: none;">
+            <h2>🔑 API Configuration</h2>
+            <div class="config-form">
+                <div class="form-group">
+                    <label for="openai-key">OpenAI API Key:</label>
+                    <input type="password" id="openai-key" placeholder="sk-..." onchange="saveAPIKey()">
+                    <p class="form-help">Your API key is stored locally and never sent to our servers</p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="model-selection">Model:</label>
+                    <select id="model-selection" onchange="updateModel()">
+                        <option value="gpt-4">GPT-4 (Best quality)</option>
+                        <option value="gpt-3.5-turbo">GPT-3.5 Turbo (Faster)</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <nav class="bottom-nav">
+            <a href="../../index.html" class="nav-item">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-label">Home</span>
+            </a>
+            <a href="chat.html" class="nav-item">
+                <span class="nav-icon">💬</span>
+                <span class="nav-label">Chat</span>
+            </a>
+            <a href="#settings" class="nav-item">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-label">Settings</span>
+            </a>
+            <a href="tests/ai-test.html" class="nav-item">
+                <span class="nav-icon">🧪</span>
+                <span class="nav-label">Tests</span>
+            </a>
+        </nav>
+    </div>
+
+    <script src="ai-assistant.js"></script>
+</body>
+</html>

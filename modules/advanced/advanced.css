@@ -1,0 +1,317 @@
+/* Advanced Features Styles */
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.page-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.page-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, var(--accent-color), #4dabf7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.page-header p {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 20px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    text-decoration: none;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+    background: var(--accent-color);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.feature-section {
+    margin: 40px 0;
+    padding: 30px;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.feature-section h2 {
+    color: var(--text-primary);
+    margin-bottom: 15px;
+}
+
+.test-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.test-link {
+    display: block;
+    padding: 15px 20px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text-primary);
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.test-link:hover {
+    background: var(--accent-color);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+}
+
+/* Modal Animations */
+.modal {
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    animation: slideInUp 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Search Results Animation */
+.search-result-item {
+    animation: slideInLeft 0.3s ease;
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Feature Card Animations */
+.feature-card {
+    animation: fadeInUp 0.5s ease;
+    animation-fill-mode: both;
+}
+
+.feature-card:nth-child(1) { animation-delay: 0.1s; }
+.feature-card:nth-child(2) { animation-delay: 0.2s; }
+.feature-card:nth-child(3) { animation-delay: 0.3s; }
+.feature-card:nth-child(4) { animation-delay: 0.4s; }
+.feature-card:nth-child(5) { animation-delay: 0.5s; }
+.feature-card:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Status Messages */
+.status-message {
+    animation: slideInDown 0.3s ease;
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Theme Customization Section */
+.theme-section, .language-section {
+    padding: 20px 0;
+}
+
+.theme-section h3, .language-section h3 {
+    margin-bottom: 15px;
+    color: var(--text-primary);
+}
+
+.color-customization {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 15px 0;
+    flex-wrap: wrap;
+}
+
+.color-customization label {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.color-customization input[type="color"] {
+    width: 50px;
+    height: 35px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Filter Chips Active State */
+.filter-chip.active {
+    background: var(--accent-color) !important;
+    color: white !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .page-header h1 {
+        font-size: 2rem;
+    }
+    
+    .feature-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .feature-card {
+        padding: 20px;
+    }
+    
+    .theme-toggle {
+        top: 15px;
+        right: 15px;
+        width: 45px;
+        height: 45px;
+    }
+    
+    .color-customization {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .test-links {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 15px;
+    }
+    
+    .modal-content {
+        margin: 20px auto;
+        padding: 20px;
+        max-height: 90vh;
+    }
+    
+    .modal-header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .search-filters {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .filter-chip {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .feature-card {
+        border-width: 2px;
+    }
+    
+    .feature-button, .btn {
+        border: 2px solid transparent;
+    }
+    
+    .feature-button:hover, .btn:hover {
+        border-color: white;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .feature-card:hover {
+        transform: none;
+    }
+    
+    .test-link:hover {
+        transform: none;
+    }
+    
+    .back-btn:hover {
+        transform: none;
+    }
+}
+
+/* Print styles */
+@media print {
+    .theme-toggle, .modal, .feature-button {
+        display: none !important;
+    }
+    
+    .feature-card {
+        break-inside: avoid;
+        border: 1px solid #000;
+    }
+    
+    .page-header {
+        border-bottom: 2px solid #000;
+    }
+}
