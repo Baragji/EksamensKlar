@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 ExamKlar Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <meta name="description" content="Dashboard med oversigt over læringsframskridt, streaks og achievements">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1>📊 Dashboard</h1>
+            <div class="nav-actions">
+                <button id="exportBtn" class="btn btn-secondary">📤 Export Data</button>
+                <button id="importBtn" class="btn btn-secondary">📥 Import Data</button>
+                <a href="../../index.html" class="btn btn-primary">🏠 Hjem</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        <!-- Quick Stats Overview -->
+        <section class="stats-overview">
+            <div class="stat-card">
+                <div class="stat-icon">🔥</div>
+                <div class="stat-content">
+                    <h3 id="currentStreak">0</h3>
+                    <p>Dages streak</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📚</div>
+                <div class="stat-content">
+                    <h3 id="totalContent">0</h3>
+                    <p>Indhold læst</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-content">
+                    <h3 id="totalFlashcards">0</h3>
+                    <p>Flashcards øvet</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🧠</div>
+                <div class="stat-content">
+                    <h3 id="totalQuizzes">0</h3>
+                    <p>Quizzer taget</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Progress Charts -->
+        <section class="charts-section">
+            <div class="chart-container">
+                <h2>📈 Ugentlig Fremskridt</h2>
+                <div id="weeklyChart" class="chart"></div>
+            </div>
+            <div class="chart-container">
+                <h2>🎯 Modul Fordeling</h2>
+                <div id="moduleChart" class="chart"></div>
+            </div>
+        </section>
+
+        <!-- Goals Section -->
+        <section class="goals-section">
+            <h2>🎯 Daglige Mål</h2>
+            <div class="goals-container">
+                <div class="goal-item">
+                    <label for="contentGoal">📚 Indhold (sider/dag):</label>
+                    <input type="number" id="contentGoal" min="1" max="20" value="3">
+                    <div class="goal-progress">
+                        <div class="progress-bar">
+                            <div id="contentProgress" class="progress-fill"></div>
+                        </div>
+                        <span id="contentProgressText">0/3</span>
+                    </div>
+                </div>
+                <div class="goal-item">
+                    <label for="flashcardGoal">🎯 Flashcards (kort/dag):</label>
+                    <input type="number" id="flashcardGoal" min="5" max="100" value="20">
+                    <div class="goal-progress">
+                        <div class="progress-bar">
+                            <div id="flashcardProgress" class="progress-fill"></div>
+                        </div>
+                        <span id="flashcardProgressText">0/20</span>
+                    </div>
+                </div>
+                <div class="goal-item">
+                    <label for="quizGoal">🧠 Quizzer (quiz/dag):</label>
+                    <input type="number" id="quizGoal" min="1" max="10" value="2">
+                    <div class="goal-progress">
+                        <div class="progress-bar">
+                            <div id="quizProgress" class="progress-fill"></div>
+                        </div>
+                        <span id="quizProgressText">0/2</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Achievements Section -->
+        <section class="achievements-section">
+            <h2>🏆 Achievements</h2>
+            <div id="achievementsGrid" class="achievements-grid">
+                <!-- Achievements will be dynamically loaded -->
+            </div>
+        </section>
+
+        <!-- Activity Timeline -->
+        <section class="timeline-section">
+            <h2>📅 Seneste Aktivitet</h2>
+            <div id="activityTimeline" class="timeline">
+                <!-- Recent activities will be shown here -->
+            </div>
+        </section>
+
+        <!-- Data Management -->
+        <section class="data-section">
+            <h2>💾 Data Management</h2>
+            <div class="data-actions">
+                <button id="resetBtn" class="btn btn-danger">🗑️ Reset Alle Data</button>
+                <button id="backupBtn" class="btn btn-success">💾 Backup Data</button>
+                <input type="file" id="importFile" accept=".json" style="display: none;">
+            </div>
+            <div class="data-stats">
+                <p>Sidste backup: <span id="lastBackup">Aldrig</span></p>
+                <p>Total data størrelse: <span id="dataSize">0 KB</span></p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Success/Error Messages -->
+    <div id="message" class="message hidden"></div>
+
+    <!-- Scripts -->
+    <script src="components/progress-chart.js"></script>
+    <script src="components/streak-counter.js"></script>
+    <script src="components/achievements.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>
