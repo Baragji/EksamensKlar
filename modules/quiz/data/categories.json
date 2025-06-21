@@ -1,0 +1,18 @@
+{
+  "categories": [],
+  "userCategories": {
+    "note": "This will be populated by user-generated content",
+    "structure": {
+      "id": "category-id",
+      "name": "Category Name",
+      "description": "Category description",
+      "color": "#color-hex",
+      "icon": "icon-name",
+      "created": "timestamp",
+      "modified": "timestamp"
+    }
+  },
+  "totalQuestions": 0,
+  "lastUpdated": null,
+  "version": "1.0.0"
+}

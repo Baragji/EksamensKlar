@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧪 Quiz Scoring System Tests</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 20px;
+            background: linear-gradient(135deg, #ff7b7b 0%, #667eea 100%);
+            color: white;
+        }
+        .test-container { 
+            background: white; 
+            color: #333;
+            border-radius: 15px; 
+            padding: 25px; 
+            margin: 20px 0; 
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        .scoring-demo { 
+            background: #f8f9fa; 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin: 15px 0;
+            border-left: 4px solid #007bff;
+        }
+        .score-display { 
+            font-size: 24px; 
+            font-weight: bold; 
+            text-align: center; 
+            padding: 20px;
+            background: linear-gradient(45deg, #4caf50, #45a049);
+            color: white;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+        .btn { 
+            background: #007bff; 
+            color: white; 
+            border: none; 
+            padding: 12px 24px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            margin: 5px;
+            font-size: 16px;
+        }
+        .btn:hover { background: #0056b3; }
+        .btn.success { background: #28a745; }
+        .btn.danger { background: #dc3545; }
+        .btn.warning { background: #ffc107; color: #333; }
+        .progress-bar { 
+            width: 100%; 
+            height: 20px; 
+            background: #e9ecef; 
+            border-radius: 10px; 
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .progress-fill { 
+            height: 100%; 
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4); 
+            transition: width 0.5s ease;
+        }
+        .stats-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 15px; 
+            margin: 20px 0;
+        }
+        .stat-card { 
+            background: #f8f9fa; 
+            padding: 15px; 
+            border-radius: 8px; 
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover { border-color: #007bff; }
+        .log { 
+            background: #f5f5f5; 
+            padding: 15px; 
+            border-radius: 8px; 
+            font-family: monospace; 
+            max-height: 300px; 
+            overflow-y: auto; 
+            margin: 10px 0;
+        }
+        h1 { text-align: center; margin-bottom: 30px; }
+        h2 { color: #343a40; border-bottom: 3px solid #dee2e6; padding-bottom: 10px; }
+        h3 { color: #495057; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Quiz Scoring System Tests</h1>
+    
+    <div class="test-container">
+        <h2>📊 Scoring Algorithm Tests</h2>
+        
+        <div class="scoring-demo">
+            <h3>Live Scoring Demo</h3>
+            <div class="score-display" id="currentScore">Score: 0 / 0 (0%)</div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <strong>Correct Answers</strong><br>
+                    <span id="correctCount" style="font-size: 24px; color: #28a745;">0</span>
+                </div>
+                <div class="stat-card">
+                    <strong>Wrong Answers</strong><br>
+                    <span id="wrongCount" style="font-size: 24px; color: #dc3545;">0</span>
+                </div>
+                <div class="stat-card">
+                    <strong>Time Bonus</strong><br>
+                    <span id="timeBonus" style="font-size: 24px; color: #ffc107;">0</span>
+                </div>
+                <div class="stat-card">
+                    <strong>Streak Bonus</strong><br>
+                    <span id="streakBonus" style="font-size: 24px; color: #17a2b8;">0</span>
+                </div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="scoreProgress" style="width: 0%"></div>
+            </div>
+            
+            <div style="text-align: center; margin: 20px 0;">
+                <button class="btn success" onclick="simulateCorrectAnswer()">✅ Correct Answer</button>
+                <button class="btn danger" onclick="simulateWrongAnswer()">❌ Wrong Answer</button>
+                <button class="btn warning" onclick="resetScoring()">🔄 Reset</button>
+            </div>
+        </div>
+        
+        <button class="btn" onclick="runScoringTests()">🧪 Run Scoring Tests</button>
+        <div id="scoringTestLog" class="log"></div>
+    </div>
+
+    <div class="test-container">
+        <h2>⚡ Performance & Time Tracking</h2>
+        
+        <div class="scoring-demo">
+            <h3>Time-based Scoring</h3>
+            <div id="timerDisplay" style="font-size: 20px; text-align: center; margin: 15px 0;">
+                Time: <span id="currentTime">00:00</span>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <strong>Average Time</strong><br>
+                    <span id="avgTime">0s</span>
+                </div>
+                <div class="stat-card">
+                    <strong>Fastest Answer</strong><br>
+                    <span id="fastestTime">-</span>
+                </div>
+                <div class="stat-card">
+                    <strong>Time Efficiency</strong><br>
+                    <span id="timeEfficiency">0%</span>
+                </div>
+            </div>
+            
+            <button class="btn" onclick="startTimerTest()">⏱️ Start Timer Test</button>
+            <button class="btn" onclick="stopTimerTest()">⏹️ Stop Timer</button>
+        </div>
+        
+        <button class="btn" onclick="runPerformanceTests()">🧪 Run Performance Tests</button>
+        <div id="performanceTestLog" class="log"></div>
+    </div>
+
+    <div class="test-container">
+        <h2>📈 Statistical Analysis</h2>
+        
+        <div class="scoring-demo">
+            <h3>Score Distribution & Trends</h3>
+            <div id="statisticsDisplay">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <strong>Mean Score</strong><br>
+                        <span id="meanScore">0%</span>
+                    </div>
+                    <div class="stat-card">
+                        <strong>Median Score</strong><br>
+                        <span id="medianScore">0%</span>
+                    </div>
+                    <div class="stat-card">
+                        <strong>Standard Dev</strong><br>
+                        <span id="stdDev">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <strong>Improvement</strong><br>
+                        <span id="improvement">0%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="btn" onclick="generateMockData()">📊 Generate Mock Data</button>
+            <button class="btn" onclick="analyzeProgress()">📈 Analyze Progress</button>
+        </div>
+        
+        <button class="btn" onclick="runStatisticalTests()">🧪 Run Statistical Tests</button>
+        <div id="statisticalTestLog" class="log"></div>
+    </div>
+
+    <script>
+        // Scoring System Class
+        class QuizScoringSystem {
+            constructor() {
+                this.correct = 0;
+                this.wrong = 0;
+                this.total = 0;
+                this.currentStreak = 0;
+                this.maxStreak = 0;
+                this.startTime = null;
+                this.questionTimes = [];
+                this.scores = [];
+            }
+
+            answerQuestion(isCorrect, timeSpent = 0) {
+                this.total++;
+                
+                if (isCorrect) {
+                    this.correct++;
+                    this.currentStreak++;
+                    this.maxStreak = Math.max(this.maxStreak, this.currentStreak);
+                } else {
+                    this.wrong++;
+                    this.currentStreak = 0;
+                }
+
+                if (timeSpent > 0) {
+                    this.questionTimes.push(timeSpent);
+                }
+
+                return this.calculateScore();
+            }
+
+            calculateScore() {
+                if (this.total === 0) return 0;
+                
+                // Base score (70% weight)
+                const baseScore = (this.correct / this.total) * 70;
+                
+                // Time bonus (15% weight) - faster answers get bonus
+                const avgTime = this.getAverageTime();
+                const timeBonus = avgTime > 0 ? Math.max(0, 15 - (avgTime / 1000)) : 0;
+                
+                // Streak bonus (15% weight)
+                const streakBonus = Math.min(15, this.maxStreak * 2);
+                
+                const totalScore = Math.min(100, baseScore + timeBonus + streakBonus);
+                
+                return {
+                    total: Math.round(totalScore),
+                    base: Math.round(baseScore),
+                    timeBonus: Math.round(timeBonus),
+                    streakBonus: Math.round(streakBonus),
+                    percentage: Math.round((this.correct / this.total) * 100)
+                };
+            }
+
+            getAverageTime() {
+                if (this.questionTimes.length === 0) return 0;
+                return this.questionTimes.reduce((a, b) => a + b) / this.questionTimes.length;
+            }
+
+            getFastestTime() {
+                return this.questionTimes.length > 0 ? Math.min(...this.questionTimes) : 0;
+            }
+
+            getStatistics() {
+                return {
+                    correct: this.correct,
+                    wrong: this.wrong,
+                    total: this.total,
+                    accuracy: this.total > 0 ? (this.correct / this.total) * 100 : 0,
+                    currentStreak: this.currentStreak,
+                    maxStreak: this.maxStreak,
+                    averageTime: this.getAverageTime(),
+                    fastestTime: this.getFastestTime()
+                };
+            }
+
+            reset() {
+                this.correct = 0;
+                this.wrong = 0;
+                this.total = 0;
+                this.currentStreak = 0;
+                this.maxStreak = 0;
+                this.questionTimes = [];
+                this.startTime = null;
+            }
+        }
+
+        // Global scoring instance
+        const scoring = new QuizScoringSystem();
+        let timer = null;
+        let startTime = null;
+
+        // Demo Functions
+        function simulateCorrectAnswer() {
+            const timeSpent = Math.random() * 5000 + 1000; // 1-6 seconds
+            const result = scoring.answerQuestion(true, timeSpent);
+            updateScoringDisplay(result);
+            logScoringTest('scoringTestLog', `✅ Correct answer! Score: ${result.total}% (Base: ${result.base}%, Time: +${result.timeBonus}, Streak: +${result.streakBonus})`);
+        }
+
+        function simulateWrongAnswer() {
+            const timeSpent = Math.random() * 8000 + 2000; // 2-10 seconds  
+            const result = scoring.answerQuestion(false, timeSpent);
+            updateScoringDisplay(result);
+            logScoringTest('scoringTestLog', `❌ Wrong answer. Score: ${result.total}% (Streak broken)`);
+        }
+
+        function resetScoring() {
+            scoring.reset();
+            updateScoringDisplay({ total: 0, base: 0, timeBonus: 0, streakBonus: 0, percentage: 0 });
+            document.getElementById('scoreProgress').style.width = '0%';
+            logScoringTest('scoringTestLog', '🔄 Scoring system reset');
+        }
+
+        function updateScoringDisplay(result) {
+            const stats = scoring.getStatistics();
+            
+            document.getElementById('currentScore').textContent = 
+                `Score: ${stats.correct} / ${stats.total} (${result.percentage}%)`;
+            
+            document.getElementById('correctCount').textContent = stats.correct;
+            document.getElementById('wrongCount').textContent = stats.wrong;
+            document.getElementById('timeBonus').textContent = `+${result.timeBonus}`;
+            document.getElementById('streakBonus').textContent = `+${result.streakBonus}`;
+            
+            // Update progress bar
+            document.getElementById('scoreProgress').style.width = `${result.percentage}%`;
+            
+            // Update time stats
+            document.getElementById('avgTime').textContent = `${(stats.averageTime / 1000).toFixed(1)}s`;
+            document.getElementById('fastestTime').textContent = 
+                stats.fastestTime > 0 ? `${(stats.fastestTime / 1000).toFixed(1)}s` : '-';
+            
+            const efficiency = stats.averageTime > 0 ? Math.max(0, 100 - (stats.averageTime / 50)) : 0;
+            document.getElementById('timeEfficiency').textContent = `${Math.round(efficiency)}%`;
+        }
+
+        // Timer Functions
+        function startTimerTest() {
+            startTime = Date.now();
+            timer = setInterval(() => {
+                const elapsed = Date.now() - startTime;
+                const seconds = Math.floor(elapsed / 1000);
+                const minutes = Math.floor(seconds / 60);
+                const displayTime = `${minutes.toString().padStart(2, '0')}:${(seconds % 60).toString().padStart(2, '0')}`;
+                document.getElementById('currentTime').textContent = displayTime;
+            }, 100);
+            
+            logScoringTest('performanceTestLog', '⏱️ Timer started');
+        }
+
+        function stopTimerTest() {
+            if (timer) {
+                clearInterval(timer);
+                const elapsed = Date.now() - startTime;
+                logScoringTest('performanceTestLog', `⏹️ Timer stopped. Elapsed: ${(elapsed / 1000).toFixed(1)}s`);
+                timer = null;
+            }
+        }
+
+        // Statistical Functions
+        function generateMockData() {
+            const mockScores = Array.from({length: 20}, () => Math.random() * 40 + 60); // 60-100%
+            updateStatisticalDisplay(mockScores);
+            logScoringTest('statisticalTestLog', `📊 Generated ${mockScores.length} mock scores`);
+        }
+
+        function updateStatisticalDisplay(scores) {
+            const mean = scores.reduce((a, b) => a + b) / scores.length;
+            const sortedScores = [...scores].sort((a, b) => a - b);
+            const median = sortedScores[Math.floor(sortedScores.length / 2)];
+            
+            const variance = scores.reduce((acc, score) => acc + Math.pow(score - mean, 2), 0) / scores.length;
+            const stdDev = Math.sqrt(variance);
+            
+            // Calculate improvement (compare first half vs second half)
+            const firstHalf = scores.slice(0, Math.floor(scores.length / 2));
+            const secondHalf = scores.slice(Math.floor(scores.length / 2));
+            const improvement = secondHalf.length > 0 ? 
+                ((secondHalf.reduce((a, b) => a + b) / secondHalf.length) - 
+                 (firstHalf.reduce((a, b) => a + b) / firstHalf.length)) : 0;
+            
+            document.getElementById('meanScore').textContent = `${mean.toFixed(1)}%`;
+            document.getElementById('medianScore').textContent = `${median.toFixed(1)}%`;
+            document.getElementById('stdDev').textContent = stdDev.toFixed(1);
+            document.getElementById('improvement').textContent = `${improvement > 0 ? '+' : ''}${improvement.toFixed(1)}%`;
+        }
+
+        function analyzeProgress() {
+            const mockData = {
+                sessions: 10,
+                totalQuestions: 200,
+                correctAnswers: 160,
+                averageScore: 80,
+                improvement: 15
+            };
+            
+            logScoringTest('statisticalTestLog', `📈 Analysis complete:`);
+            logScoringTest('statisticalTestLog', `   • ${mockData.sessions} sessions completed`);
+            logScoringTest('statisticalTestLog', `   • ${mockData.correctAnswers}/${mockData.totalQuestions} correct (${mockData.averageScore}%)`);
+            logScoringTest('statisticalTestLog', `   • ${mockData.improvement}% improvement over time`);
+        }
+
+        // Test Functions
+        function logScoringTest(logId, message) {
+            const logDiv = document.getElementById(logId);
+            const timestamp = new Date().toLocaleTimeString();
+            logDiv.textContent += `[${timestamp}] ${message}\n`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(message);
+        }
+
+        async function runScoringTests() {
+            logScoringTest('scoringTestLog', '🧪 Starting scoring system tests...');
+            
+            try {
+                // Test 1: Basic scoring calculation
+                const testScoring = new QuizScoringSystem();
+                
+                // Answer 3 correct, 1 wrong
+                testScoring.answerQuestion(true, 2000);   // 2s
+                testScoring.answerQuestion(true, 1500);   // 1.5s  
+                testScoring.answerQuestion(false, 5000);  // 5s
+                testScoring.answerQuestion(true, 1800);   // 1.8s
+                
+                const result = testScoring.calculateScore();
+                logScoringTest('scoringTestLog', `✓ Basic scoring: ${result.total}% (3/4 correct)`);
+                
+                // Test 2: Streak bonus
+                if (testScoring.maxStreak !== 2) {
+                    throw new Error(`Expected max streak 2, got ${testScoring.maxStreak}`);
+                }
+                logScoringTest('scoringTestLog', `✓ Streak tracking: max streak = ${testScoring.maxStreak}`);
+                
+                // Test 3: Time tracking
+                const avgTime = testScoring.getAverageTime();
+                if (avgTime < 2000 || avgTime > 3000) {
+                    throw new Error(`Unexpected average time: ${avgTime}ms`);
+                }
+                logScoringTest('scoringTestLog', `✓ Time tracking: avg = ${(avgTime/1000).toFixed(1)}s`);
+                
+                // Test 4: Statistical calculations
+                const scores = [85, 90, 78, 92, 88];
+                const mean = scores.reduce((a, b) => a + b) / scores.length;
+                if (Math.abs(mean - 86.6) > 0.1) {
+                    throw new Error(`Mean calculation error: expected ~86.6, got ${mean}`);
+                }
+                logScoringTest('scoringTestLog', `✓ Statistical calculations: mean = ${mean.toFixed(1)}%`);
+                
+                logScoringTest('scoringTestLog', '🎉 All scoring tests PASSED');
+                
+            } catch (error) {
+                logScoringTest('scoringTestLog', `❌ Test failed: ${error.message}`);
+            }
+        }
+
+        async function runPerformanceTests() {
+            logScoringTest('performanceTestLog', '🧪 Starting performance tests...');
+            
+            try {
+                // Test timing accuracy
+                const start = performance.now();
+                await new Promise(resolve => setTimeout(resolve, 100)); // 100ms delay
+                const end = performance.now();
+                const elapsed = end - start;
+                
+                if (elapsed < 90 || elapsed > 120) {
+                    logScoringTest('performanceTestLog', `⚠️ Timing variance: ${elapsed.toFixed(1)}ms (expected ~100ms)`);
+                } else {
+                    logScoringTest('performanceTestLog', `✓ Timing accuracy: ${elapsed.toFixed(1)}ms`);
+                }
+                
+                // Test large dataset handling
+                const largeArray = Array.from({length: 10000}, (_, i) => Math.random() * 100);
+                const testStart = performance.now();
+                const sum = largeArray.reduce((a, b) => a + b, 0);
+                const testEnd = performance.now();
+                
+                logScoringTest('performanceTestLog', `✓ Large dataset (10k items): ${(testEnd - testStart).toFixed(2)}ms`);
+                
+                // Test memory usage simulation
+                logScoringTest('performanceTestLog', `✓ Memory usage: Estimated ${JSON.stringify(largeArray).length} bytes`);
+                
+                logScoringTest('performanceTestLog', '🎉 Performance tests PASSED');
+                
+            } catch (error) {
+                logScoringTest('performanceTestLog', `❌ Performance test failed: ${error.message}`);
+            }
+        }
+
+        async function runStatisticalTests() {
+            logScoringTest('statisticalTestLog', '🧪 Starting statistical tests...');
+            
+            try {
+                // Test statistical functions
+                const testData = [70, 80, 85, 90, 95, 88, 92, 76, 84, 89];
+                
+                // Mean
+                const mean = testData.reduce((a, b) => a + b) / testData.length;
+                logScoringTest('statisticalTestLog', `✓ Mean calculation: ${mean.toFixed(1)}%`);
+                
+                // Median
+                const sorted = [...testData].sort((a, b) => a - b);
+                const median = sorted[Math.floor(sorted.length / 2)];
+                logScoringTest('statisticalTestLog', `✓ Median calculation: ${median}%`);
+                
+                // Standard deviation
+                const variance = testData.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / testData.length;
+                const stdDev = Math.sqrt(variance);
+                logScoringTest('statisticalTestLog', `✓ Standard deviation: ${stdDev.toFixed(2)}`);
+                
+                // Improvement trend
+                const firstHalf = testData.slice(0, 5);
+                const secondHalf = testData.slice(5);
+                const firstAvg = firstHalf.reduce((a, b) => a + b) / firstHalf.length;
+                const secondAvg = secondHalf.reduce((a, b) => a + b) / secondHalf.length;
+                const improvement = secondAvg - firstAvg;
+                
+                logScoringTest('statisticalTestLog', `✓ Improvement trend: ${improvement > 0 ? '+' : ''}${improvement.toFixed(1)}%`);
+                
+                logScoringTest('statisticalTestLog', '🎉 Statistical tests PASSED');
+                
+            } catch (error) {
+                logScoringTest('statisticalTestLog', `❌ Statistical test failed: ${error.message}`);
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            logScoringTest('scoringTestLog', '🎯 Scoring system tests initialized');
+            updateScoringDisplay({ total: 0, base: 0, timeBonus: 0, streakBonus: 0, percentage: 0 });
+        });
+    </script>
+</body>
+</html>

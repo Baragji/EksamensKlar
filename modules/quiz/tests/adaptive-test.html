@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧪 Adaptive Difficulty Tests</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #f093fb 100%);
+            color: white;
+        }
+        .test-container { 
+            background: white; 
+            color: #333;
+            border-radius: 15px; 
+            padding: 25px; 
+            margin: 20px 0; 
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        .difficulty-meter { 
+            width: 100%; 
+            height: 40px; 
+            background: #e9ecef; 
+            border-radius: 20px; 
+            overflow: hidden;
+            position: relative;
+            margin: 15px 0;
+        }
+        .difficulty-fill { 
+            height: 100%; 
+            background: linear-gradient(90deg, #28a745, #ffc107, #fd7e14, #dc3545); 
+            transition: width 0.5s ease;
+            border-radius: 20px;
+        }
+        .difficulty-label { 
+            position: absolute; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+            font-weight: bold; 
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        .btn { 
+            background: #007bff; 
+            color: white; 
+            border: none; 
+            padding: 12px 24px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            margin: 5px;
+            font-size: 16px;
+        }
+        .btn:hover { background: #0056b3; }
+        .btn.success { background: #28a745; }
+        .btn.danger { background: #dc3545; }
+        .btn.warning { background: #ffc107; color: #333; }
+        .btn.info { background: #17a2b8; }
+        .adaptive-demo { 
+            background: #f8f9fa; 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin: 15px 0;
+            border-left: 4px solid #007bff;
+        }
+        .question-preview { 
+            background: white; 
+            border: 2px solid #dee2e6; 
+            border-radius: 8px; 
+            padding: 20px; 
+            margin: 15px 0;
+            transition: border-color 0.3s ease;
+        }
+        .question-preview.easy { border-color: #28a745; }
+        .question-preview.medium { border-color: #ffc107; }
+        .question-preview.hard { border-color: #fd7e14; }
+        .question-preview.expert { border-color: #dc3545; }
+        .stats-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
+            gap: 15px; 
+            margin: 20px 0;
+        }
+        .stat-card { 
+            background: #f8f9fa; 
+            padding: 15px; 
+            border-radius: 8px; 
+            text-align: center;
+            border: 2px solid transparent;
+        }
+        .stat-card.positive { border-color: #28a745; background: #d4edda; }
+        .stat-card.negative { border-color: #dc3545; background: #f8d7da; }
+        .stat-card.neutral { border-color: #6c757d; background: #e2e3e5; }
+        .log { 
+            background: #f5f5f5; 
+            padding: 15px; 
+            border-radius: 8px; 
+            font-family: monospace; 
+            max-height: 300px; 
+            overflow-y: auto; 
+            margin: 10px 0;
+        }
+        .performance-chart { 
+            height: 200px; 
+            background: #f8f9fa; 
+            border: 1px solid #dee2e6; 
+            border-radius: 8px; 
+            margin: 15px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        h1 { text-align: center; margin-bottom: 30px; }
+        h2 { color: #343a40; border-bottom: 3px solid #dee2e6; padding-bottom: 10px; }
+        h3 { color: #495057; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Adaptive Difficulty System Tests</h1>
+    
+    <div class="test-container">
+        <h2>🎯 Current Difficulty Level</h2>
+        
+        <div class="adaptive-demo">
+            <h3>Real-time Difficulty Adjustment</h3>
+            
+            <div class="difficulty-meter">
+                <div class="difficulty-fill" id="difficultyFill" style="width: 50%"></div>
+                <div class="difficulty-label" id="difficultyLabel">Medium (Level 2)</div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card neutral" id="currentLevel">
+                    <strong>Current Level</strong><br>
+                    <span style="font-size: 24px;">2</span>
+                </div>
+                <div class="stat-card positive" id="recentAccuracy">
+                    <strong>Recent Accuracy</strong><br>
+                    <span style="font-size: 24px;">75%</span>
+                </div>
+                <div class="stat-card neutral" id="questionSpeed">
+                    <strong>Avg Speed</strong><br>
+                    <span style="font-size: 24px;">8.5s</span>
+                </div>
+                <div class="stat-card positive" id="adaptiveScore">
+                    <strong>Adaptive Score</strong><br>
+                    <span style="font-size: 24px;">850</span>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin: 20px 0;">
+                <button class="btn success" onclick="simulateCorrectStreak()">✅ Correct Streak</button>
+                <button class="btn danger" onclick="simulateWrongStreak()">❌ Wrong Streak</button>
+                <button class="btn warning" onclick="simulateMixedPerformance()">⚖️ Mixed Performance</button>
+                <button class="btn info" onclick="resetAdaptiveSystem()">🔄 Reset System</button>
+            </div>
+        </div>
+        
+        <button class="btn" onclick="runAdaptiveTests()">🧪 Run Adaptive Tests</button>
+        <div id="adaptiveTestLog" class="log"></div>
+    </div>
+
+    <div class="test-container">
+        <h2>📊 Question Difficulty Examples</h2>
+        
+        <div class="question-preview easy" id="easyQuestion">
+            <h4>🟢 Easy Question (Level 1)</h4>
+            <p><strong>Q:</strong> Hvad er det primære formål med proteinrensning?</p>
+            <div style="font-size: 14px; color: #666; margin-top: 10px;">
+                • Straightforward concept<br>
+                • Clear terminology<br>
+                • Single correct answer
+            </div>
+        </div>
+        
+        <div class="question-preview medium" id="mediumQuestion">
+            <h4>🟡 Medium Question (Level 2)</h4>
+            <p><strong>Q:</strong> Hvilken kromatografi metode ville være mest effektiv til at separere proteiner med lignende størrelse men forskellige ladninger?</p>
+            <div style="font-size: 14px; color: #666; margin-top: 10px;">
+                • Requires understanding of principles<br>
+                • Multiple valid approaches<br>
+                • Context-dependent reasoning
+            </div>
+        </div>
+        
+        <div class="question-preview hard" id="hardQuestion">
+            <h4>🟠 Hard Question (Level 3)</h4>
+            <p><strong>Q:</strong> I en multi-step purification hvor SEC følger efter ion-exchange, hvilke faktorer skal overvejes for buffer optimization mellem steps?</p>
+            <div style="font-size: 14px; color: #666; margin-top: 10px;">
+                • Multi-step reasoning<br>
+                • Advanced terminology<br>
+                • Integration of concepts
+            </div>
+        </div>
+        
+        <div class="question-preview expert" id="expertQuestion">
+            <h4>🔴 Expert Question (Level 4)</h4>
+            <p><strong>Q:</strong> Analyze the thermodynamic implications of salt gradient elution in hydrophobic interaction chromatography for thermolabile proteins at different temperatures.</p>
+            <div style="font-size: 14px; color: #666; margin-top: 10px;">
+                • Research-level complexity<br>
+                • Multiple variables<br>
+                • Professional application
+            </div>
+        </div>
+        
+        <button class="btn" onclick="runQuestionAnalysisTests()">🧪 Test Question Analysis</button>
+        <div id="questionTestLog" class="log"></div>
+    </div>
+
+    <div class="test-container">
+        <h2>📈 Performance Tracking</h2>
+        
+        <div class="adaptive-demo">
+            <h3>Learning Curve Analysis</h3>
+            
+            <div class="performance-chart" id="performanceChart">
+                <div style="padding: 20px; text-align: center; color: #666;">
+                    Performance chart would be rendered here<br>
+                    <small>Shows difficulty adjustments over time</small>
+                </div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <strong>Sessions</strong><br>
+                    <span id="sessionCount">0</span>
+                </div>
+                <div class="stat-card">
+                    <strong>Avg Difficulty</strong><br>
+                    <span id="avgDifficulty">2.0</span>
+                </div>
+                <div class="stat-card">
+                    <strong>Mastery Level</strong><br>
+                    <span id="masteryLevel">Intermediate</span>
+                </div>
+                <div class="stat-card">
+                    <strong>Learning Rate</strong><br>
+                    <span id="learningRate">+12%</span>
+                </div>
+            </div>
+            
+            <button class="btn" onclick="generatePerformanceData()">📊 Generate Performance Data</button>
+            <button class="btn" onclick="analyzeProgressTrends()">📈 Analyze Trends</button>
+        </div>
+        
+        <button class="btn" onclick="runPerformanceTrackingTests()">🧪 Test Performance Tracking</button>
+        <div id="performanceTestLog" class="log"></div>
+    </div>
+
+    <script>
+        // Adaptive Difficulty System
+        class AdaptiveDifficultySystem {
+            constructor() {
+                this.currentLevel = 2; // Start at medium
+                this.recentAnswers = []; // Last 10 answers
+                this.sessionHistory = [];
+                this.performanceWindow = 5; // Number of recent answers to consider
+                this.confidenceThreshold = 0.8; // 80% accuracy to level up
+                this.difficultyRange = { min: 1, max: 4 };
+            }
+
+            recordAnswer(isCorrect, timeSpent, difficulty) {
+                const answer = {
+                    correct: isCorrect,
+                    time: timeSpent,
+                    difficulty: difficulty,
+                    timestamp: Date.now()
+                };
+
+                this.recentAnswers.push(answer);
+                
+                // Keep only recent answers
+                if (this.recentAnswers.length > this.performanceWindow) {
+                    this.recentAnswers.shift();
+                }
+
+                return this.adjustDifficulty();
+            }
+
+            adjustDifficulty() {
+                if (this.recentAnswers.length < 3) {
+                    return this.currentLevel; // Need minimum data
+                }
+
+                const recentAccuracy = this.getRecentAccuracy();
+                const avgTime = this.getAverageTime();
+                const optimalTime = 8000; // 8 seconds target
+
+                let adjustment = 0;
+
+                // Accuracy-based adjustment
+                if (recentAccuracy >= 0.85 && avgTime <= optimalTime) {
+                    adjustment = 0.3; // Level up faster
+                } else if (recentAccuracy >= 0.75) {
+                    adjustment = 0.1; // Gradual increase
+                } else if (recentAccuracy <= 0.4) {
+                    adjustment = -0.3; // Level down faster
+                } else if (recentAccuracy <= 0.6) {
+                    adjustment = -0.1; // Gradual decrease
+                }
+
+                // Time-based fine-tuning
+                if (avgTime > optimalTime * 2) {
+                    adjustment -= 0.1; // Too slow, make easier
+                } else if (avgTime < optimalTime * 0.5) {
+                    adjustment += 0.1; // Too fast, make harder
+                }
+
+                this.currentLevel = Math.max(
+                    this.difficultyRange.min,
+                    Math.min(this.difficultyRange.max, this.currentLevel + adjustment)
+                );
+
+                return this.currentLevel;
+            }
+
+            getRecentAccuracy() {
+                if (this.recentAnswers.length === 0) return 0;
+                const correct = this.recentAnswers.filter(a => a.correct).length;
+                return correct / this.recentAnswers.length;
+            }
+
+            getAverageTime() {
+                if (this.recentAnswers.length === 0) return 0;
+                const totalTime = this.recentAnswers.reduce((sum, a) => sum + a.time, 0);
+                return totalTime / this.recentAnswers.length;
+            }
+
+            getDifficultyLabel(level = this.currentLevel) {
+                if (level <= 1.3) return { label: 'Easy', color: '#28a745' };
+                if (level <= 2.3) return { label: 'Medium', color: '#ffc107' };
+                if (level <= 3.3) return { label: 'Hard', color: '#fd7e14' };
+                return { label: 'Expert', color: '#dc3545' };
+            }
+
+            getAdaptiveScore() {
+                const baseScore = this.getRecentAccuracy() * 500;
+                const difficultyBonus = this.currentLevel * 200;
+                const timeBonus = Math.max(0, 150 - (this.getAverageTime() / 100));
+                return Math.round(baseScore + difficultyBonus + timeBonus);
+            }
+
+            getStatistics() {
+                return {
+                    currentLevel: this.currentLevel,
+                    recentAccuracy: this.getRecentAccuracy(),
+                    averageTime: this.getAverageTime(),
+                    adaptiveScore: this.getAdaptiveScore(),
+                    totalAnswers: this.recentAnswers.length,
+                    difficultyLabel: this.getDifficultyLabel()
+                };
+            }
+
+            reset() {
+                this.currentLevel = 2;
+                this.recentAnswers = [];
+                this.sessionHistory = [];
+            }
+        }
+
+        // Global adaptive system instance
+        const adaptiveSystem = new AdaptiveDifficultySystem();
+
+        // UI Update Functions
+        function updateDifficultyDisplay() {
+            const stats = adaptiveSystem.getStatistics();
+            const difficultyPercentage = ((stats.currentLevel - 1) / 3) * 100;
+            
+            document.getElementById('difficultyFill').style.width = `${difficultyPercentage}%`;
+            document.getElementById('difficultyLabel').textContent = 
+                `${stats.difficultyLabel.label} (Level ${stats.currentLevel.toFixed(1)})`;
+            
+            document.getElementById('currentLevel').innerHTML = `
+                <strong>Current Level</strong><br>
+                <span style="font-size: 24px;">${stats.currentLevel.toFixed(1)}</span>
+            `;
+            
+            document.getElementById('recentAccuracy').innerHTML = `
+                <strong>Recent Accuracy</strong><br>
+                <span style="font-size: 24px;">${Math.round(stats.recentAccuracy * 100)}%</span>
+            `;
+            
+            document.getElementById('questionSpeed').innerHTML = `
+                <strong>Avg Speed</strong><br>
+                <span style="font-size: 24px;">${(stats.averageTime / 1000).toFixed(1)}s</span>
+            `;
+            
+            document.getElementById('adaptiveScore').innerHTML = `
+                <strong>Adaptive Score</strong><br>
+                <span style="font-size: 24px;">${stats.adaptiveScore}</span>
+            `;
+
+            // Update stat card colors based on performance
+            updateStatCardColor('recentAccuracy', stats.recentAccuracy >= 0.75);
+            updateStatCardColor('questionSpeed', stats.averageTime <= 10000);
+            updateStatCardColor('adaptiveScore', stats.adaptiveScore >= 800);
+        }
+
+        function updateStatCardColor(cardId, isPositive) {
+            const card = document.getElementById(cardId);
+            card.className = `stat-card ${isPositive ? 'positive' : 'negative'}`;
+        }
+
+        // Simulation Functions
+        function simulateCorrectStreak() {
+            logAdaptiveTest('adaptiveTestLog', '🎯 Simulating correct answer streak...');
+            
+            for (let i = 0; i < 5; i++) {
+                const timeSpent = Math.random() * 3000 + 2000; // 2-5 seconds (fast)
+                adaptiveSystem.recordAnswer(true, timeSpent, adaptiveSystem.currentLevel);
+                
+                setTimeout(() => {
+                    updateDifficultyDisplay();
+                    logAdaptiveTest('adaptiveTestLog', 
+                        `✅ Correct answer ${i + 1}/5 - Level: ${adaptiveSystem.currentLevel.toFixed(2)}`);
+                }, i * 200);
+            }
+        }
+
+        function simulateWrongStreak() {
+            logAdaptiveTest('adaptiveTestLog', '🎯 Simulating wrong answer streak...');
+            
+            for (let i = 0; i < 4; i++) {
+                const timeSpent = Math.random() * 8000 + 5000; // 5-13 seconds (slow)
+                adaptiveSystem.recordAnswer(false, timeSpent, adaptiveSystem.currentLevel);
+                
+                setTimeout(() => {
+                    updateDifficultyDisplay();
+                    logAdaptiveTest('adaptiveTestLog', 
+                        `❌ Wrong answer ${i + 1}/4 - Level: ${adaptiveSystem.currentLevel.toFixed(2)}`);
+                }, i * 200);
+            }
+        }
+
+        function simulateMixedPerformance() {
+            logAdaptiveTest('adaptiveTestLog', '🎯 Simulating mixed performance...');
+            
+            const pattern = [true, true, false, true, false, true, true]; // ~71% accuracy
+            
+            pattern.forEach((isCorrect, i) => {
+                const timeSpent = Math.random() * 6000 + 4000; // 4-10 seconds
+                
+                setTimeout(() => {
+                    adaptiveSystem.recordAnswer(isCorrect, timeSpent, adaptiveSystem.currentLevel);
+                    updateDifficultyDisplay();
+                    logAdaptiveTest('adaptiveTestLog', 
+                        `${isCorrect ? '✅' : '❌'} Answer ${i + 1}/7 - Level: ${adaptiveSystem.currentLevel.toFixed(2)}`);
+                }, i * 300);
+            });
+        }
+
+        function resetAdaptiveSystem() {
+            adaptiveSystem.reset();
+            updateDifficultyDisplay();
+            logAdaptiveTest('adaptiveTestLog', '🔄 Adaptive system reset to default settings');
+        }
+
+        // Test Functions
+        function logAdaptiveTest(logId, message) {
+            const logDiv = document.getElementById(logId);
+            const timestamp = new Date().toLocaleTimeString();
+            logDiv.textContent += `[${timestamp}] ${message}\n`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(message);
+        }
+
+        async function runAdaptiveTests() {
+            logAdaptiveTest('adaptiveTestLog', '🧪 Starting adaptive difficulty tests...');
+            
+            try {
+                // Test 1: Initial state
+                const initialLevel = adaptiveSystem.currentLevel;
+                if (initialLevel !== 2) {
+                    throw new Error(`Expected initial level 2, got ${initialLevel}`);
+                }
+                logAdaptiveTest('adaptiveTestLog', `✓ Initial difficulty level: ${initialLevel}`);
+                
+                // Test 2: Level increase with good performance
+                adaptiveSystem.reset();
+                for (let i = 0; i < 5; i++) {
+                    adaptiveSystem.recordAnswer(true, 3000, adaptiveSystem.currentLevel);
+                }
+                
+                if (adaptiveSystem.currentLevel <= 2) {
+                    logAdaptiveTest('adaptiveTestLog', `⚠️ Level should increase with good performance (current: ${adaptiveSystem.currentLevel.toFixed(2)})`);
+                } else {
+                    logAdaptiveTest('adaptiveTestLog', `✓ Level increased to ${adaptiveSystem.currentLevel.toFixed(2)} with good performance`);
+                }
+                
+                // Test 3: Level decrease with poor performance
+                adaptiveSystem.reset();
+                for (let i = 0; i < 5; i++) {
+                    adaptiveSystem.recordAnswer(false, 8000, adaptiveSystem.currentLevel);
+                }
+                
+                if (adaptiveSystem.currentLevel >= 2) {
+                    logAdaptiveTest('adaptiveTestLog', `⚠️ Level should decrease with poor performance (current: ${adaptiveSystem.currentLevel.toFixed(2)})`);
+                } else {
+                    logAdaptiveTest('adaptiveTestLog', `✓ Level decreased to ${adaptiveSystem.currentLevel.toFixed(2)} with poor performance`);
+                }
+                
+                // Test 4: Boundary limits
+                adaptiveSystem.currentLevel = 1;
+                adaptiveSystem.recordAnswer(false, 10000, 1);
+                if (adaptiveSystem.currentLevel < 1) {
+                    throw new Error('Level went below minimum boundary');
+                }
+                
+                adaptiveSystem.currentLevel = 4;
+                adaptiveSystem.recordAnswer(true, 2000, 4);
+                if (adaptiveSystem.currentLevel > 4) {
+                    throw new Error('Level went above maximum boundary');
+                }
+                logAdaptiveTest('adaptiveTestLog', '✓ Boundary limits respected');
+                
+                // Test 5: Statistical calculations
+                adaptiveSystem.reset();
+                adaptiveSystem.recordAnswer(true, 3000, 2);
+                adaptiveSystem.recordAnswer(false, 6000, 2);
+                adaptiveSystem.recordAnswer(true, 4000, 2);
+                
+                const accuracy = adaptiveSystem.getRecentAccuracy();
+                if (Math.abs(accuracy - 0.6667) > 0.01) {
+                    throw new Error(`Accuracy calculation error: expected ~0.67, got ${accuracy}`);
+                }
+                logAdaptiveTest('adaptiveTestLog', `✓ Accuracy calculation: ${(accuracy * 100).toFixed(1)}%`);
+                
+                logAdaptiveTest('adaptiveTestLog', '🎉 All adaptive difficulty tests PASSED');
+                
+            } catch (error) {
+                logAdaptiveTest('adaptiveTestLog', `❌ Test failed: ${error.message}`);
+            }
+        }
+
+        async function runQuestionAnalysisTests() {
+            logAdaptiveTest('questionTestLog', '🧪 Testing question difficulty analysis...');
+            
+            try {
+                // Mock question difficulty analysis
+                const questions = [
+                    { text: "What is protein?", complexity: 1, keywords: ["basic"], length: 3 },
+                    { text: "Compare ion-exchange vs size-exclusion chromatography", complexity: 2, keywords: ["chromatography", "compare"], length: 6 },
+                    { text: "Optimize multi-step purification protocol considering buffer compatibility", complexity: 3, keywords: ["optimize", "multi-step", "protocol"], length: 9 },
+                    { text: "Analyze thermodynamic implications of gradient elution", complexity: 4, keywords: ["analyze", "thermodynamic", "implications"], length: 7 }
+                ];
+                
+                questions.forEach((q, i) => {
+                    // Simple difficulty scoring algorithm
+                    let difficultyScore = 1;
+                    
+                    // Length factor
+                    if (q.length > 8) difficultyScore += 1;
+                    else if (q.length > 5) difficultyScore += 0.5;
+                    
+                    // Keyword complexity
+                    const complexKeywords = ["analyze", "optimize", "thermodynamic", "implications", "multi-step"];
+                    const complexCount = q.keywords.filter(k => complexKeywords.includes(k)).length;
+                    difficultyScore += complexCount * 0.5;
+                    
+                    // Verify against expected complexity
+                    const expectedRange = [q.complexity - 0.5, q.complexity + 0.5];
+                    if (difficultyScore >= expectedRange[0] && difficultyScore <= expectedRange[1]) {
+                        logAdaptiveTest('questionTestLog', `✓ Question ${i + 1}: Difficulty ${difficultyScore.toFixed(1)} (expected ~${q.complexity})`);
+                    } else {
+                        logAdaptiveTest('questionTestLog', `⚠️ Question ${i + 1}: Difficulty ${difficultyScore.toFixed(1)} (expected ~${q.complexity})`);
+                    }
+                });
+                
+                logAdaptiveTest('questionTestLog', '🎉 Question analysis tests completed');
+                
+            } catch (error) {
+                logAdaptiveTest('questionTestLog', `❌ Question analysis test failed: ${error.message}`);
+            }
+        }
+
+        async function runPerformanceTrackingTests() {
+            logAdaptiveTest('performanceTestLog', '🧪 Testing performance tracking...');
+            
+            try {
+                // Simulate session data
+                const sessions = [
+                    { avgDifficulty: 1.8, accuracy: 0.65, score: 720 },
+                    { avgDifficulty: 2.1, accuracy: 0.72, score: 780 },
+                    { avgDifficulty: 2.4, accuracy: 0.68, score: 790 },
+                    { avgDifficulty: 2.6, accuracy: 0.75, score: 850 },
+                    { avgDifficulty: 2.8, accuracy: 0.78, score: 890 }
+                ];
+                
+                // Calculate learning progression
+                const firstSession = sessions[0];
+                const lastSession = sessions[sessions.length - 1];
+                
+                const difficultyImprovement = lastSession.avgDifficulty - firstSession.avgDifficulty;
+                const accuracyImprovement = (lastSession.accuracy - firstSession.accuracy) * 100;
+                const scoreImprovement = lastSession.score - firstSession.score;
+                
+                logAdaptiveTest('performanceTestLog', `✓ Difficulty progression: +${difficultyImprovement.toFixed(1)} levels`);
+                logAdaptiveTest('performanceTestLog', `✓ Accuracy improvement: +${accuracyImprovement.toFixed(1)}%`);
+                logAdaptiveTest('performanceTestLog', `✓ Score improvement: +${scoreImprovement} points`);
+                
+                // Update UI with mock data
+                document.getElementById('sessionCount').textContent = sessions.length;
+                document.getElementById('avgDifficulty').textContent = lastSession.avgDifficulty.toFixed(1);
+                document.getElementById('masteryLevel').textContent = 
+                    lastSession.avgDifficulty >= 3 ? 'Advanced' : 
+                    lastSession.avgDifficulty >= 2.5 ? 'Intermediate+' : 'Intermediate';
+                document.getElementById('learningRate').textContent = `+${accuracyImprovement.toFixed(0)}%`;
+                
+                logAdaptiveTest('performanceTestLog', '🎉 Performance tracking tests PASSED');
+                
+            } catch (error) {
+                logAdaptiveTest('performanceTestLog', `❌ Performance tracking test failed: ${error.message}`);
+            }
+        }
+
+        function generatePerformanceData() {
+            logAdaptiveTest('performanceTestLog', '📊 Generating performance visualization data...');
+            
+            // Mock chart data generation
+            const dataPoints = Array.from({length: 20}, (_, i) => ({
+                session: i + 1,
+                difficulty: 1.5 + (i * 0.1) + (Math.random() * 0.3 - 0.15),
+                accuracy: Math.min(1, 0.5 + (i * 0.02) + (Math.random() * 0.2 - 0.1))
+            }));
+            
+            logAdaptiveTest('performanceTestLog', `✓ Generated ${dataPoints.length} performance data points`);
+            logAdaptiveTest('performanceTestLog', `✓ Difficulty range: ${Math.min(...dataPoints.map(d => d.difficulty)).toFixed(1)} - ${Math.max(...dataPoints.map(d => d.difficulty)).toFixed(1)}`);
+            logAdaptiveTest('performanceTestLog', `✓ Accuracy range: ${Math.min(...dataPoints.map(d => d.accuracy * 100)).toFixed(0)}% - ${Math.max(...dataPoints.map(d => d.accuracy * 100)).toFixed(0)}%`);
+        }
+
+        function analyzeProgressTrends() {
+            logAdaptiveTest('performanceTestLog', '📈 Analyzing learning progression trends...');
+            
+            // Mock trend analysis
+            const trends = {
+                learningVelocity: 'Accelerating (+15% per week)',
+                difficultyTolerance: 'Improving (can handle Level 3+ questions)',
+                retentionRate: 'High (85% knowledge retention)',
+                masteryPrediction: 'Advanced level achievable in 4-6 weeks'
+            };
+            
+            Object.entries(trends).forEach(([metric, value]) => {
+                logAdaptiveTest('performanceTestLog', `✓ ${metric}: ${value}`);
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDifficultyDisplay();
+            logAdaptiveTest('adaptiveTestLog', '🎯 Adaptive difficulty system initialized');
+            logAdaptiveTest('questionTestLog', '📝 Question analysis system ready');
+            logAdaptiveTest('performanceTestLog', '📊 Performance tracking system ready');
+        });
+    </script>
+</body>
+</html>

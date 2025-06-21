@@ -1,0 +1,46 @@
+{
+  "questions": [],
+  "userQuestions": {
+    "note": "All quiz questions are user-generated. No static content is pre-filled.",
+    "structure": {
+      "id": "unique-question-id",
+      "question": "Question text",
+      "options": [
+        "Option 1",
+        "Option 2", 
+        "Option 3",
+        "Option 4"
+      ],
+      "correct": 1,
+      "explanation": "Detailed explanation of the correct answer",
+      "difficulty": 2,
+      "category": "category-id",
+      "tags": ["tag1", "tag2"],
+      "hint": "Optional hint text",
+      "timeLimit": 30,
+      "points": 10,
+      "created": "timestamp",
+      "modified": "timestamp",
+      "createdBy": "user-id",
+      "statistics": {
+        "timesAnswered": 0,
+        "timesCorrect": 0,
+        "averageTime": 0,
+        "difficultyRating": 0
+      }
+    }
+  },
+  "metadata": {
+    "totalQuestions": 0,
+    "categories": {},
+    "difficulties": {
+      "1": { "name": "Easy", "count": 0 },
+      "2": { "name": "Medium", "count": 0 },
+      "3": { "name": "Hard", "count": 0 },
+      "4": { "name": "Expert", "count": 0 }
+    },
+    "lastUpdated": null,
+    "version": "1.0.0",
+    "userGenerated": true
+  }
+}
