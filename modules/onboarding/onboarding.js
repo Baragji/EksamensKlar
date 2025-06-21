@@ -259,9 +259,53 @@ class OnboardingSystem {
                     <button onclick="onboarding.removeContent('${item.name}')" class="remove-btn">✕</button>
                 </div>
             `).join('');
+            
+            // FIXED: Auto-scroll to show uploaded content + success feedback
+            preview.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            
+            // Show success toast
+            this.showToast(`✅ ${this.userData.content[this.userData.content.length - 1].name} tilføjet`, 'success');
         } else {
             preview.style.display = 'none';
         }
+    }
+    
+    // Add toast notification method
+    showToast(message, type = 'info') {
+        // Create toast element if it doesn't exist
+        let toast = document.getElementById('onboarding-toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'onboarding-toast';
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 12px 20px;
+                border-radius: 8px;
+                color: white;
+                font-weight: 500;
+                z-index: 10000;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            `;
+            document.body.appendChild(toast);
+        }
+        
+        // Set toast styling based on type
+        const colors = {
+            success: '#10b981',
+            error: '#ef4444', 
+            info: '#3b82f6'
+        };
+        toast.style.backgroundColor = colors[type] || colors.info;
+        toast.textContent = message;
+        
+        // Show and auto-hide toast
+        toast.style.opacity = '1';
+        setTimeout(() => {
+            toast.style.opacity = '0';
+        }, 3000);
     }
 
     getFileIcon(type) {
@@ -366,23 +410,38 @@ class OnboardingSystem {
     }
 
     async generateLearningPlan() {
-        // Show instant generation (no AI simulation)
+        // Show generation with proper UX feedback
         document.getElementById('generationStatus').style.display = 'block';
         document.getElementById('generationResult').style.display = 'none';
 
-        // Quick system processing (no delays)
         const steps = document.querySelectorAll('.thinking-step');
         
-        // Mark all steps as completed immediately
-        steps.forEach(step => {
+        // Animate through steps with proper timing for UX
+        for (let i = 0; i < steps.length; i++) {
+            const step = steps[i];
+            
+            // Mark current step as active
+            step.classList.add('active');
+            step.classList.remove('completed');
+            
+            // Give user time to see AI "thinking"
+            await this.delay(800);
+            
+            // Mark as completed and move to next
             step.classList.remove('active');
             step.classList.add('completed');
-        });
+            
+            // Short pause before next step
+            await this.delay(300);
+        }
 
-        // Generate learning plan instantly
+        // Generate learning plan
         this.userData.learningPlan = this.createLearningPlan();
 
-        // Show result immediately
+        // Final pause for completion effect
+        await this.delay(500);
+
+        // Show result with animation
         document.getElementById('generationStatus').style.display = 'none';
         document.getElementById('generationResult').style.display = 'block';
         
@@ -497,36 +556,56 @@ class OnboardingSystem {
                 button.disabled = true;
             }
 
-            // Save onboarding data
+            // Save onboarding data FIRST
             await this.saveOnboardingData();
+            console.log('✅ Onboarding data saved');
             
-            // Initialize training data through DataBridge
+            if (button) {
+                button.innerHTML = '<span class="loading-luxury"></span> Genererer læringsplan...';
+            }
+            await this.delay(800); // Give user feedback
+            
+            // CRITICAL FIX: Ensure DataBridge initialization completes BEFORE redirect
+            let initSuccess = false;
             if (window.DataBridge) {
                 console.log('🔄 Initializing training data...');
-                window.DataBridge.initializeFromOnboarding();
-                if (button) {
-                    button.innerHTML = '<span class="loading-luxury"></span> Forbereder træningsdata...';
+                initSuccess = window.DataBridge.initializeFromOnboarding();
+                
+                if (initSuccess) {
+                    console.log('✅ Training data initialized successfully');
+                    if (button) {
+                        button.innerHTML = '<span class="loading-luxury"></span> Forbereder dashboard...';
+                    }
+                    await this.delay(500);
+                } else {
+                    console.error('❌ Failed to initialize training data');
                 }
-                await this.delay(1000); // Give time for data initialization
             }
             
             // Mark onboarding as completed
             localStorage.setItem('examklar_onboarding_completed', 'true');
             
-            // Success feedback
+            // Success feedback before redirect
             if (button) {
-                button.innerHTML = '✅ Færdig! Omdirigerer...';
+                button.innerHTML = '✅ Færdig! Starter din læringsrejse...';
             }
+            await this.delay(1000);
             
-            // Redirect to main app immediately
+            // ONLY redirect after data is ready
+            console.log('🚀 Redirecting to main app with initialized data');
             window.location.href = '../../index.html';
             
         } catch (error) {
-            console.error('❌ Error completing onboarding:', error);
+            console.error('❌ Critical error in startLearning:', error);
             
-            // Mark as completed anyway and redirect
-            localStorage.setItem('examklar_onboarding_completed', 'true');
-            window.location.href = '../../index.html';
+            // Show error to user
+            const button = document.querySelector('button[onclick="startLearning()"]');
+            if (button) {
+                button.innerHTML = '❌ Fejl opstået - prøver igen...';
+                button.disabled = false;
+            }
+            
+            // Don't redirect on error - let user try again
         }
     }
 
@@ -535,21 +614,28 @@ class OnboardingSystem {
             // Save onboarding data
             this.saveOnboardingData();
             
-            // Initialize training data through DataBridge
+            // CRITICAL FIX: Ensure DataBridge initialization before redirect
+            let initSuccess = false;
             if (window.DataBridge) {
-                console.log('🔄 Initializing training data...');
-                window.DataBridge.initializeFromOnboarding();
+                console.log('🔄 Initializing training data for dashboard...');
+                initSuccess = window.DataBridge.initializeFromOnboarding();
+                
+                if (initSuccess) {
+                    console.log('✅ Training data initialized for dashboard');
+                } else {
+                    console.error('❌ Failed to initialize training data for dashboard');
+                }
             }
             
             // Mark onboarding as completed
             localStorage.setItem('examklar_onboarding_completed', 'true');
             
-            // Redirect to dashboard
+            // Redirect to dashboard only after data is ready
+            console.log('🚀 Redirecting to dashboard with initialized data');
             window.location.href = '../dashboard/index.html';
         } catch (error) {
-            console.error('❌ Error completing onboarding:', error);
-            // Fallback redirect
-            window.location.href = '../../index.html';
+            console.error('❌ Critical error in viewDashboard:', error);
+            alert('Der opstod en fejl. Prøv igen eller kontakt support.');
         }
     }
 
