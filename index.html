@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExamKlar - Mikrolæring til Proteinrensning</title>
+    <meta name="description" content="Lær proteinrensning gennem daglige mikrolærings-sessioner med flashcards, quizzer og spaced repetition">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="ExamKlar">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles/global.css">
+    <link rel="stylesheet" href="styles/components.css">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-brand">
+                <h1 class="logo">📚 ExamKlar</h1>
+                <span class="tagline">Mikrolæring til Proteinrensning</span>
+            </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main" id="mainContent">
+        <!-- Landing Page Content -->
+        <section class="hero">
+            <div class="hero-content">
+                <h2 class="hero-title">Mester Proteinrensning på 7 Dage</h2>
+                <p class="hero-subtitle">
+                    Lær gennem daglige mikro-sessioner med spaced repetition, 
+                    interaktive flashcards og praksis-orienterede quizzer.
+                </p>
+                <div class="hero-actions">
+                    <button class="btn btn-primary" onclick="app.navigateTo('dashboard')">
+                        Start Læring 🚀
+                    </button>
+                    <button class="btn btn-secondary" onclick="app.navigateTo('content')">
+                        Se Indhold 📖
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Stats -->
+        <section class="stats">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number" id="totalProgress">0%</span>
+                    <span class="stat-label">Samlet Fremskridt</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="currentStreak">0</span>
+                    <span class="stat-label">Dage i Træk</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="completedCards">0</span>
+                    <span class="stat-label">Gennemførte Cards</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Module Navigation -->
+        <section class="modules">
+            <h3 class="modules-title">Læringsmoduler</h3>
+            <div class="modules-grid">
+                
+                <div class="module-card" onclick="app.navigateTo('content')">
+                    <div class="module-icon">📖</div>
+                    <h4 class="module-title">Dagligt Indhold</h4>
+                    <p class="module-description">7 dages struktureret læringsindhold om proteinrensning</p>
+                    <div class="module-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%" id="contentProgress"></div>
+                        </div>
+                        <span class="progress-text">0/7 dage</span>
+                    </div>
+                </div>
+
+                <div class="module-card" onclick="app.navigateTo('flashcards')">
+                    <div class="module-icon">🗂️</div>
+                    <h4 class="module-title">Flashcards</h4>
+                    <p class="module-description">Interaktive kort til hurtig gentagelse og memorering</p>
+                    <div class="module-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%" id="flashcardsProgress"></div>
+                        </div>
+                        <span class="progress-text">0/50 kort</span>
+                    </div>
+                </div>
+
+                <div class="module-card" onclick="app.navigateTo('quiz')">
+                    <div class="module-icon">❓</div>
+                    <h4 class="module-title">Quiz</h4>
+                    <p class="module-description">Test din viden med multiple-choice spørgsmål</p>
+                    <div class="module-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%" id="quizProgress"></div>
+                        </div>
+                        <span class="progress-text">0/25 spørgsmål</span>
+                    </div>
+                </div>
+
+                <div class="module-card" onclick="app.navigateTo('dashboard')">
+                    <div class="module-icon">📊</div>
+                    <h4 class="module-title">Dashboard</h4>
+                    <p class="module-description">Oversigt over dit fremskridt og statistikker</p>
+                    <div class="module-status">
+                        <span class="status-badge">Aktiv</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Bottom Navigation (Mobile) -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" onclick="app.navigateTo('home')" data-nav="home">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">Hjem</span>
+        </button>
+        <button class="nav-item" onclick="app.navigateTo('content')" data-nav="content">
+            <span class="nav-icon">📖</span>
+            <span class="nav-label">Indhold</span>
+        </button>
+        <button class="nav-item" onclick="app.navigateTo('flashcards')" data-nav="flashcards">
+            <span class="nav-icon">🗂️</span>
+            <span class="nav-label">Cards</span>
+        </button>
+        <button class="nav-item" onclick="app.navigateTo('quiz')" data-nav="quiz">
+            <span class="nav-icon">❓</span>
+            <span class="nav-label">Quiz</span>
+        </button>
+        <button class="nav-item" onclick="app.navigateTo('dashboard')" data-nav="dashboard">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">Fremskridt</span>
+        </button>
+    </nav>
+
+    <!-- Scripts -->
+    <script src="core/utils.js"></script>
+    <script src="core/storage.js"></script>
+    <script src="core/app.js"></script>
+    
+    <!-- Initialize App -->
+    <script>
+        // Register Service Worker for PWA functionality
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then((registration) => {
+                        console.log('✅ Service Worker registered successfully:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.log('❌ Service Worker registration failed:', error);
+                    });
+            });
+        }
+
+        // Initialize app when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            app.init();
+        });
+    </script>
+</body>
+</html>

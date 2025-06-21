@@ -1,0 +1,95 @@
+name: Deploy ExamKlar to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Validate HTML
+      run: |
+        echo "🔍 Validating HTML structure..."
+        # Check if main files exist
+        test -f index.html || (echo "❌ index.html missing" && exit 1)
+        test -f manifest.json || (echo "❌ manifest.json missing" && exit 1)
+        test -f sw.js || (echo "❌ sw.js missing" && exit 1)
+        echo "✅ Core files validated"
+        
+    - name: Validate CSS
+      run: |
+        echo "🎨 Validating CSS..."
+        test -f styles/global.css || (echo "❌ global.css missing" && exit 1)
+        test -f styles/components.css || (echo "❌ components.css missing" && exit 1)
+        echo "✅ CSS files validated"
+        
+    - name: Validate JavaScript
+      run: |
+        echo "⚡ Validating JavaScript..."
+        test -f core/app.js || (echo "❌ app.js missing" && exit 1)
+        test -f core/storage.js || (echo "❌ storage.js missing" && exit 1)
+        test -f core/utils.js || (echo "❌ utils.js missing" && exit 1)
+        
+        # Basic syntax check
+        node -c core/app.js || (echo "❌ app.js syntax error" && exit 1)
+        node -c core/storage.js || (echo "❌ storage.js syntax error" && exit 1)
+        node -c core/utils.js || (echo "❌ utils.js syntax error" && exit 1)
+        node -c sw.js || (echo "❌ sw.js syntax error" && exit 1)
+        echo "✅ JavaScript files validated"
+        
+    - name: Check PWA Manifest
+      run: |
+        echo "📱 Validating PWA manifest..."
+        # Basic JSON validation
+        python3 -m json.tool manifest.json > /dev/null || (echo "❌ Invalid manifest.json" && exit 1)
+        echo "✅ PWA manifest validated"
+        
+    - name: Optimize Files (if needed)
+      run: |
+        echo "🔧 Running basic optimizations..."
+        # Remove any .DS_Store files
+        find . -name '.DS_Store' -delete
+        echo "✅ Cleanup completed"
+        
+    - name: Generate Build Info
+      run: |
+        echo "📋 Generating build information..."
+        cat > build-info.json << EOF
+        {
+          "buildDate": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+          "commitHash": "${{ github.sha }}",
+          "branch": "${{ github.ref_name }}",
+          "version": "1.0.0"
+        }
+        EOF
+        echo "✅ Build info generated"
+        
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+      
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: '.'
+        
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
+
+# Permissions required for GitHub Pages deployment
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Environment configuration
+environment:
+  name: github-pages
+  url: ${{ steps.deployment.outputs.page_url }}
