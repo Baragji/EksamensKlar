@@ -351,6 +351,32 @@ const utils = {
             .replace(/[^\w\s-]/g, '')
             .replace(/[\s_-]+/g, '-')
             .replace(/^-+|-+$/g, '');
+    },
+
+    /**
+     * Check if onboarding is completed and redirect if not
+     * @returns {boolean} True if onboarding is completed
+     */
+    checkOnboarding() {
+        const hasCompletedOnboarding = localStorage.getItem('examklar_onboarding_completed');
+        if (!hasCompletedOnboarding) {
+            // Get current page path to determine correct redirect
+            const currentPath = window.location.pathname;
+            const moduleDepth = (currentPath.match(/\//g) || []).length;
+            
+            let redirectPath;
+            if (moduleDepth <= 2) {
+                // From root or modules folder
+                redirectPath = 'modules/onboarding/index.html';
+            } else {
+                // From inside a module
+                redirectPath = '../onboarding/index.html';
+            }
+            
+            window.location.href = redirectPath;
+            return false;
+        }
+        return true;
     }
 };
 

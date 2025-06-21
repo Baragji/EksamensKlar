@@ -13,15 +13,59 @@ class ContentManager {
 
     setupEventListeners() {
         // Auto-save on form changes
-        document.getElementById('dayTitle').addEventListener('input', () => this.saveFormState());
-        document.getElementById('dayContent').addEventListener('input', () => this.saveFormState());
+        const dayTitleEl = document.getElementById('dayTitle');
+        const dayContentEl = document.getElementById('dayContent');
+        
+        if (dayTitleEl) dayTitleEl.addEventListener('input', () => this.saveFormState());
+        if (dayContentEl) dayContentEl.addEventListener('input', () => this.saveFormState());
+
+        // Listen for progress updates
+        window.addEventListener('examklar:progress-updated', (e) => {
+            this.handleProgressUpdate(e.detail);
+        });
     }
 
     loadCurriculum() {
+        // First try to load from DataBridge unified training data
+        if (window.DataBridge) {
+            const trainingData = window.DataBridge.getTrainingData();
+            if (trainingData && trainingData.content) {
+                return {
+                    program: {
+                        title: `${trainingData.subject.name} Læringsplan`,
+                        description: `Personaliseret læringsplan for ${trainingData.subject.name}`,
+                        totalDays: trainingData.content.items.length,
+                        estimatedHours: Math.ceil(trainingData.content.items.reduce((sum, item) => sum + (item.estimatedTime || 15), 0) / 60)
+                    },
+                    days: trainingData.content.items.map((item, index) => ({
+                        day: index + 1,
+                        title: item.title,
+                        content: item.content || '',
+                        duration: item.estimatedTime || 15,
+                        difficulty: item.difficulty || 2,
+                        status: item.status || 'available',
+                        created: item.created
+                    })),
+                    metadata: {
+                        version: "1.0",
+                        lastUpdated: trainingData.meta.lastUpdated,
+                        contentType: "ai-generated"
+                    }
+                };
+            }
+        }
+
+        // Fallback to legacy storage
         const stored = localStorage.getItem(this.storageKey);
         if (stored) {
-            return JSON.parse(stored);
+            const parsed = JSON.parse(stored);
+            if (parsed.curriculum) {
+                return parsed.curriculum;
+            }
+            return parsed;
         }
+
+        // Default empty curriculum
         return {
             program: {
                 title: "Custom Learning Program",
@@ -64,10 +108,20 @@ class ContentManager {
     }
 
     addContent() {
-        const title = document.getElementById('dayTitle').value.trim();
-        const content = document.getElementById('dayContent').value.trim();
-        const estimatedTime = parseInt(document.getElementById('estimatedTime').value);
-        const difficulty = parseInt(document.getElementById('difficulty').value);
+        const titleEl = document.getElementById('dayTitle');
+        const contentEl = document.getElementById('dayContent');
+        const timeEl = document.getElementById('estimatedTime');
+        const difficultyEl = document.getElementById('difficulty');
+
+        if (!titleEl || !contentEl) {
+            alert('📝 Udfyld venligst titel og indhold!');
+            return;
+        }
+
+        const title = titleEl.value.trim();
+        const content = contentEl.value.trim();
+        const estimatedTime = timeEl ? parseInt(timeEl.value) || 15 : 15;
+        const difficulty = difficultyEl ? parseInt(difficultyEl.value) || 2 : 2;
 
         if (!title || !content) {
             alert('📝 Udfyld venligst titel og indhold!');
@@ -96,6 +150,54 @@ class ContentManager {
 
         // Show success message
         this.showNotification('✅ Indhold tilføjet succesfuldt!', 'success');
+    }
+
+    /**
+     * Mark content as completed and update progress
+     */
+    completeContent(dayIndex, actualReadingTime = null) {
+        const day = this.curriculum.days[dayIndex];
+        if (!day) return;
+        
+        // Update status to completed
+        day.status = 'completed';
+        day.completedAt = new Date().toISOString();
+        
+        // Save curriculum
+        this.saveCurriculum();
+        
+        // Update progress through DataBridge
+        if (window.DataBridge) {
+            const timeSpent = actualReadingTime || day.duration || 15;
+            window.DataBridge.updateProgress('content', 'lesson-completed', {
+                timeSpent: timeSpent,
+                lessonId: `day_${day.day}`,
+                lessonTitle: day.title,
+                difficulty: day.difficulty
+            });
+        }
+
+        // Show completion feedback
+        this.showNotification(`🎉 Godt klaret! Du har gennemført "${day.title}"`, 'success');
+        
+        // Re-render to show updated status
+        this.renderContentList();
+
+        // Unlock next lesson if available
+        const nextDay = this.curriculum.days[dayIndex + 1];
+        if (nextDay && nextDay.status === 'locked') {
+            nextDay.status = 'available';
+            this.saveCurriculum();
+            this.showNotification(`🔓 Ny lektion låst op: "${nextDay.title}"`, 'info');
+        }
+    }
+
+    /**
+     * Handle progress updates from other modules
+     */
+    handleProgressUpdate(data) {
+        // Could update UI to reflect cross-module progress
+        console.log('Content module received progress update:', data);
     }
 
     parseContentSections(content) {
@@ -153,19 +255,34 @@ class ContentManager {
             return;
         }
 
-        container.innerHTML = this.curriculum.days.map(day => `
-            <div class="content-item">
+        container.innerHTML = this.curriculum.days.map((day, index) => {
+            const statusIcon = this.getStatusIcon(day.status);
+            const statusClass = day.status === 'completed' ? 'completed' : day.status === 'locked' ? 'locked' : 'available';
+            
+            return `
+            <div class="content-item ${statusClass}">
                 <div class="content-header">
-                    <h3>📖 Day ${day.day}: ${day.title}</h3>
+                    <h3>${statusIcon} Day ${day.day}: ${day.title}</h3>
                     <div class="content-meta">
                         <span class="duration">⏱️ ${day.duration} min</span>
                         <span class="difficulty">${'⭐'.repeat(day.difficulty)}</span>
+                        <span class="status status-${day.status}">${this.getStatusText(day.status)}</span>
                     </div>
                 </div>
                 <div class="content-preview">
                     ${this.truncateText(day.content, 150)}
                 </div>
                 <div class="content-actions">
+                    ${day.status === 'available' ? `
+                        <button onclick="contentManager.startContent(${index})" class="btn-small btn-primary">
+                            ▶️ Start Lektion
+                        </button>
+                    ` : ''}
+                    ${day.status === 'completed' ? `
+                        <button onclick="contentManager.reviewContent(${index})" class="btn-small">
+                            🔄 Gennemgå igen
+                        </button>
+                    ` : ''}
                     <button onclick="contentManager.editContent(${day.day})" class="btn-small">
                         ✏️ Rediger
                     </button>
@@ -177,7 +294,7 @@ class ContentManager {
                     </button>
                 </div>
             </div>
-        `).join('');
+        `}).join('');
     }
 
     truncateText(text, maxLength) {
@@ -393,6 +510,168 @@ class ContentManager {
         setTimeout(() => {
             notification.remove();
         }, 3000);
+    }
+
+    getStatusIcon(status) {
+        switch (status) {
+            case 'completed': return '✅';
+            case 'locked': return '🔒';
+            case 'in-progress': return '🔄';
+            default: return '📖';
+        }
+    }
+
+    getStatusText(status) {
+        switch (status) {
+            case 'completed': return 'Gennemført';
+            case 'locked': return 'Låst';
+            case 'in-progress': return 'I gang';
+            default: return 'Tilgængelig';
+        }
+    }
+
+    /**
+     * Start a content lesson
+     */
+    startContent(dayIndex) {
+        const day = this.curriculum.days[dayIndex];
+        if (!day || day.status === 'locked') return;
+
+        // Open content reader modal
+        this.openContentReader(day, dayIndex);
+    }
+
+    /**
+     * Review completed content
+     */
+    reviewContent(dayIndex) {
+        const day = this.curriculum.days[dayIndex];
+        if (!day) return;
+
+        // Open content reader modal in review mode
+        this.openContentReader(day, dayIndex, true);
+    }
+
+    /**
+     * Open content reader modal
+     */
+    openContentReader(day, dayIndex, isReview = false) {
+        // Create modal if it doesn't exist
+        let modal = document.getElementById('contentReaderModal');
+        if (!modal) {
+            modal = this.createContentReaderModal();
+            document.body.appendChild(modal);
+        }
+
+        // Populate modal content
+        const modalTitle = modal.querySelector('.modal-title');
+        const modalContent = modal.querySelector('.modal-content-body');
+        const modalActions = modal.querySelector('.modal-actions');
+
+        modalTitle.textContent = `📖 ${day.title}`;
+        modalContent.innerHTML = `
+            <div class="content-meta-info">
+                <span class="duration">⏱️ ${day.duration} min</span>
+                <span class="difficulty">Sværhedsgrad: ${'⭐'.repeat(day.difficulty)}</span>
+                <span class="day-number">Dag ${day.day}</span>
+            </div>
+            <div class="content-text">
+                ${this.formatContent(day.content)}
+            </div>
+        `;
+
+        // Set up action buttons
+        if (isReview) {
+            modalActions.innerHTML = `
+                <button onclick="contentManager.closeContentReader()" class="btn btn-secondary">
+                    Luk
+                </button>
+            `;
+        } else {
+            modalActions.innerHTML = `
+                <button onclick="contentManager.closeContentReader()" class="btn btn-secondary">
+                    Luk
+                </button>
+                <button onclick="contentManager.finishContent(${dayIndex})" class="btn btn-primary">
+                    ✅ Marker som Gennemført
+                </button>
+            `;
+        }
+
+        // Show modal
+        modal.style.display = 'block';
+        modal.classList.add('active');
+        
+        // Track reading start time
+        this.readingStartTime = Date.now();
+    }
+
+    /**
+     * Create content reader modal
+     */
+    createContentReaderModal() {
+        const modal = document.createElement('div');
+        modal.id = 'contentReaderModal';
+        modal.className = 'content-modal';
+        modal.innerHTML = `
+            <div class="modal-overlay" onclick="contentManager.closeContentReader()"></div>
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h2 class="modal-title"></h2>
+                    <button class="modal-close" onclick="contentManager.closeContentReader()">×</button>
+                </div>
+                <div class="modal-content-body"></div>
+                <div class="modal-actions"></div>
+            </div>
+        `;
+        return modal;
+    }
+
+    /**
+     * Close content reader modal
+     */
+    closeContentReader() {
+        const modal = document.getElementById('contentReaderModal');
+        if (modal) {
+            modal.style.display = 'none';
+            modal.classList.remove('active');
+        }
+    }
+
+    /**
+     * Finish reading content and mark as completed
+     */
+    finishContent(dayIndex) {
+        const day = this.curriculum.days[dayIndex];
+        if (!day) return;
+
+        // Calculate reading time
+        const readingTime = this.readingStartTime ? 
+            Math.round((Date.now() - this.readingStartTime) / 1000 / 60) : 
+            day.duration;
+
+        // Close modal first
+        this.closeContentReader();
+
+        // Mark as completed
+        this.completeContent(dayIndex, readingTime);
+    }
+
+    /**
+     * Format content for display
+     */
+    formatContent(content) {
+        // Convert markdown-style formatting to HTML
+        return content
+            .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+            .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+            .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.+?)\*/g, '<em>$1</em>')
+            .replace(/\n\n/g, '</p><p>')
+            .replace(/^(.+)$/, '<p>$1</p>')
+            .replace(/^<p><h([1-6])>/g, '<h$1>')
+            .replace(/<\/h([1-6])><\/p>$/g, '</h$1>');
     }
 }
 

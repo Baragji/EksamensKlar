@@ -6,19 +6,41 @@ class Dashboard {
         this.streakCounter = null;
         this.achievementSystem = null;
         this.goals = this.loadGoals();
+        this.checkOnboarding();
         this.init();
     }
 
+    checkOnboarding() {
+        // Check if onboarding is completed
+        const hasCompletedOnboarding = localStorage.getItem('examklar_onboarding_completed');
+        if (!hasCompletedOnboarding) {
+            // Redirect to onboarding
+            window.location.href = '../onboarding/index.html';
+            return false;
+        }
+        return true;
+    }
+
     loadGoals() {
+        // Try to load from DataBridge first
+        if (window.DataBridge) {
+            const progressSummary = window.DataBridge.getProgressSummary();
+            if (progressSummary.goals && progressSummary.goals.daily) {
+                return progressSummary.goals.daily;
+            }
+        }
+
+        // Fallback to localStorage
         const saved = localStorage.getItem('examklar-daily-goals');
         if (saved) {
             return JSON.parse(saved);
         }
         
         return {
-            content: 3,
-            flashcards: 20,
-            quiz: 2
+            content: 1,
+            flashcards: 10,
+            quiz: 1,
+            timeSpent: 30 // minutes
         };
     }
 
@@ -33,6 +55,27 @@ class Dashboard {
         this.updateTimeline();
         this.bindEvents();
         this.updateDataStats();
+        
+        // Listen for progress updates from other modules
+        window.addEventListener('examklar:progress-updated', (e) => {
+            this.handleProgressUpdate(e.detail);
+        });
+    }
+
+    handleProgressUpdate(data) {
+        console.log('Dashboard received progress update:', data);
+        
+        // Update real-time progress display
+        this.updateStats();
+        this.updateGoals();
+        
+        // Update charts if they exist
+        if (this.progressChart && typeof this.progressChart.update === 'function') {
+            this.progressChart.update();
+        }
+        if (this.moduleChart && typeof this.moduleChart.update === 'function') {
+            this.moduleChart.update();
+        }
     }
 
     initializeComponents() {
@@ -88,7 +131,19 @@ class Dashboard {
     }
 
     getTodayProgress(date) {
-        // Get today's progress from all modules
+        // Try to get from DataBridge first
+        if (window.DataBridge) {
+            const progressSummary = window.DataBridge.getProgressSummary();
+            if (progressSummary.today) {
+                return {
+                    content: progressSummary.today.content || 0,
+                    flashcards: progressSummary.today.flashcards || 0,
+                    quiz: progressSummary.today.quiz || 0
+                };
+            }
+        }
+
+        // Fallback to individual module progress
         const contentProgress = JSON.parse(localStorage.getItem('examklar-content-progress') || '{}');
         const flashcardProgress = JSON.parse(localStorage.getItem('examklar-flashcard-progress') || '{}');
         const quizProgress = JSON.parse(localStorage.getItem('examklar-quiz-progress') || '{}');

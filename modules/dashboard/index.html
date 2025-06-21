@@ -7,47 +7,41 @@
     <link rel="stylesheet" href="../../styles/premium.css">
     <link rel="stylesheet" href="dashboard.css">
 </head>
-<body>
-    <!-- Skip Link for Accessibility -->
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-
-    <!-- Luxury Navigation -->
-    <nav class="navbar" role="navigation" aria-label="Main navigation">
-        <div class="nav-container">
-            <a href="../../index.html" class="nav-brand" aria-label="ExamKlar home">
-                <span class="brand-text">ExamKlar</span>
-            </a>
-            
-            <div class="nav-links">
-                <a href="../dashboard/index.html" class="nav-link active" aria-label="Dashboard" aria-current="page">
-                    <i class="icon-dashboard" aria-hidden="true"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="../subjects/index.html" class="nav-link" aria-label="Subjects">
-                    <i class="icon-subjects" aria-hidden="true"></i>
-                    <span>Fag</span>
-                </a>
-                <a href="../flashcards/index.html" class="nav-link" aria-label="Flashcards">
-                    <i class="icon-flashcards" aria-hidden="true"></i>
-                    <span>Flashcards</span>
-                </a>
-                <a href="../quiz/index.html" class="nav-link" aria-label="Quiz">
-                    <i class="icon-quiz" aria-hidden="true"></i>
-                    <span>Quiz</span>
-                </a>
-                <a href="../ai-assistant/index.html" class="nav-link" aria-label="AI Assistant">
-                    <i class="icon-ai" aria-hidden="true"></i>
-                    <span>AI Assistant</span>
-                </a>
-            </div>
-        </div>
-    </nav>
-                <h1 class="logo text-gradient">📊 Dashboard</h1>
-                <span class="badge-luxury">Live Analytics</span>
+<body class="gpu-accelerated">
+    <!-- Skip to Content Link -->
+    <a href="#main-content" class="skip-link">Spring til hovedindhold</a>
+    
+    <!-- Dark Mode Toggle -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Skift til mørk/lys tilstand" title="Skift tema">
+        <span id="themeIcon">🌙</span>
+    </button>
+    
+    <!-- Ultra-Premium Navigation -->
+    <header class="nav-luxury">
+        <nav class="nav container" role="navigation" aria-label="Hovednavigation">
+            <div class="nav-brand">
+                <div class="logo text-gradient glow">✨ ExamKlar</div>
+                <span class="badge-luxury" aria-label="Dashboard">Dashboard</span>
             </div>
             <div class="nav-actions">
-                <button id="exportBtn" class="btn-luxury" aria-describedby="export-desc">
-                    <span class="icon icon-settings" aria-hidden="true"></span>
+                <a href="../../index.html" class="btn-luxury-small" aria-label="Tilbage til forside">
+                    <span class="icon">🏠</span>
+                    Forside
+                </a>
+                <a href="../subjects/index.html" class="btn-luxury-small">
+                    <span class="icon">📚</span>
+                    Fag
+                </a>
+                <a href="../quiz/index.html" class="btn-luxury-small">
+                    <span class="icon">🎯</span>
+                    Quiz
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main" id="main-content">
                     Export Data
                 </button>
                 <span id="export-desc" class="sr-only">Eksporter alle dine læringsdata</span>
@@ -189,6 +183,50 @@
     <div id="message" class="message hidden"></div>
 
     <!-- Scripts -->
+    <script>
+        // Dark Mode Toggle System
+        function initializeDarkMode() {
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            
+            // Check for saved theme or use system preference
+            const savedTheme = localStorage.getItem('examklar-theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const currentTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+            
+            // Apply theme
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            updateThemeIcon(currentTheme);
+            
+            // Toggle handler
+            themeToggle?.addEventListener('click', () => {
+                const current = document.documentElement.getAttribute('data-theme');
+                const newTheme = current === 'dark' ? 'light' : 'dark';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('examklar-theme', newTheme);
+                updateThemeIcon(newTheme);
+                
+                // Add micro-animation
+                themeToggle.style.transform = 'scale(0.8)';
+                setTimeout(() => themeToggle.style.transform = 'scale(1)', 150);
+            });
+        }
+        
+        function updateThemeIcon(theme) {
+            const themeIcon = document.getElementById('themeIcon');
+            if (themeIcon) {
+                themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+            }
+        }
+        
+        // Initialize when DOM loads
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeDarkMode();
+        });
+    </script>
+    
+    <script src="../../core/data-bridge.js"></script>
     <script src="components/progress-chart.js"></script>
     <script src="components/streak-counter.js"></script>
     <script src="components/achievements.js"></script>

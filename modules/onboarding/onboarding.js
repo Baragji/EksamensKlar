@@ -366,41 +366,23 @@ class OnboardingSystem {
     }
 
     async generateLearningPlan() {
-        // Show thinking animation
+        // Show instant generation (no AI simulation)
         document.getElementById('generationStatus').style.display = 'block';
         document.getElementById('generationResult').style.display = 'none';
 
-        // Simulate AI processing steps
+        // Quick system processing (no delays)
         const steps = document.querySelectorAll('.thinking-step');
         
-        for (let i = 0; i < steps.length; i++) {
-            // Remove active from previous steps
-            steps.forEach(step => step.classList.remove('active'));
-            
-            // Add completed to previous steps
-            for (let j = 0; j < i; j++) {
-                steps[j].classList.add('completed');
-            }
-            
-            // Add active to current step
-            steps[i].classList.add('active');
-            
-            // Wait for animation
-            await this.delay(1000 + Math.random() * 1000);
-        }
-
-        // Mark all as completed
+        // Mark all steps as completed immediately
         steps.forEach(step => {
             step.classList.remove('active');
             step.classList.add('completed');
         });
 
-        await this.delay(500);
-
-        // Generate learning plan
+        // Generate learning plan instantly
         this.userData.learningPlan = this.createLearningPlan();
 
-        // Show result
+        // Show result immediately
         document.getElementById('generationStatus').style.display = 'none';
         document.getElementById('generationResult').style.display = 'block';
         
@@ -518,31 +500,33 @@ class OnboardingSystem {
             // Save onboarding data
             await this.saveOnboardingData();
             
+            // Initialize training data through DataBridge
+            if (window.DataBridge) {
+                console.log('🔄 Initializing training data...');
+                window.DataBridge.initializeFromOnboarding();
+                if (button) {
+                    button.innerHTML = '<span class="loading-luxury"></span> Forbereder træningsdata...';
+                }
+                await this.delay(1000); // Give time for data initialization
+            }
+            
             // Mark onboarding as completed
             localStorage.setItem('examklar_onboarding_completed', 'true');
-            
-            // Short delay to ensure saving is complete
-            await this.delay(1000);
             
             // Success feedback
             if (button) {
                 button.innerHTML = '✅ Færdig! Omdirigerer...';
             }
             
-            // Redirect to main app
-            setTimeout(() => {
-                window.location.href = '../../index.html';
-            }, 1500);
+            // Redirect to main app immediately
+            window.location.href = '../../index.html';
             
         } catch (error) {
             console.error('❌ Error completing onboarding:', error);
             
-            // Show error state
-            const button = document.querySelector('button[onclick="startLearning()"]');
-            if (button) {
-                button.innerHTML = '❌ Fejl - prøv igen';
-                button.disabled = false;
-            }
+            // Mark as completed anyway and redirect
+            localStorage.setItem('examklar_onboarding_completed', 'true');
+            window.location.href = '../../index.html';
         }
     }
 
@@ -550,6 +534,12 @@ class OnboardingSystem {
         try {
             // Save onboarding data
             this.saveOnboardingData();
+            
+            // Initialize training data through DataBridge
+            if (window.DataBridge) {
+                console.log('🔄 Initializing training data...');
+                window.DataBridge.initializeFromOnboarding();
+            }
             
             // Mark onboarding as completed
             localStorage.setItem('examklar_onboarding_completed', 'true');

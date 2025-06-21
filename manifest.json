@@ -1,16 +1,16 @@
 {
-  "name": "ExamKlar - Din Personlige Eksamen App",
+  "name": "ExamKlar - Premium AI Exam Platform",
   "short_name": "ExamKlar",
-  "description": "Skab dine egne kurser og lær gennem daglige mikrolærings-sessioner med flashcards, quizzer og spaced repetition",
-  "version": "1.0.0",
+  "description": "Ultra-moderne AI-baseret eksamenplatform med premium mikrolearning og personaliserede læringsplaner",
+  "version": "2.0.0",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#f8fafc",
-  "theme_color": "#2563eb",
+  "background_color": "#0f172a",
+  "theme_color": "#6366f1",
   "orientation": "portrait-primary",
   "lang": "da",
   "scope": "./",
-  "categories": ["education", "productivity"],
+  "categories": ["education", "productivity", "utilities"],
   "icons": [
     {
       "src": "./assets/icons/icon-72x72.png",

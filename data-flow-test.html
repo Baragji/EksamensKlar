@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExamKlar Data Flow Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f8fafc;
+        }
+        .test-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        .test-title {
+            color: #1e293b;
+            margin-bottom: 16px;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        .button {
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .button:hover {
+            background: #5855eb;
+        }
+        .button.secondary {
+            background: #64748b;
+        }
+        .button.success {
+            background: #10b981;
+        }
+        .button.danger {
+            background: #ef4444;
+        }
+        .status {
+            padding: 12px;
+            border-radius: 8px;
+            margin: 12px 0;
+            font-size: 14px;
+        }
+        .status.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+        .status.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+        .status.info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #3b82f6;
+        }
+        .data-display {
+            background: #f1f5f9;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 12px 0;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 12px;
+            overflow-x: auto;
+        }
+        .progress-bar {
+            background: #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 8px 0;
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 ExamKlar Data Flow Test</h1>
+    <p>Test den nye centraliserede data arkitektur og user flow</p>
+
+    <!-- Onboarding Test -->
+    <div class="test-section">
+        <h2 class="test-title">🎯 Onboarding & Data Initialization</h2>
+        <button class="button" onclick="simulateOnboarding()">Simuler Onboarding</button>
+        <button class="button secondary" onclick="checkTrainingData()">Tjek Training Data</button>
+        <button class="button danger" onclick="resetAllData()">Reset Alt Data</button>
+        <div id="onboardingStatus"></div>
+        <div id="trainingDataDisplay" class="data-display" style="display: none;"></div>
+    </div>
+
+    <!-- Progress Tracking Test -->
+    <div class="test-section">
+        <h2 class="test-title">📈 Progress Tracking</h2>
+        <button class="button" onclick="simulateContentSession()">Simuler Content Session</button>
+        <button class="button" onclick="simulateFlashcardSession()">Simuler Flashcard Session</button>
+        <button class="button" onclick="simulateQuizSession()">Simuler Quiz Session</button>
+        <div id="progressStatus"></div>
+        
+        <h3 style="margin-top: 20px;">Daglige Mål:</h3>
+        <div>
+            Content: <div class="progress-bar"><div id="contentProgress" class="progress-fill" style="width: 0%;">0/1</div></div>
+            Flashcards: <div class="progress-bar"><div id="flashcardsProgress" class="progress-fill" style="width: 0%;">0/10</div></div>
+            Quiz: <div class="progress-bar"><div id="quizProgress" class="progress-fill" style="width: 0%;">0/1</div></div>
+        </div>
+    </div>
+
+    <!-- Cross-Module Communication Test -->
+    <div class="test-section">
+        <h2 class="test-title">🔄 Cross-Module Communication</h2>
+        <button class="button" onclick="testCrossModuleData()">Test Data Synkronisering</button>
+        <button class="button" onclick="showProgressSummary()">Vis Progress Summary</button>
+        <div id="crossModuleStatus"></div>
+        <div id="progressSummaryDisplay" class="data-display" style="display: none;"></div>
+    </div>
+
+    <!-- User Flow Test -->
+    <div class="test-section">
+        <h2 class="test-title">👤 User Flow Test</h2>
+        <button class="button" onclick="simulateCompleteUserFlow()">Simuler Komplet User Flow</button>
+        <div id="userFlowStatus"></div>
+        <div id="userFlowSteps"></div>
+    </div>
+
+    <!-- Real-Time Stats -->
+    <div class="test-section">
+        <h2 class="test-title">⚡ Real-Time Stats</h2>
+        <div id="realTimeStats">
+            <p><strong>Total Sessions:</strong> <span id="totalSessions">0</span></p>
+            <p><strong>Current Streak:</strong> <span id="currentStreak">0</span> dage</p>
+            <p><strong>Total Time:</strong> <span id="totalTime">0</span> minutter</p>
+            <p><strong>Achievements:</strong> <span id="achievements">0</span></p>
+        </div>
+        <button class="button success" onclick="updateRealTimeStats()">Opdater Stats</button>
+    </div>
+
+    <!-- Scripts -->
+    <script src="core/data-bridge.js"></script>
+    <script>
+        // Test Functions
+        function simulateOnboarding() {
+            showStatus('onboardingStatus', '🔄 Simulerer onboarding...', 'info');
+
+            // Simulate onboarding data
+            const onboardingData = {
+                subject: 'Matematik',
+                subjectEmoji: '📐',
+                content: [
+                    { name: 'Algebra Basics', type: 'document', content: 'Grundlæggende algebra principper...' },
+                    { name: 'Geometry', type: 'document', content: 'Geometriske former og beregninger...' }
+                ],
+                examDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                daysToExam: 30,
+                learningPlan: {
+                    dailyGoal: 2,
+                    weeklyGoal: 10,
+                    focusAreas: ['algebra', 'geometri']
+                }
+            };
+
+            // Save onboarding data
+            localStorage.setItem('examklar_onboarding_data', JSON.stringify(onboardingData));
+            localStorage.setItem('examklar_onboarding_completed', 'true');
+
+            // Initialize through DataBridge
+            if (window.DataBridge) {
+                const success = window.DataBridge.initializeFromOnboarding();
+                if (success) {
+                    showStatus('onboardingStatus', '✅ Onboarding simuleret! Training data initialiseret', 'success');
+                } else {
+                    showStatus('onboardingStatus', '❌ Fejl ved initialisering af training data', 'error');
+                }
+            } else {
+                showStatus('onboardingStatus', '❌ DataBridge ikke tilgængelig', 'error');
+            }
+        }
+
+        function checkTrainingData() {
+            if (window.DataBridge) {
+                const trainingData = window.DataBridge.getTrainingData();
+                if (trainingData) {
+                    showStatus('onboardingStatus', '✅ Training data fundet!', 'success');
+                    document.getElementById('trainingDataDisplay').style.display = 'block';
+                    document.getElementById('trainingDataDisplay').textContent = JSON.stringify(trainingData, null, 2);
+                } else {
+                    showStatus('onboardingStatus', '⚠️ Ingen training data fundet', 'error');
+                }
+            }
+        }
+
+        function resetAllData() {
+            if (confirm('Er du sikker på at du vil slette alt data?')) {
+                if (window.DataBridge) {
+                    window.DataBridge.resetTrainingData();
+                }
+                localStorage.removeItem('examklar_onboarding_completed');
+                localStorage.removeItem('examklar_onboarding_data');
+                showStatus('onboardingStatus', '🗑️ Alt data slettet', 'info');
+                updateRealTimeStats();
+            }
+        }
+
+        function simulateContentSession() {
+            if (window.DataBridge) {
+                window.DataBridge.updateProgress('content', 'lesson-completed', {
+                    timeSpent: 15,
+                    lessonId: 'test_lesson_1',
+                    lessonTitle: 'Test Lektion',
+                    difficulty: 2
+                });
+                showStatus('progressStatus', '✅ Content session simuleret (15 min)', 'success');
+                updateProgressBars();
+            }
+        }
+
+        function simulateFlashcardSession() {
+            if (window.DataBridge) {
+                window.DataBridge.updateProgress('flashcards', 'session-completed', {
+                    timeSpent: 10,
+                    cardsReviewed: 15,
+                    correctAnswers: 12,
+                    score: 80
+                });
+                showStatus('progressStatus', '✅ Flashcard session simuleret (15 kort, 80%)', 'success');
+                updateProgressBars();
+            }
+        }
+
+        function simulateQuizSession() {
+            if (window.DataBridge) {
+                window.DataBridge.updateProgress('quiz', 'quiz-completed', {
+                    timeSpent: 8,
+                    questionsAnswered: 5,
+                    correctAnswers: 4,
+                    score: 80,
+                    difficulty: 'medium'
+                });
+                showStatus('progressStatus', '✅ Quiz session simuleret (5 spørgsmål, 80%)', 'success');
+                updateProgressBars();
+            }
+        }
+
+        function updateProgressBars() {
+            if (window.DataBridge) {
+                const summary = window.DataBridge.getProgressSummary();
+                
+                // Update content progress
+                const contentProgress = Math.min((summary.today.content / 1) * 100, 100);
+                document.getElementById('contentProgress').style.width = contentProgress + '%';
+                document.getElementById('contentProgress').textContent = `${summary.today.content}/1`;
+
+                // Update flashcards progress
+                const flashcardsProgress = Math.min((summary.today.flashcards / 10) * 100, 100);
+                document.getElementById('flashcardsProgress').style.width = flashcardsProgress + '%';
+                document.getElementById('flashcardsProgress').textContent = `${summary.today.flashcards}/10`;
+
+                // Update quiz progress
+                const quizProgress = Math.min((summary.today.quiz / 1) * 100, 100);
+                document.getElementById('quizProgress').style.width = quizProgress + '%';
+                document.getElementById('quizProgress').textContent = `${summary.today.quiz}/1`;
+            }
+        }
+
+        function testCrossModuleData() {
+            showStatus('crossModuleStatus', '🔄 Tester cross-module data...', 'info');
+
+            // Test data consistency across modules
+            const dataBridgeData = window.DataBridge ? window.DataBridge.getTrainingData() : null;
+            const contentData = localStorage.getItem('examklar-content');
+            const flashcardData = localStorage.getItem('examklar-flashcards');
+            const quizData = localStorage.getItem('examklar-quiz');
+
+            let status = '';
+            if (dataBridgeData) status += '✅ DataBridge: OK\n';
+            if (contentData) status += '✅ Content Module: OK\n';
+            if (flashcardData) status += '✅ Flashcard Module: OK\n';
+            if (quizData) status += '✅ Quiz Module: OK\n';
+
+            if (status) {
+                showStatus('crossModuleStatus', status, 'success');
+            } else {
+                showStatus('crossModuleStatus', '❌ Ingen module data fundet', 'error');
+            }
+        }
+
+        function showProgressSummary() {
+            if (window.DataBridge) {
+                const summary = window.DataBridge.getProgressSummary();
+                document.getElementById('progressSummaryDisplay').style.display = 'block';
+                document.getElementById('progressSummaryDisplay').textContent = JSON.stringify(summary, null, 2);
+                showStatus('crossModuleStatus', '✅ Progress summary vist', 'success');
+            }
+        }
+
+        function simulateCompleteUserFlow() {
+            showStatus('userFlowStatus', '🔄 Simulerer komplet user flow...', 'info');
+            
+            const steps = [
+                '1. Bruger starter onboarding',
+                '2. Vælger emne: Matematik',
+                '3. Uploader indhold',
+                '4. Sætter eksamensdato',
+                '5. System genererer læringsplan',
+                '6. Training data initialiseres',
+                '7. Bruger læser første lektion',
+                '8. Bruger gennemgår flashcards',
+                '9. Bruger tager quiz',
+                '10. Progress opdateres på tværs af moduler',
+                '11. Dashboard viser samlet fremgang',
+                '12. Achievements låses op'
+            ];
+
+            let stepIndex = 0;
+            const stepContainer = document.getElementById('userFlowSteps');
+            stepContainer.innerHTML = '';
+
+            function executeStep() {
+                if (stepIndex < steps.length) {
+                    const stepDiv = document.createElement('div');
+                    stepDiv.className = 'status success';
+                    stepDiv.textContent = `✅ ${steps[stepIndex]}`;
+                    stepContainer.appendChild(stepDiv);
+                    
+                    stepIndex++;
+                    setTimeout(executeStep, 1000);
+                } else {
+                    showStatus('userFlowStatus', '🎉 Komplet user flow simuleret!', 'success');
+                }
+            }
+
+            executeStep();
+        }
+
+        function updateRealTimeStats() {
+            if (window.DataBridge) {
+                const summary = window.DataBridge.getProgressSummary();
+                
+                document.getElementById('totalSessions').textContent = 
+                    (summary.total.sessionsCompleted || 0);
+                document.getElementById('currentStreak').textContent = 
+                    (summary.streaks.current || 0);
+                document.getElementById('totalTime').textContent = 
+                    (summary.total.totalTimeSpent || 0);
+                document.getElementById('achievements').textContent = '0'; // Placeholder
+            }
+        }
+
+        function showStatus(elementId, message, type) {
+            const element = document.getElementById(elementId);
+            element.className = `status ${type}`;
+            element.textContent = message;
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            updateRealTimeStats();
+            updateProgressBars();
+            
+            // Listen for progress updates
+            window.addEventListener('examklar:progress-updated', (e) => {
+                updateRealTimeStats();
+                updateProgressBars();
+                showStatus('crossModuleStatus', '⚡ Real-time update modtaget!', 'info');
+            });
+        });
+    </script>
+</body>
+</html>

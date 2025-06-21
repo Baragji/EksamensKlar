@@ -15,10 +15,43 @@ class FlashcardManager {
     }
 
     loadData() {
+        // First try to load from DataBridge unified training data
+        if (window.DataBridge) {
+            const trainingData = window.DataBridge.getTrainingData();
+            if (trainingData && trainingData.flashcards && trainingData.flashcards.decks.length > 0) {
+                const deck = trainingData.flashcards.decks[0]; // Use first deck
+                return {
+                    flashcards: deck.cards || [],
+                    categories: [
+                        {
+                            id: "main",
+                            name: deck.name || "Hovedkort",
+                            description: deck.description || "Grundlæggende flashcards",
+                            color: "#3498db"
+                        }
+                    ],
+                    settings: deck.settings || {
+                        defaultCategory: "main",
+                        spacedRepetitionEnabled: true,
+                        showHints: true,
+                        autoAdvance: false
+                    },
+                    metadata: {
+                        version: "1.0",
+                        lastUpdated: trainingData.meta.lastUpdated,
+                        totalCards: deck.cards ? deck.cards.length : 0
+                    }
+                };
+            }
+        }
+
+        // Fallback to legacy storage
         const stored = localStorage.getItem(this.storageKey);
         if (stored) {
             return JSON.parse(stored);
         }
+
+        // Default empty data
         return {
             flashcards: [],
             categories: [
@@ -372,6 +405,110 @@ class FlashcardManager {
         }));
         
         window.location.href = 'player.html';
+    }
+
+    /**
+     * Complete a flashcard review session
+     */
+    completeFlashcardSession(results) {
+        const sessionData = {
+            cardsReviewed: results.totalCards || 0,
+            correctAnswers: results.correctAnswers || 0,
+            timeSpent: results.timeSpent || 0, // in minutes
+            averageResponseTime: results.averageResponseTime || 0,
+            difficultCards: results.difficultCards || [],
+            timestamp: new Date().toISOString()
+        };
+
+        // Update local stats
+        if (!this.data.stats) {
+            this.data.stats = {
+                totalReviewed: 0,
+                averageScore: 0,
+                streakCount: 0,
+                sessionsCompleted: 0
+            };
+        }
+
+        this.data.stats.totalReviewed += sessionData.cardsReviewed;
+        this.data.stats.sessionsCompleted = (this.data.stats.sessionsCompleted || 0) + 1;
+        
+        // Calculate new average score
+        const sessionScore = sessionData.cardsReviewed > 0 ? 
+            (sessionData.correctAnswers / sessionData.cardsReviewed) * 100 : 0;
+        
+        this.data.stats.averageScore = this.data.stats.sessionsCompleted === 1 ? 
+            sessionScore : 
+            (this.data.stats.averageScore + sessionScore) / 2;
+
+        // Update streak
+        if (sessionScore >= 70) { // 70% threshold for maintaining streak
+            this.data.stats.streakCount = (this.data.stats.streakCount || 0) + 1;
+        } else if (sessionScore < 50) { // Reset streak if performance is poor
+            this.data.stats.streakCount = 0;
+        }
+
+        // Save updated data
+        this.saveData();
+
+        // Update progress through DataBridge
+        if (window.DataBridge) {
+            window.DataBridge.updateProgress('flashcards', 'session-completed', {
+                timeSpent: sessionData.timeSpent,
+                cardsReviewed: sessionData.cardsReviewed,
+                correctAnswers: sessionData.correctAnswers,
+                score: sessionScore
+            });
+        }
+
+        // Show completion feedback
+        this.showSessionComplete(sessionData, sessionScore);
+
+        // Re-render stats
+        this.renderStats();
+    }
+
+    /**
+     * Show session completion feedback
+     */
+    showSessionComplete(sessionData, score) {
+        let message = '';
+        let type = 'info';
+
+        if (score >= 90) {
+            message = `🎉 Fantastisk! ${score.toFixed(1)}% korrekte svar!`;
+            type = 'success';
+        } else if (score >= 70) {
+            message = `👍 Godt klaret! ${score.toFixed(1)}% korrekte svar`;
+            type = 'success';
+        } else if (score >= 50) {
+            message = `📚 Øv lidt mere - ${score.toFixed(1)}% korrekte svar`;
+            type = 'warning';
+        } else {
+            message = `💪 Bliv ved med at øve - ${score.toFixed(1)}% korrekte svar`;
+            type = 'error';
+        }
+
+        this.showNotification(message, type);
+
+        // Show detailed stats
+        const statsMessage = `
+            Kort gennemgået: ${sessionData.cardsReviewed}
+            Tid brugt: ${sessionData.timeSpent} min
+            Nuværende streak: ${this.data.stats.streakCount}
+        `;
+        
+        setTimeout(() => {
+            this.showNotification(statsMessage, 'info');
+        }, 2000);
+    }
+
+    /**
+     * Handle progress updates from other modules
+     */
+    handleProgressUpdate(data) {
+        // Could update UI to reflect cross-module progress
+        console.log('Flashcard module received progress update:', data);
     }
 
     // Utility Functions

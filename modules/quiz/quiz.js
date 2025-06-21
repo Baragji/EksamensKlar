@@ -15,25 +15,119 @@ class QuizManager {
         console.log('Quiz Manager initialized');
     }
 
-    // Data Management
+    // Data Management with static fallback for file:// protocol
     async loadData() {
         try {
-            // Load questions
-            const questionsResponse = await fetch('./data/questions.json');
-            const questionsData = await questionsResponse.json();
-            this.questions = questionsData.questions || [];
+            // First try to load from DataBridge unified training data
+            if (window.DataBridge) {
+                const trainingData = window.DataBridge.getTrainingData();
+                if (trainingData && trainingData.quiz && trainingData.quiz.available.length > 0) {
+                    this.questions = [];
+                    this.categories = [
+                        {
+                            id: trainingData.subject.name.toLowerCase(),
+                            name: trainingData.subject.name,
+                            icon: trainingData.subject.emoji || '📚',
+                            color: '#6366f1'
+                        }
+                    ];
 
-            // Load categories
-            const categoriesResponse = await fetch('./data/categories.json');
-            const categoriesData = await categoriesResponse.json();
-            this.categories = categoriesData.categories || [];
+                    // Extract questions from available quizzes
+                    trainingData.quiz.available.forEach(quiz => {
+                        quiz.questions.forEach(q => {
+                            this.questions.push({
+                                ...q,
+                                category: trainingData.subject.name.toLowerCase(),
+                                quizId: quiz.id,
+                                quizTitle: quiz.title
+                            });
+                        });
+                    });
+
+                    console.log(`Loaded ${this.questions.length} questions from training data`);
+                    return;
+                }
+            }
+
+            // Try to load from JSON files if not file:// protocol
+            if (window.location.protocol !== 'file:') {
+                const questionsResponse = await fetch('./data/questions.json');
+                const questionsData = await questionsResponse.json();
+                this.questions = questionsData.questions || [];
+
+                const categoriesResponse = await fetch('./data/categories.json');
+                const categoriesData = await categoriesResponse.json();
+                this.categories = categoriesData.categories || [];
+            } else {
+                // Use static data for file:// protocol
+                this.loadStaticData();
+            }
 
             console.log(`Loaded ${this.questions.length} questions and ${this.categories.length} categories`);
         } catch (error) {
-            console.error('Error loading data:', error);
-            this.questions = [];
-            this.categories = [];
+            console.warn('Loading from files failed, using static data:', error);
+            this.loadStaticData();
         }
+    }
+
+    loadStaticData() {
+        // Static sample data for demo and file:// protocol
+        this.categories = [
+            { id: 'matematik', name: 'Matematik', icon: '📐', color: '#6366f1' },
+            { id: 'fysik', name: 'Fysik', icon: '⚡', color: '#8b5cf6' },
+            { id: 'kemi', name: 'Kemi', icon: '🧪', color: '#06b6d4' },
+            { id: 'biologi', name: 'Biologi', icon: '🌱', color: '#10b981' },
+            { id: 'historie', name: 'Historie', icon: '📚', color: '#f59e0b' },
+            { id: 'dansk', name: 'Dansk', icon: '✍️', color: '#ef4444' }
+        ];
+
+        this.questions = [
+            {
+                id: 'q1',
+                category: 'matematik',
+                difficulty: 'medium',
+                question: 'Hvad er resultatet af 2² + 3²?',
+                options: ['13', '12', '10', '8'],
+                correct: 0,
+                explanation: '2² = 4 og 3² = 9, så 4 + 9 = 13'
+            },
+            {
+                id: 'q2',
+                category: 'fysik',
+                difficulty: 'hard',
+                question: 'Hvad er Einsteins berømte ligning?',
+                options: ['E = mc²', 'F = ma', 'P = mv', 'V = IR'],
+                correct: 0,
+                explanation: 'E = mc² er Einsteins masse-energi ækvivalensligning'
+            },
+            {
+                id: 'q3',
+                category: 'kemi',
+                difficulty: 'easy',
+                question: 'Hvad er det kemiske symbol for guld?',
+                options: ['Go', 'Gd', 'Au', 'Ag'],
+                correct: 2,
+                explanation: 'Au kommer fra det latinske navn "aurum"'
+            },
+            {
+                id: 'q4',
+                category: 'biologi',
+                difficulty: 'medium',
+                question: 'Hvilken proces producerer ilt i planter?',
+                options: ['Respiration', 'Fotosyntese', 'Fermentation', 'Transpiration'],
+                correct: 1,
+                explanation: 'Fotosyntese bruger CO² og lys til at producere O² og glucose'
+            },
+            {
+                id: 'q5',
+                category: 'historie',
+                difficulty: 'easy',
+                question: 'Hvornår startede 2. Verdenskrig?',
+                options: ['1938', '1939', '1940', '1941'],
+                correct: 1,
+                explanation: '2. Verdenskrig begyndte den 1. september 1939'
+            }
+        ];
     }
 
     async saveData() {
@@ -249,6 +343,99 @@ class QuizManager {
         });
 
         return stats;
+    }
+
+    /**
+     * Complete a quiz and update progress
+     */
+    completeQuiz(quizResults) {
+        const sessionData = {
+            quizId: quizResults.quizId || 'general',
+            questionsTotal: quizResults.totalQuestions || 0,
+            questionsCorrect: quizResults.correctAnswers || 0,
+            timeSpent: quizResults.timeSpent || 0, // in minutes
+            score: quizResults.score || 0,
+            difficulty: quizResults.difficulty || 'medium',
+            timestamp: new Date().toISOString()
+        };
+
+        // Save quiz result to localStorage
+        const quizHistory = JSON.parse(localStorage.getItem('examklar-quiz-history') || '[]');
+        quizHistory.push(sessionData);
+        
+        // Keep only last 100 quiz results
+        if (quizHistory.length > 100) {
+            quizHistory.splice(0, quizHistory.length - 100);
+        }
+        
+        localStorage.setItem('examklar-quiz-history', JSON.stringify(quizHistory));
+
+        // Update progress through DataBridge
+        if (window.DataBridge) {
+            window.DataBridge.updateProgress('quiz', 'quiz-completed', {
+                timeSpent: sessionData.timeSpent,
+                questionsAnswered: sessionData.questionsTotal,
+                correctAnswers: sessionData.questionsCorrect,
+                score: sessionData.score,
+                difficulty: sessionData.difficulty
+            });
+        }
+
+        // Show completion feedback
+        this.showQuizComplete(sessionData);
+
+        // Update statistics
+        this.updateStatistics();
+    }
+
+    /**
+     * Show quiz completion feedback
+     */
+    showQuizComplete(sessionData) {
+        let message = '';
+        let type = 'info';
+
+        if (sessionData.score >= 90) {
+            message = `🎉 Fremragende! ${sessionData.score}% korrekt!`;
+            type = 'success';
+        } else if (sessionData.score >= 70) {
+            message = `👍 Godt klaret! ${sessionData.score}% korrekt`;
+            type = 'success';
+        } else if (sessionData.score >= 50) {
+            message = `📚 Øv lidt mere - ${sessionData.score}% korrekt`;
+            type = 'warning';
+        } else {
+            message = `💪 Bliv ved med at træne - ${sessionData.score}% korrekt`;
+            type = 'error';
+        }
+
+        // Show notification
+        if (typeof this.showNotification === 'function') {
+            this.showNotification(message, type);
+        } else {
+            alert(message);
+        }
+
+        // Show detailed stats
+        const statsMessage = `
+            Spørgsmål besvaret: ${sessionData.questionsTotal}
+            Korrekte svar: ${sessionData.questionsCorrect}
+            Tid brugt: ${sessionData.timeSpent} min
+        `;
+        
+        setTimeout(() => {
+            if (typeof this.showNotification === 'function') {
+                this.showNotification(statsMessage, 'info');
+            }
+        }, 2000);
+    }
+
+    /**
+     * Handle progress updates from other modules
+     */
+    handleProgressUpdate(data) {
+        // Could update UI to reflect cross-module progress
+        console.log('Quiz module received progress update:', data);
     }
 
     // UI Functions

@@ -204,6 +204,12 @@ class PerformanceOptimizer {
 
         files.forEach(async (file) => {
             try {
+                // Skip fetch for file:// protocol
+                if (window.location.protocol === 'file:') {
+                    console.log(`📁 ${file}: Skipped (file:// protocol)`);
+                    return;
+                }
+                
                 const response = await fetch(file);
                 const text = await response.text();
                 const size = new Blob([text]).size;

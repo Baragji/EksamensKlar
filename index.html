@@ -27,11 +27,16 @@
     <!-- Skip to Content Link -->
     <a href="#main-content" class="skip-link">Spring til hovedindhold</a>
     
+    <!-- Dark Mode Toggle -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Skift til mørk/lys tilstand" title="Skift tema">
+        <span id="themeIcon">🌙</span>
+    </button>
+    
     <!-- Ultra-Premium Navigation -->
     <header class="nav-luxury">
         <nav class="nav container" role="navigation" aria-label="Hovednavigation">
             <div class="nav-brand">
-                <h1 class="logo text-gradient glow">✨ ExamKlar</h1>
+                <div class="logo text-gradient glow">✨ ExamKlar</div>
                 <span class="badge-luxury" aria-label="AI-drevet platform">AI-Powered</span>
             </div>
             <button class="nav-toggle" id="navToggle" aria-label="Åbn navigation menu" aria-expanded="false">
@@ -48,7 +53,7 @@
         <section class="hero-luxury" role="banner" aria-labelledby="hero-title">
             <div class="container">
                 <div class="hero-content">
-                    <h2 id="hero-title" class="hero-title-luxury">Revolutionér Din Eksamensforberedelse</h2>
+                    <h1 id="hero-title" class="hero-title-luxury">Revolutionér Din Eksamensforberedelse</h1>
                     <p class="hero-subtitle-luxury">
                         Benyt AI-teknologi til at skabe personaliserede læringsplaner for ethvert emne. 
                         Premium mikrolearning med spaced repetition, adaptive quizzer og intelligente flashcards.
@@ -72,7 +77,7 @@
         <!-- Premium Performance Dashboard -->
         <section class="stats luxury-section" role="region" aria-labelledby="stats-title">
             <div class="container container-responsive">
-                <h3 id="stats-title" class="section-title text-gradient">Dine Resultater</h3>
+                <h2 id="stats-title" class="section-title text-gradient">Dine Resultater</h2>
                 <div class="stats-grid-luxury grid-responsive grid-3">
                     <div class="luxury-card float mobile-full tablet-half desktop-third">
                         <div class="stat-icon" aria-hidden="true">
@@ -187,7 +192,7 @@
         <section class="cta-luxury">
             <div class="container">
                 <div class="luxury-card cta-content">
-                    <h3 class="text-gradient">Klar til at revolutionere din læring?</h3>
+                    <h2 class="text-gradient">Klar til at revolutionere din læring?</h2>
                     <p>Kom i gang med personaliserede AI-drevne læringsplaner og eksklusiv adgang til premium features</p>
                     <div class="cta-actions">
                         <a href="modules/onboarding/index.html" class="btn-luxury" aria-describedby="onboarding-desc">
@@ -213,6 +218,12 @@
                             Automated Tests
                         </a>
                         <span id="tests-desc" class="sr-only">Kør automatiserede tests af hele platformen</span>
+                        
+                        <button onclick="resetOnboarding()" class="btn-luxury" style="background: var(--gradient-warning);" aria-describedby="reset-desc">
+                            <span class="icon icon-refresh" aria-hidden="true"></span>
+                            Reset Onboarding
+                        </button>
+                        <span id="reset-desc" class="sr-only">Nulstil onboarding for at teste den igen</span>
                     </div>
                 </div>
             </div>
@@ -279,6 +290,7 @@
     <script src="core/accessibility.js"></script>
     <script src="core/mobile-gestures.js"></script>
     <script src="core/pwa-installer.js"></script>
+    <script src="core/data-bridge.js"></script>
     <script src="core/app.js"></script>
     
     <!-- Initialize App -->
@@ -298,27 +310,74 @@
 
         // Initialize app when DOM is ready
         document.addEventListener('DOMContentLoaded', () => {
+            // Initialize dark mode first
+            initializeDarkMode();
+            
+            // Check if onboarding is completed
+            const hasCompletedOnboarding = localStorage.getItem('examklar_onboarding_completed');
+            if (!hasCompletedOnboarding) {
+                // Redirect to onboarding
+                window.location.href = 'modules/onboarding/index.html';
+                return;
+            }
+            
             app.init();
-            initializeTheme();
+            initializeDarkMode();
         });
 
-        // Simple theme toggle function
-        function toggleDarkMode() {
-            const current = document.documentElement.getAttribute('data-theme') || 'light';
-            const newTheme = current === 'light' ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('examklar-theme', newTheme);
+        // Dark Mode Toggle System
+        function initializeDarkMode() {
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            
+            // Check for saved theme or use system preference
+            const savedTheme = localStorage.getItem('examklar-theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const currentTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+            
+            // Apply theme
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            updateThemeIcon(currentTheme);
+            
+            // Toggle handler
+            themeToggle?.addEventListener('click', () => {
+                const current = document.documentElement.getAttribute('data-theme');
+                const newTheme = current === 'dark' ? 'light' : 'dark';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('examklar-theme', newTheme);
+                updateThemeIcon(newTheme);
+                
+                // Add micro-animation
+                themeToggle.style.transform = 'scale(0.8)';
+                setTimeout(() => themeToggle.style.transform = 'scale(1)', 150);
+            });
+            
+            // Listen for system theme changes
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('examklar-theme')) {
+                    const newTheme = e.matches ? 'dark' : 'light';
+                    document.documentElement.setAttribute('data-theme', newTheme);
+                    updateThemeIcon(newTheme);
+                }
+            });
+        }
+        
+        function updateThemeIcon(theme) {
+            const themeIcon = document.getElementById('themeIcon');
+            if (themeIcon) {
+                themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+            }
         }
 
-        // Initialize theme on load
-        function initializeTheme() {
-            const savedTheme = localStorage.getItem('examklar-theme');
-            if (savedTheme) {
-                document.documentElement.setAttribute('data-theme', savedTheme);
-            } else {
-                // Use system preference
-                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+        // Reset onboarding for testing
+        function resetOnboarding() {
+            if (confirm('Er du sikker på at du vil nulstille onboarding? Dette vil slette dine gemte indstillinger.')) {
+                localStorage.removeItem('examklar_onboarding_completed');
+                localStorage.removeItem('examklar_subjects');
+                localStorage.removeItem('examklar_user_data');
+                alert('Onboarding nulstillet! Du vil blive omdirigeret til onboarding når du opdaterer siden.');
+                window.location.href = 'modules/onboarding/index.html';
             }
         }
     </script>

@@ -413,6 +413,7 @@
         </div>
     </div>
 
+    <script src="../../core/data-bridge.js"></script>
     <script>
         class FlashcardPlayer {
             constructor() {
@@ -639,7 +640,8 @@
 
             completeSession() {
                 // Calculate final stats
-                const duration = Math.round((new Date() - this.sessionStats.startTime) / 1000 / 60);
+                const endTime = new Date();
+                const duration = Math.round((endTime - this.sessionStats.startTime) / 1000 / 60);
                 const successRate = this.sessionStats.cardsReviewed > 0 ? 
                     Math.round((this.sessionStats.correctAnswers / this.sessionStats.cardsReviewed) * 100) : 0;
                 
@@ -667,11 +669,66 @@
                     </div>
                 `;
                 
+                // Prepare session results for DataBridge
+                const sessionResults = {
+                    totalCards: this.sessionStats.cardsReviewed,
+                    correctAnswers: this.sessionStats.correctAnswers,
+                    timeSpent: duration,
+                    averageResponseTime: this.sessionStats.totalResponseTime / this.sessionStats.cardsReviewed || 0,
+                    difficultCards: this.sessionStats.difficultCards || [],
+                    endTime: endTime.toISOString()
+                };
+
+                // Update progress through flashcard manager if available
+                if (window.opener && window.opener.flashcardManager) {
+                    window.opener.flashcardManager.completeFlashcardSession(sessionResults);
+                } else if (parent && parent.flashcardManager) {
+                    parent.flashcardManager.completeFlashcardSession(sessionResults);
+                } else {
+                    // Direct DataBridge update if no manager available
+                    if (window.DataBridge) {
+                        window.DataBridge.updateProgress('flashcards', 'session-completed', {
+                            timeSpent: duration,
+                            cardsReviewed: this.sessionStats.cardsReviewed,
+                            correctAnswers: this.sessionStats.correctAnswers,
+                            score: successRate
+                        });
+                    }
+                }
+                
                 // Save session history
                 this.saveSessionHistory();
                 
                 // Clear current session
                 localStorage.removeItem('examklar-review-session');
+
+                // Show success message
+                this.showSessionFeedback(successRate, duration);
+            }
+
+            showSessionFeedback(successRate, duration) {
+                let message = '';
+                if (successRate >= 90) {
+                    message = `🎉 Fantastisk arbejde! ${successRate}% korrekt på ${duration} minutter!`;
+                } else if (successRate >= 70) {
+                    message = `👍 Godt klaret! ${successRate}% korrekt. Bliv ved!`;
+                } else if (successRate >= 50) {
+                    message = `📚 Øv lidt mere - ${successRate}% korrekt. Du kommer derhen!`;
+                } else {
+                    message = `💪 Bliv ved med at træne - ${successRate}% korrekt. Øvelse gør mester!`;
+                }
+
+                // Create feedback element
+                const feedback = document.createElement('div');
+                feedback.className = 'session-feedback';
+                feedback.innerHTML = `
+                    <div class="feedback-message">${message}</div>
+                    <div class="feedback-details">
+                        Session afsluttet - data gemt til dit dashboard
+                    </div>
+                `;
+                
+                document.getElementById('sessionComplete').appendChild(feedback);
             }
 
             saveSessionHistory() {

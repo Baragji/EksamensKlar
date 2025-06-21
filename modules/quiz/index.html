@@ -7,41 +7,38 @@
     <link rel="stylesheet" href="../../styles/premium.css">
     <link rel="stylesheet" href="quiz.css">
 </head>
-<body>
-    <!-- Skip Link for Accessibility -->
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-
-    <!-- Luxury Navigation -->
-    <nav class="navbar" role="navigation" aria-label="Main navigation">
-        <div class="nav-container">
-            <a href="../../index.html" class="nav-brand" aria-label="ExamKlar home">
-                <span class="brand-text">ExamKlar</span>
-            </a>
-            
-            <div class="nav-links">
-                <a href="../dashboard/index.html" class="nav-link" aria-label="Dashboard">
-                    <i class="icon-dashboard" aria-hidden="true"></i>
-                    <span>Dashboard</span>
+<body class="gpu-accelerated">
+    <!-- Skip to Content Link -->
+    <a href="#main-content" class="skip-link">Spring til hovedindhold</a>
+    
+    <!-- Dark Mode Toggle -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Skift til mørk/lys tilstand" title="Skift tema">
+        <span id="themeIcon">🌙</span>
+    </button>
+    
+    <!-- Ultra-Premium Navigation -->
+    <header class="nav-luxury">
+        <nav class="nav container" role="navigation" aria-label="Hovednavigation">
+            <div class="nav-brand">
+                <div class="logo text-gradient glow">✨ ExamKlar</div>
+                <span class="badge-luxury" aria-label="Quiz Manager">Quiz Manager</span>
+            </div>
+            <div class="nav-actions">
+                <a href="../../index.html" class="btn-luxury-small" aria-label="Tilbage til forside">
+                    <span class="icon">🏠</span>
+                    Forside
                 </a>
-                <a href="../subjects/index.html" class="nav-link" aria-label="Subjects">
-                    <i class="icon-subjects" aria-hidden="true"></i>
-                    <span>Fag</span>
+                <a href="../dashboard/index.html" class="btn-luxury-small">
+                    <span class="icon">📊</span>
+                    Dashboard
                 </a>
-                <a href="../flashcards/index.html" class="nav-link" aria-label="Flashcards">
-                    <i class="icon-flashcards" aria-hidden="true"></i>
-                    <span>Flashcards</span>
-                </a>
-                <a href="../quiz/index.html" class="nav-link active" aria-label="Quiz" aria-current="page">
-                    <i class="icon-quiz" aria-hidden="true"></i>
-                    <span>Quiz</span>
-                </a>
-                <a href="../ai-assistant/index.html" class="nav-link" aria-label="AI Assistant">
-                    <i class="icon-ai" aria-hidden="true"></i>
-                    <span>AI Assistant</span>
+                <a href="../subjects/index.html" class="btn-luxury-small">
+                    <span class="icon">📚</span>
+                    Fag
                 </a>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </header>
 
     <main id="main-content" class="main-content">
         <!-- Hero Section -->
@@ -210,6 +207,45 @@
     <!-- Modals will be loaded by JavaScript -->
     <div id="notification" class="notification" role="alert" aria-live="polite"></div>
 
+    <script>
+        // Dark Mode Toggle System
+        function initializeDarkMode() {
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            
+            const savedTheme = localStorage.getItem('examklar-theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const currentTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+            
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            updateThemeIcon(currentTheme);
+            
+            themeToggle?.addEventListener('click', () => {
+                const current = document.documentElement.getAttribute('data-theme');
+                const newTheme = current === 'dark' ? 'light' : 'dark';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('examklar-theme', newTheme);
+                updateThemeIcon(newTheme);
+                
+                themeToggle.style.transform = 'scale(0.8)';
+                setTimeout(() => themeToggle.style.transform = 'scale(1)', 150);
+            });
+        }
+        
+        function updateThemeIcon(theme) {
+            const themeIcon = document.getElementById('themeIcon');
+            if (themeIcon) {
+                themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeDarkMode();
+        });
+    </script>
+
+    <script src="../../core/data-bridge.js"></script>
     <script src="quiz.js"></script>
 </body>
 </html>

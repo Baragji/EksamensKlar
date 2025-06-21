@@ -10,8 +10,27 @@
     <link rel="stylesheet" href="onboarding.css">
 </head>
 <body class="onboarding-body gpu-accelerated">
+    <!-- Skip to Content Link -->
+    <a href="#main-content" class="skip-link">Spring til hovedindhold</a>
+    
+    <!-- Navigation Header -->
+    <header class="nav-luxury">
+        <nav class="nav container" role="navigation" aria-label="Onboarding navigation">
+            <div class="nav-brand">
+                <div class="logo text-gradient glow">✨ ExamKlar</div>
+                <span class="badge-luxury">Onboarding</span>
+            </div>
+            <div class="nav-actions">
+                <a href="../../index.html" class="btn-luxury-small" aria-label="Tilbage til forside">
+                    <span class="icon">🏠</span>
+                    Forside
+                </a>
+            </div>
+        </nav>
+    </header>
+
     <!-- Premium Onboarding Container -->
-    <div class="onboarding-container">
+    <main class="onboarding-container" id="main-content">
         
         <!-- Step 1: Exclusive AI Welcome -->
         <div class="onboarding-step active" id="step-welcome">
@@ -267,7 +286,7 @@
             </div>
         </div>
 
-        <!-- Step 5: AI Learning Path Generation -->
+        <!-- Step 5: System Learning Plan Generation -->
         <div class="onboarding-step" id="step-generate">
             <div class="step-content">
                 <div class="progress-bar-container">
@@ -278,10 +297,10 @@
                 </div>
                 
                 <div class="generation-status" id="generationStatus">
-                    <!-- AI Thinking Animation -->
+                    <!-- System Processing Animation -->
                     <div class="ai-thinking">
                         <div class="thinking-avatar">
-                            <span class="avatar-emoji">🤖</span>
+                            <span class="avatar-emoji">⚙️</span>
                             <div class="thinking-dots">
                                 <span></span>
                                 <span></span>
@@ -289,57 +308,53 @@
                             </div>
                         </div>
                         
-                        <h2 class="thinking-title">Jeg skaber din personlige læringsplan...</h2>
+                        <h2 class="thinking-title">Systemet opretter din personlige læringsplan...</h2>
                         
                         <div class="thinking-steps" id="thinkingSteps">
-                            <div class="thinking-step active">
+                            <div class="thinking-step completed">
                                 <span class="step-icon">📚</span>
                                 <span class="step-text">Analyserer dit emne og materiale</span>
                             </div>
-                            <div class="thinking-step">
+                            <div class="thinking-step completed">
                                 <span class="step-icon">🎯</span>
-                                <span class="step-text">Optimerer baseret på tid til eksamen</span>
+                                <span class="step-text">Optimerer din studieplan</span>
                             </div>
-                            <div class="thinking-step">
-                                <span class="step-icon">🗂️</span>
-                                <span class="step-text">Genererer flashcards og quizzer</span>
+                            <div class="thinking-step completed">
+                                <span class="step-icon">📅</span>
+                                <span class="step-text">Planlægger din timeline</span>
                             </div>
-                            <div class="thinking-step">
-                                <span class="step-icon">📊</span>
-                                <span class="step-text">Skaber progress tracking</span>
-                            </div>
-                            <div class="thinking-step">
+                            <div class="thinking-step completed">
                                 <span class="step-icon">✨</span>
-                                <span class="step-text">Færdiggør din læringsplan</span>
+                                <span class="step-text">Forbereder dit dashboard</span>
                             </div>
                         </div>
                     </div>
+                </div>
+                
+                <!-- Success Result -->
+                <div class="generation-result" id="generationResult" style="display: none;">
+                    <div class="success-animation">
+                        <div class="checkmark">✓</div>
+                    </div>
                     
-                    <!-- Success Result -->
-                    <div class="generation-result" id="generationResult" style="display: none;">
-                        <div class="success-animation">
-                            <div class="checkmark">✓</div>
-                        </div>
-                        
-                        <h2 class="result-title">Din læringsplan er klar! 🎉</h2>
-                        
-                        <div class="plan-summary" id="planSummary">
-                            <!-- Will be populated by JavaScript -->
-                        </div>
-                        
-                        <div class="next-steps">
-                            <button class="btn btn-primary btn-large" onclick="startLearning()">
-                                🚀 Start læring nu!
-                            </button>
-                            <button class="btn btn-secondary" onclick="viewDashboard()">
-                                📊 Se dashboard
-                            </button>
-                        </div>
+                    <h2 class="result-title">Din læringsplan er klar! 🎉</h2>
+                    
+                    <div class="plan-summary" id="planSummary">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                    
+                    <div class="next-steps">
+                        <button class="btn btn-primary btn-large" onclick="startLearning()">
+                            🚀 Start læring nu!
+                        </button>
+                        <button class="btn btn-secondary" onclick="viewDashboard()">
+                            📊 Se dashboard
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
     
     <!-- Background Elements -->
     <div class="background-elements">
@@ -349,6 +364,9 @@
         <div class="floating-element" style="--delay: 15s; --duration: 22s;">🎯</div>
     </div>
 
+    <script src="../../core/utils.js"></script>
+    <script src="../../core/storage.js"></script>
+    <script src="../../core/data-bridge.js"></script>
     <script src="onboarding.js"></script>
 </body>
 </html>
