@@ -633,14 +633,17 @@ class OnboardingSystem {
         }
     }
 
-    viewDashboard() {
+    async viewDashboard() {
         try {
-            // Save onboarding data
-            this.saveOnboardingData();
+            // Save onboarding data (wait for completion)
+            await this.saveOnboardingData();
             
             // DEBUG: Check if data was actually saved
             const savedData = localStorage.getItem('examklar_onboarding_data');
             console.log('🔍 DEBUG: Saved onboarding data for dashboard:', savedData ? JSON.parse(savedData) : 'NO DATA');
+            
+            // Add a small delay to ensure localStorage write completes
+            await this.delay(100);
             
             // CRITICAL FIX: Ensure DataBridge initialization before redirect
             let initSuccess = false;
@@ -689,6 +692,8 @@ class OnboardingSystem {
     }
 
     async saveOnboardingData() {
+        console.log('🔍 DEBUG: Starting saveOnboardingData with userData:', this.userData);
+        
         // Create subject
         const subjectManager = {
             subjects: JSON.parse(localStorage.getItem('examklar_subjects') || '[]')
@@ -725,14 +730,14 @@ class OnboardingSystem {
             });
         }
 
-        // Save onboarding completion data
+        // Save onboarding completion data - ensure all critical fields are present
         const onboardingDataToSave = {
-            subject: this.userData.subject,
-            subjectEmoji: this.userData.subjectEmoji,
-            examDate: this.userData.examDate,
-            daysToExam: this.userData.daysToExam,
-            content: this.userData.content,
-            learningPlan: this.userData.learningPlan,
+            subject: this.userData.subject || 'Ukendt Emne',
+            subjectEmoji: this.userData.subjectEmoji || '📚',
+            examDate: this.userData.examDate || null,
+            daysToExam: this.userData.daysToExam || 14,
+            content: this.userData.content || [],
+            learningPlan: this.userData.learningPlan || null,
             completed: true,
             savedAt: new Date().toISOString()
         };
