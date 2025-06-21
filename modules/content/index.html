@@ -4,27 +4,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Content Manager - ExamKlar</title>
+    <link rel="stylesheet" href="../../styles/premium.css">
     <link rel="stylesheet" href="content.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>📚 Content Manager</h1>
-            <p>Upload og organiser dit læringsindhold</p>
-        </header>
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
-        <div class="upload-section">
-            <h2>🔝 Upload Nyt Indhold</h2>
+    <!-- Luxury Navigation -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand" aria-label="ExamKlar home">
+                <span class="brand-text">ExamKlar</span>
+            </a>
             
-            <div class="upload-form">
-                <div class="form-group">
-                    <label for="dayTitle">📖 Lesson Title:</label>
-                    <input type="text" id="dayTitle" placeholder="f.eks. Protein Basics">
-                </div>
+            <div class="nav-links">
+                <a href="../dashboard/index.html" class="nav-link" aria-label="Dashboard">
+                    <i class="icon-dashboard" aria-hidden="true"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="../subjects/index.html" class="nav-link" aria-label="Subjects">
+                    <i class="icon-subjects" aria-hidden="true"></i>
+                    <span>Fag</span>
+                </a>
+                <a href="../flashcards/index.html" class="nav-link" aria-label="Flashcards">
+                    <i class="icon-flashcards" aria-hidden="true"></i>
+                    <span>Flashcards</span>
+                </a>
+                <a href="../content/index.html" class="nav-link active" aria-label="Content Manager" aria-current="page">
+                    <i class="icon-content" aria-hidden="true"></i>
+                    <span>Content</span>
+                </a>
+                <a href="../ai-assistant/index.html" class="nav-link" aria-label="AI Assistant">
+                    <i class="icon-ai" aria-hidden="true"></i>
+                    <span>AI Assistant</span>
+                </a>
+            </div>
+        </div>
+    </nav>
 
-                <div class="form-group">
-                    <label for="dayContent">📝 Indhold (Markdown supported):</label>
-                    <textarea id="dayContent" rows="10" placeholder="Skriv dit læringsindhold her...
+    <main id="main-content" class="main-content">
+        <!-- Hero Section -->
+        <section class="hero-section" role="banner">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <i class="icon-content gradient-text" aria-hidden="true"></i>
+                    Content Manager
+                </h1>
+                <p class="hero-subtitle">Upload og organiser dit læringsindhold</p>
+            </div>
+        </section>
+
+        <!-- Upload Section -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">
+                    <i class="icon-upload" aria-hidden="true"></i>
+                    Upload Nyt Indhold
+                </h2>
+                
+                <div class="glass-card">
+                    <div class="card-content">
+                        <div class="form-group">
+                            <label for="dayTitle" class="form-label">
+                                <i class="icon-book" aria-hidden="true"></i>
+                                Lesson Title:
+                            </label>
+                            <input type="text" id="dayTitle" class="input-field" placeholder="f.eks. Protein Basics" aria-describedby="title-help">
+                            <p id="title-help" class="text-secondary">Giv din lektion en beskrivende titel</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dayContent" class="form-label">
+                                <i class="icon-edit" aria-hidden="true"></i>
+                                Indhold (Markdown supported):
+                            </label>
+                            <textarea id="dayContent" class="textarea-field" rows="10" placeholder="Skriv dit læringsindhold her...
 
 Du kan bruge Markdown:
 # Overskrift
@@ -34,52 +89,60 @@ Du kan bruge Markdown:
 - Liste punkt
 1. Nummereret liste
 
-[Link](http://example.com)
-"></textarea>
-                </div>
+[Link](http://example.com)" aria-describedby="content-help"></textarea>
+                            <p id="content-help" class="text-secondary">Brug Markdown til formatering af dit indhold</p>
+                        </div>
 
-                <div class="form-group">
-                    <label for="estimatedTime">⏱️ Estimeret læsetid (minutter):</label>
-                    <input type="number" id="estimatedTime" min="1" max="180" value="15">
-                </div>
+                        <div class="form-group">
+                            <label for="estimatedTime" class="form-label">
+                                <i class="icon-clock" aria-hidden="true"></i>
+                                Estimeret læsetid (minutter):
+                            </label>
+                            <input type="number" id="estimatedTime" class="input-field" min="1" max="180" value="15" aria-describedby="time-help">
+                            <p id="time-help" class="text-secondary">Hvor lang tid tager det at læse dette indhold?</p>
+                        </div>
 
-                <div class="form-group">
-                    <label for="difficulty">🎯 Sværhedsgrad:</label>
-                    <select id="difficulty">
-                        <option value="1">⭐ Begynder</option>
-                        <option value="2">⭐⭐ Mellem</option>
-                        <option value="3">⭐⭐⭐ Avanceret</option>
-                    </select>
-                </div>
+                        <div class="form-group">
+                            <label for="difficulty" class="form-label">
+                                <i class="icon-target" aria-hidden="true"></i>
+                                Sværhedsgrad:
+                            </label>
+                            <select id="difficulty" class="select-field" aria-describedby="difficulty-help">
+                                <option value="1">Begynder</option>
+                                <option value="2">Mellem</option>
+                                <option value="3">Avanceret</option>
+                            </select>
+                            <p id="difficulty-help" class="text-secondary">Vælg passende sværhedsgrad for indholdet</p>
+                        </div>
 
-                <button onclick="addContent()" class="btn-primary">
-                    ➕ Tilføj Indhold
-                </button>
+                        <button onclick="addContent()" class="btn btn-primary">
+                            <i class="icon-plus" aria-hidden="true"></i>
+                            Tilføj Indhold
+                        </button>
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
 
-        <div class="content-list">
-            <h2>📋 Eksisterende Indhold</h2>
-            <div id="contentList">
-                <div class="empty-state">
-                    <p>📭 Intet indhold endnu. Upload dit første lesson!</p>
+        <!-- Content List -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">
+                    <i class="icon-list" aria-hidden="true"></i>
+                    Eksisterende Indhold
+                </h2>
+                <div id="contentList">
+                    <div class="glass-card empty-state">
+                        <div class="card-content text-center">
+                            <i class="icon-empty" aria-hidden="true"></i>
+                            <h3>Intet indhold endnu</h3>
+                            <p>Upload dit første læringsindhold for at komme i gang</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="actions">
-            <button onclick="exportData()" class="btn-secondary">
-                📤 Export Data
-            </button>
-            <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(this)">
-            <button onclick="document.getElementById('importFile').click()" class="btn-secondary">
-                📥 Import Data
-            </button>
-            <button onclick="clearAllData()" class="btn-danger">
-                🗑️ Slet Alt
-            </button>
-        </div>
-    </div>
+        </section>
+    </main>
 
     <script src="content.js"></script>
 </body>

@@ -4,74 +4,116 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Advanced Features - ExamKlar</title>
-    <link rel="stylesheet" href="../../styles/global.css">
+    <link rel="stylesheet" href="../../styles/premium.css">
     <link rel="stylesheet" href="advanced.css">
-    <style>
-        :root {
-            --bg-primary: #ffffff;
-            --bg-secondary: #f8f9fa;
-            --text-primary: #212529;
-            --text-secondary: #6c757d;
-            --border-color: #dee2e6;
-            --accent-color: #007bff;
-            --success-color: #28a745;
-            --warning-color: #ffc107;
-            --danger-color: #dc3545;
-        }
+</head>
+<body>
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
-        [data-theme="dark"] {
-            --bg-primary: #1a1a1a;
-            --bg-secondary: #2d2d2d;
-            --text-primary: #ffffff;
-            --text-secondary: #b0b0b0;
-            --border-color: #404040;
-            --accent-color: #4dabf7;
-            --success-color: #51cf66;
-            --warning-color: #ffd43b;
-            --danger-color: #ff6b6b;
-        }
+    <!-- Luxury Navigation -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand" aria-label="ExamKlar home">
+                <span class="brand-text">ExamKlar</span>
+            </a>
+            
+            <div class="nav-links">
+                <a href="../dashboard/index.html" class="nav-link" aria-label="Dashboard">
+                    <i class="icon-dashboard" aria-hidden="true"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="../subjects/index.html" class="nav-link" aria-label="Subjects">
+                    <i class="icon-subjects" aria-hidden="true"></i>
+                    <span>Fag</span>
+                </a>
+                <a href="../flashcards/index.html" class="nav-link" aria-label="Flashcards">
+                    <i class="icon-flashcards" aria-hidden="true"></i>
+                    <span>Flashcards</span>
+                </a>
+                <a href="../advanced/index.html" class="nav-link active" aria-label="Advanced Features" aria-current="page">
+                    <i class="icon-advanced" aria-hidden="true"></i>
+                    <span>Advanced</span>
+                </a>
+                <a href="../ai-assistant/index.html" class="nav-link" aria-label="AI Assistant">
+                    <i class="icon-ai" aria-hidden="true"></i>
+                    <span>AI Assistant</span>
+                </a>
+            </div>
+        </div>
+    </nav>
 
-        * {
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-        }
+    <main id="main-content" class="main-content">
+        <!-- Hero Section -->
+        <section class="hero-section" role="banner">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <i class="icon-advanced gradient-text" aria-hidden="true"></i>
+                    Advanced Features
+                </h1>
+                <p class="hero-subtitle">Avancerede værktøjer til eksamensforberedelse</p>
+            </div>
+        </section>
 
-        body {
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-        }
+        <!-- Advanced Features -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">
+                    <i class="icon-star" aria-hidden="true"></i>
+                    Advanced Tools
+                </h2>
+                <div class="grid grid-3">
+                    <button class="glass-card card-hover" onclick="openExportModal()" aria-label="Export and backup">
+                        <div class="card-content">
+                            <i class="icon-export" aria-hidden="true"></i>
+                            <h3>Export & Backup</h3>
+                            <p>Eksporter al din data til backup eller deling</p>
+                        </div>
+                    </button>
 
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin: 20px 0;
-        }
+                    <button class="glass-card card-hover" onclick="openImportModal()" aria-label="Import and restore">
+                        <div class="card-content">
+                            <i class="icon-import" aria-hidden="true"></i>
+                            <h3>Import & Restore</h3>
+                            <p>Importer data fra backup filer eller andre kilder</p>
+                        </div>
+                    </button>
 
-        .feature-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 25px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+                    <button class="glass-card card-hover" onclick="openSearchModal()" aria-label="Global search">
+                        <div class="card-content">
+                            <i class="icon-search" aria-hidden="true"></i>
+                            <h3>Global Search</h3>
+                            <p>Søg på tværs af alt dit indhold og flashcards</p>
+                        </div>
+                    </button>
 
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.15);
-            border-color: var(--accent-color);
-        }
+                    <button class="glass-card card-hover" onclick="openAnalyticsModal()" aria-label="Learning analytics">
+                        <div class="card-content">
+                            <i class="icon-analytics" aria-hidden="true"></i>
+                            <h3>Learning Analytics</h3>
+                            <p>Dybdegående analyser af din læringsfremgang</p>
+                        </div>
+                    </button>
 
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            display: block;
-        }
+                    <button class="glass-card card-hover" onclick="openCustomizationModal()" aria-label="Customization">
+                        <div class="card-content">
+                            <i class="icon-customize" aria-hidden="true"></i>
+                            <h3>Customization</h3>
+                            <p>Tilpas interfacet efter dine præferencer</p>
+                        </div>
+                    </button>
 
-        .feature-title {
-            font-size: 1.5rem;
-            font-weight: 600;
+                    <button class="glass-card card-hover" onclick="openIntegrationsModal()" aria-label="Integrations">
+                        <div class="card-content">
+                            <i class="icon-integrations" aria-hidden="true"></i>
+                            <h3>Integrations</h3>
+                            <p>Forbind med eksterne værktøjer og tjenester</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
             margin-bottom: 10px;
             color: var(--text-primary);
         }

@@ -3,30 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mine Emner - ExamKlar</title>
-    <link rel="stylesheet" href="../../styles/global.css">
+    <title>Subjects - ExamKlar</title>
+    <link rel="stylesheet" href="../../styles/premium.css">
     <link rel="stylesheet" href="subjects.css">
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <nav class="nav">
-            <div class="nav-brand">
-                <a href="../../index.html" class="back-btn">← Tilbage</a>
-                <h1>📚 Mine Emner</h1>
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Luxury Navigation -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand" aria-label="ExamKlar home">
+                <span class="brand-text">ExamKlar</span>
+            </a>
+            
+            <div class="nav-links">
+                <a href="../dashboard/index.html" class="nav-link" aria-label="Dashboard">
+                    <i class="icon-dashboard" aria-hidden="true"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="../subjects/index.html" class="nav-link active" aria-label="Subjects" aria-current="page">
+                    <i class="icon-subjects" aria-hidden="true"></i>
+                    <span>Fag</span>
+                </a>
+                <a href="../flashcards/index.html" class="nav-link" aria-label="Flashcards">
+                    <i class="icon-flashcards" aria-hidden="true"></i>
+                    <span>Flashcards</span>
+                </a>
+                <a href="../quiz/index.html" class="nav-link" aria-label="Quiz">
+                    <i class="icon-quiz" aria-hidden="true"></i>
+                    <span>Quiz</span>
+                </a>
+                <a href="../ai-assistant/index.html" class="nav-link" aria-label="AI Assistant">
+                    <i class="icon-ai" aria-hidden="true"></i>
+                    <span>AI Assistant</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+                <a href="../../index.html" class="nav-link-luxury" aria-label="Tilbage til hovedside">
+                    <span class="icon icon-dashboard" aria-hidden="true"></span>
+                    Tilbage
+                </a>
+                <h1 class="logo text-gradient">📚 Emnestyring</h1>
+                <span class="badge-luxury">Premium</span>
             </div>
         </nav>
     </header>
 
-    <main class="main">
-        <!-- Create New Subject -->
-        <section class="create-subject">
-            <h2>Opret Nyt Emne</h2>
-            <form id="createSubjectForm" class="subject-form">
-                <div class="form-group">
-                    <label for="subjectName">Emne Navn:</label>
-                    <input type="text" id="subjectName" placeholder="f.eks. Matematik, Kemiteknik, Historie..." required>
-                </div>
+    <main class="main" id="main-content">
+        <!-- Create New Subject Section -->
+        <section class="create-subject luxury-section" role="region" aria-labelledby="create-title">
+            <div class="container container-responsive">
+                <h2 id="create-title" class="section-title text-gradient">Opret Nyt Emne</h2>
+                <div class="luxury-card">
+                    <form id="createSubjectForm" class="subject-form" role="form" aria-labelledby="create-title">
+                        <div class="form-group">
+                            <label for="subjectName" class="form-label">Emne Navn:</label>
+                            <input type="text" id="subjectName" class="input-luxury" 
+                                   placeholder="f.eks. Matematik, Kemiteknik, Historie..." 
+                                   required aria-describedby="name-help">
+                            <small id="name-help" class="form-help">Vælg et beskrivende navn for dit læringsemne</small>
+                        </div>
                 
                 <div class="form-group">
                     <label for="subjectDescription">Beskrivelse:</label>

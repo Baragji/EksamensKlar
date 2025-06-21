@@ -3,31 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📊 ExamKlar Dashboard</title>
+    <title>Dashboard - ExamKlar</title>
+    <link rel="stylesheet" href="../../styles/premium.css">
     <link rel="stylesheet" href="dashboard.css">
-    <meta name="description" content="Dashboard med oversigt over læringsframskridt, streaks og achievements">
 </head>
 <body>
-    <header class="header">
-        <div class="header-content">
-            <h1>📊 Dashboard</h1>
-            <div class="nav-actions">
-                <button id="exportBtn" class="btn btn-secondary">📤 Export Data</button>
-                <button id="importBtn" class="btn btn-secondary">📥 Import Data</button>
-                <a href="../../index.html" class="btn btn-primary">🏠 Hjem</a>
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Luxury Navigation -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand" aria-label="ExamKlar home">
+                <span class="brand-text">ExamKlar</span>
+            </a>
+            
+            <div class="nav-links">
+                <a href="../dashboard/index.html" class="nav-link active" aria-label="Dashboard" aria-current="page">
+                    <i class="icon-dashboard" aria-hidden="true"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="../subjects/index.html" class="nav-link" aria-label="Subjects">
+                    <i class="icon-subjects" aria-hidden="true"></i>
+                    <span>Fag</span>
+                </a>
+                <a href="../flashcards/index.html" class="nav-link" aria-label="Flashcards">
+                    <i class="icon-flashcards" aria-hidden="true"></i>
+                    <span>Flashcards</span>
+                </a>
+                <a href="../quiz/index.html" class="nav-link" aria-label="Quiz">
+                    <i class="icon-quiz" aria-hidden="true"></i>
+                    <span>Quiz</span>
+                </a>
+                <a href="../ai-assistant/index.html" class="nav-link" aria-label="AI Assistant">
+                    <i class="icon-ai" aria-hidden="true"></i>
+                    <span>AI Assistant</span>
+                </a>
             </div>
         </div>
+    </nav>
+                <h1 class="logo text-gradient">📊 Dashboard</h1>
+                <span class="badge-luxury">Live Analytics</span>
+            </div>
+            <div class="nav-actions">
+                <button id="exportBtn" class="btn-luxury" aria-describedby="export-desc">
+                    <span class="icon icon-settings" aria-hidden="true"></span>
+                    Export Data
+                </button>
+                <span id="export-desc" class="sr-only">Eksporter alle dine læringsdata</span>
+                
+                <button id="importBtn" class="btn-luxury" style="background: var(--gradient-aurora);" aria-describedby="import-desc">
+                    <span class="icon icon-subjects" aria-hidden="true"></span>
+                    Import Data
+                </button>
+                <span id="import-desc" class="sr-only">Importer eksisterende læringsdata</span>
+                
+                <a href="../../index.html" class="btn-luxury" style="background: var(--gradient-luxury);" aria-describedby="home-desc">
+                    <span class="icon icon-dashboard" aria-hidden="true"></span>
+                    Hjem
+                </a>
+                <span id="home-desc" class="sr-only">Gå tilbage til hovedsiden</span>
+            </div>
+        </nav>
     </header>
 
-    <main class="dashboard-container">
-        <!-- Quick Stats Overview -->
-        <section class="stats-overview">
-            <div class="stat-card">
-                <div class="stat-icon">🔥</div>
-                <div class="stat-content">
-                    <h3 id="currentStreak">0</h3>
-                    <p>Dages streak</p>
-                </div>
+    <main class="main" id="main-content">
+        <!-- Premium Performance Dashboard -->
+        <section class="stats luxury-section" role="region" aria-labelledby="stats-title">
+            <div class="container container-responsive">
+                <h2 id="stats-title" class="section-title text-gradient">Performance Analytics</h2>
+                <div class="stats-grid-luxury grid-responsive grid-3">
+                    <div class="luxury-card float">
+                        <div class="stat-icon" aria-hidden="true">
+                            <span class="icon icon-xl text-gradient">🔥</span>
+                        </div>
+                        <span class="stat-number text-gradient" id="currentStreak">0</span>
+                        <span class="stat-label">Dages Streak</span>
+                        <div class="progress-luxury" data-progress="75" aria-label="75% streak target"></div>
+                    </div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon">📚</div>

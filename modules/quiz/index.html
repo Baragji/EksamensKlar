@@ -4,602 +4,211 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Manager - ExamKlar</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #333;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        header {
-            text-align: center;
-            color: white;
-            margin-bottom: 30px;
-        }
-
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-
-        .main-card {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            margin-bottom: 20px;
-        }
-
-        .stats-overview {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            border: 3px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover {
-            border-color: #007bff;
-            transform: translateY(-2px);
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #007bff;
-            margin-bottom: 5px;
-        }
-
-        .stat-label {
-            color: #666;
-            font-size: 1rem;
-        }
-
-        .action-buttons {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .btn {
-            background: linear-gradient(135deg, #007bff, #0056b3);
-            color: white;
-            border: none;
-            padding: 20px;
-            border-radius: 15px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0,123,255,0.3);
-        }
-
-        .btn.success {
-            background: linear-gradient(135deg, #28a745, #20c997);
-        }
-
-        .btn.warning {
-            background: linear-gradient(135deg, #ffc107, #fd7e14);
-        }
-
-        .btn.danger {
-            background: linear-gradient(135deg, #dc3545, #c82333);
-        }
-
-        .btn.info {
-            background: linear-gradient(135deg, #17a2b8, #138496);
-        }
-
-        .btn-icon {
-            font-size: 1.5rem;
-        }
-
-        .quiz-list {
-            margin-top: 30px;
-        }
-
-        .quiz-item {
-            background: #f8f9fa;
-            border: 2px solid #e9ecef;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 15px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .quiz-item:hover {
-            border-color: #007bff;
-            background: #e3f2fd;
-        }
-
-        .quiz-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .quiz-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: #333;
-        }
-
-        .quiz-stats {
-            display: flex;
-            gap: 15px;
-            font-size: 0.9rem;
-            color: #666;
-        }
-
-        .quiz-difficulty {
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-
-        .difficulty-easy { background: #d4edda; color: #155724; }
-        .difficulty-medium { background: #fff3cd; color: #856404; }
-        .difficulty-hard { background: #f8d7da; color: #721c24; }
-        .difficulty-expert { background: #d1ecf1; color: #0c5460; }
-
-        .quiz-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .btn-small {
-            padding: 8px 16px;
-            font-size: 0.9rem;
-            border-radius: 8px;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 1000;
-        }
-
-        .modal-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #333;
-        }
-
-        .form-input, .form-textarea, .form-select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-input:focus, .form-textarea:focus, .form-select:focus {
-            outline: none;
-            border-color: #007bff;
-        }
-
-        .form-textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .options-container {
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 10px;
-        }
-
-        .option-input {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .option-radio {
-            width: 20px;
-            height: 20px;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            background: none;
-            border: none;
-            font-size: 2rem;
-            color: #666;
-            cursor: pointer;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #666;
-        }
-
-        .empty-icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            opacity: 0.5;
-        }
-
-        .search-bar {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #e9ecef;
-            border-radius: 15px;
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-        }
-
-        .filter-bar {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .filter-select {
-            padding: 10px;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            background: white;
-        }
-
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            border-radius: 10px;
-            color: white;
-            font-weight: 600;
-            z-index: 1001;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-        }
-
-        .notification.show {
-            transform: translateX(0);
-        }
-
-        .notification.success { background: #28a745; }
-        .notification.error { background: #dc3545; }
-        .notification.info { background: #17a2b8; }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-            }
-
-            h1 {
-                font-size: 2rem;
-            }
-
-            .stats-overview {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
-            }
-
-            .action-buttons {
-                grid-template-columns: 1fr;
-            }
-
-            .quiz-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-
-            .quiz-stats {
-                flex-wrap: wrap;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="../../styles/premium.css">
+    <link rel="stylesheet" href="quiz.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>📝 Quiz Manager</h1>
-            <p class="subtitle">Opret, rediger og administrer dine quiz spørgsmål</p>
-        </header>
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
-        <div class="main-card">
-            <!-- Statistics Overview -->
-            <div class="stats-overview">
-                <div class="stat-card">
-                    <div class="stat-number" id="totalQuestions">0</div>
-                    <div class="stat-label">Spørgsmål</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="totalCategories">0</div>
-                    <div class="stat-label">Kategorier</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="averageDifficulty">0</div>
-                    <div class="stat-label">Ø Sværhedsgrad</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="totalQuizzes">0</div>
-                    <div class="stat-label">Quiz Sæt</div>
-                </div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="action-buttons">
-                <button class="btn success" onclick="openCreateQuestionModal()">
-                    <span class="btn-icon">➕</span>
-                    Nyt Spørgsmål
-                </button>
-                <button class="btn info" onclick="openCreateCategoryModal()">
-                    <span class="btn-icon">📁</span>
-                    Ny Kategori
-                </button>
-                <button class="btn warning" onclick="openImportModal()">
-                    <span class="btn-icon">📥</span>
-                    Importer Data
-                </button>
-                <button class="btn" onclick="exportData()">
-                    <span class="btn-icon">📤</span>
-                    Eksporter Data
-                </button>
-            </div>
-
-            <!-- Search and Filter -->
-            <input type="text" class="search-bar" id="searchBar" placeholder="🔍 Søg efter spørgsmål..." onkeyup="filterQuestions()">
+    <!-- Luxury Navigation -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand" aria-label="ExamKlar home">
+                <span class="brand-text">ExamKlar</span>
+            </a>
             
-            <div class="filter-bar">
-                <select class="filter-select" id="categoryFilter" onchange="filterQuestions()">
-                    <option value="">Alle kategorier</option>
-                </select>
-                <select class="filter-select" id="difficultyFilter" onchange="filterQuestions()">
-                    <option value="">Alle sværhedsgrader</option>
-                    <option value="1">Easy</option>
-                    <option value="2">Medium</option>
-                    <option value="3">Hard</option>
-                    <option value="4">Expert</option>
-                </select>
-                <select class="filter-select" id="sortBy" onchange="sortQuestions()">
-                    <option value="created">Nyeste først</option>
-                    <option value="difficulty">Sværhedsgrad</option>
-                    <option value="category">Kategori</option>
-                    <option value="title">Alfabetisk</option>
-                </select>
+            <div class="nav-links">
+                <a href="../dashboard/index.html" class="nav-link" aria-label="Dashboard">
+                    <i class="icon-dashboard" aria-hidden="true"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="../subjects/index.html" class="nav-link" aria-label="Subjects">
+                    <i class="icon-subjects" aria-hidden="true"></i>
+                    <span>Fag</span>
+                </a>
+                <a href="../flashcards/index.html" class="nav-link" aria-label="Flashcards">
+                    <i class="icon-flashcards" aria-hidden="true"></i>
+                    <span>Flashcards</span>
+                </a>
+                <a href="../quiz/index.html" class="nav-link active" aria-label="Quiz" aria-current="page">
+                    <i class="icon-quiz" aria-hidden="true"></i>
+                    <span>Quiz</span>
+                </a>
+                <a href="../ai-assistant/index.html" class="nav-link" aria-label="AI Assistant">
+                    <i class="icon-ai" aria-hidden="true"></i>
+                    <span>AI Assistant</span>
+                </a>
             </div>
+        </div>
+    </nav>
 
-            <!-- Quiz List -->
-            <div class="quiz-list">
-                <div id="questionsList">
-                    <div class="empty-state">
-                        <div class="empty-icon">📝</div>
-                        <h3>Ingen spørgsmål endnu</h3>
-                        <p>Opret dit første quiz spørgsmål for at komme i gang!</p>
+    <main id="main-content" class="main-content">
+        <!-- Hero Section -->
+        <section class="hero-section" role="banner">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <i class="icon-quiz gradient-text" aria-hidden="true"></i>
+                    Quiz Manager
+                </h1>
+                <p class="hero-subtitle">Test din viden og spor din fremgang</p>
+            </div>
+        </section>
+
+        <!-- Stats Overview -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">
+                    <i class="icon-analytics" aria-hidden="true"></i>
+                    Quiz Statistikker
+                </h2>
+                <div class="grid grid-4">
+                    <div class="glass-card text-center">
+                        <div class="card-content">
+                            <div class="stat-number" id="totalQuestions">0</div>
+                            <div class="stat-label">Spørgsmål</div>
+                        </div>
+                    </div>
+                    <div class="glass-card text-center">
+                        <div class="card-content">
+                            <div class="stat-number" id="totalCategories">0</div>
+                            <div class="stat-label">Kategorier</div>
+                        </div>
+                    </div>
+                    <div class="glass-card text-center">
+                        <div class="card-content">
+                            <div class="stat-number" id="averageDifficulty">0</div>
+                            <div class="stat-label">Ø Sværhedsgrad</div>
+                        </div>
+                    </div>
+                    <div class="glass-card text-center">
+                        <div class="card-content">
+                            <div class="stat-number" id="totalQuizzes">0</div>
+                            <div class="stat-label">Quiz Sæt</div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <!-- Create Question Modal -->
-    <div id="createQuestionModal" class="modal">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeModal('createQuestionModal')">&times;</button>
-            <h2>📝 Nyt Quiz Spørgsmål</h2>
-            
-            <form id="questionForm" onsubmit="saveQuestion(event)">
-                <div class="form-group">
-                    <label class="form-label">Spørgsmål</label>
-                    <textarea class="form-textarea" id="questionText" required placeholder="Skriv dit spørgsmål her..."></textarea>
+        <!-- Action Buttons -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">
+                    <i class="icon-lightning" aria-hidden="true"></i>
+                    Quiz Actions
+                </h2>
+                <div class="grid grid-3">
+                    <button class="glass-card card-hover" onclick="startQuickQuiz()" aria-label="Start quick quiz">
+                        <div class="card-content">
+                            <i class="icon-play" aria-hidden="true"></i>
+                            <h3>Start Quiz</h3>
+                            <p>Tag en hurtig quiz</p>
+                        </div>
+                    </button>
+                    
+                    <button class="glass-card card-hover" onclick="createNewQuiz()" aria-label="Create new quiz">
+                        <div class="card-content">
+                            <i class="icon-plus" aria-hidden="true"></i>
+                            <h3>Opret Quiz</h3>
+                            <p>Lav nye spørgsmål</p>
+                        </div>
+                    </button>
+                    
+                    <button class="glass-card card-hover" onclick="viewStatistics()" aria-label="View statistics">
+                        <div class="card-content">
+                            <i class="icon-chart" aria-hidden="true"></i>
+                            <h3>Statistikker</h3>
+                            <p>Se din fremgang</p>
+                        </div>
+                    </button>
+                    
+                    <button class="glass-card card-hover" onclick="manageCategories()" aria-label="Manage categories">
+                        <div class="card-content">
+                            <i class="icon-categories" aria-hidden="true"></i>
+                            <h3>Kategorier</h3>
+                            <p>Organiser emner</p>
+                        </div>
+                    </button>
+                    
+                    <button class="glass-card card-hover" onclick="importQuestions()" aria-label="Import questions">
+                        <div class="card-content">
+                            <i class="icon-import" aria-hidden="true"></i>
+                            <h3>Import</h3>
+                            <p>Importer spørgsmål</p>
+                        </div>
+                    </button>
+                    
+                    <button class="glass-card card-hover" onclick="exportQuestions()" aria-label="Export questions">
+                        <div class="card-content">
+                            <i class="icon-export" aria-hidden="true"></i>
+                            <h3>Export</h3>
+                            <p>Eksporter data</p>
+                        </div>
+                    </button>
                 </div>
+            </div>
+        </section>
 
-                <div class="form-group">
-                    <label class="form-label">Svarmuligheder</label>
-                    <div class="options-container">
-                        <div class="option-input">
-                            <input type="radio" name="correctAnswer" value="0" class="option-radio">
-                            <input type="text" class="form-input" id="option0" placeholder="Svarmulighed 1" required>
+        <!-- Quiz List -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">
+                    <i class="icon-list" aria-hidden="true"></i>
+                    Quiz Spørgsmål
+                </h2>
+                
+                <div class="filter-bar glass-card">
+                    <div class="card-content">
+                        <div class="grid grid-3">
+                            <div class="form-group">
+                                <label for="categoryFilter" class="form-label">Filtrer efter kategori:</label>
+                                <select id="categoryFilter" class="select-field" onchange="filterQuizzes()" aria-label="Filter by category">
+                                    <option value="">Alle kategorier</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="difficultyFilter" class="form-label">Sværhedsgrad:</label>
+                                <select id="difficultyFilter" class="select-field" onchange="filterQuizzes()" aria-label="Filter by difficulty">
+                                    <option value="">Alle</option>
+                                    <option value="1">Let</option>
+                                    <option value="2">Mellem</option>
+                                    <option value="3">Svær</option>
+                                    <option value="4">Ekspert</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">&nbsp;</label>
+                                <button class="btn btn-secondary" onclick="resetFilters()" aria-label="Reset filters">
+                                    <i class="icon-refresh" aria-hidden="true"></i>
+                                    Reset
+                                </button>
+                            </div>
                         </div>
-                        <div class="option-input">
-                            <input type="radio" name="correctAnswer" value="1" class="option-radio">
-                            <input type="text" class="form-input" id="option1" placeholder="Svarmulighed 2" required>
-                        </div>
-                        <div class="option-input">
-                            <input type="radio" name="correctAnswer" value="2" class="option-radio">
-                            <input type="text" class="form-input" id="option2" placeholder="Svarmulighed 3">
-                        </div>
-                        <div class="option-input">
-                            <input type="radio" name="correctAnswer" value="3" class="option-radio">
-                            <input type="text" class="form-input" id="option3" placeholder="Svarmulighed 4">
-                        </div>
-                        <small style="color: #666;">Vælg det rigtige svar ved at klikke på cirklen</small>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">Forklaring</label>
-                    <textarea class="form-textarea" id="explanation" placeholder="Forklar hvorfor svaret er rigtigt..."></textarea>
+                <div class="quiz-list" id="quizList">
+                    <div class="glass-card empty-state">
+                        <div class="card-content text-center">
+                            <i class="icon-empty" aria-hidden="true"></i>
+                            <h3>Ingen quiz spørgsmål endnu</h3>
+                            <p>Opret dit første spørgsmål for at komme i gang</p>
+                            <button class="btn btn-primary" onclick="createNewQuiz()" style="margin-top: 1rem;">
+                                <i class="icon-plus" aria-hidden="true"></i>
+                                Opret Første Spørgsmål
+                            </button>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="form-group">
-                    <label class="form-label">Kategori</label>
-                    <select class="form-select" id="questionCategory" required>
-                        <option value="">Vælg kategori</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Sværhedsgrad</label>
-                    <select class="form-select" id="questionDifficulty" required>
-                        <option value="1">Easy - Grundlæggende viden</option>
-                        <option value="2">Medium - Anvendelse af viden</option>
-                        <option value="3">Hard - Analyse og syntese</option>
-                        <option value="4">Expert - Forskning og innovation</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Hint (valgfrit)</label>
-                    <input type="text" class="form-input" id="questionHint" placeholder="Et lille hint til brugeren...">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Tags (valgfrit)</label>
-                    <input type="text" class="form-input" id="questionTags" placeholder="tag1, tag2, tag3">
-                    <small style="color: #666;">Komma-separerede tags</small>
-                </div>
-
-                <div style="display: flex; gap: 15px; margin-top: 30px;">
-                    <button type="submit" class="btn success" style="flex: 1;">
-                        💾 Gem Spørgsmål
-                    </button>
-                    <button type="button" class="btn" onclick="closeModal('createQuestionModal')" style="flex: 1;">
-                        ❌ Annuller
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Create Category Modal -->
-    <div id="createCategoryModal" class="modal">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeModal('createCategoryModal')">&times;</button>
-            <h2>📁 Ny Kategori</h2>
-            
-            <form id="categoryForm" onsubmit="saveCategory(event)">
-                <div class="form-group">
-                    <label class="form-label">Kategori Navn</label>
-                    <input type="text" class="form-input" id="categoryName" required placeholder="F.eks. Proteinrensning">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Beskrivelse</label>
-                    <textarea class="form-textarea" id="categoryDescription" placeholder="Beskriv hvad denne kategori handler om..."></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Farve</label>
-                    <select class="form-select" id="categoryColor">
-                        <option value="#007bff">Blå</option>
-                        <option value="#28a745">Grøn</option>
-                        <option value="#ffc107">Gul</option>
-                        <option value="#dc3545">Rød</option>
-                        <option value="#6f42c1">Lilla</option>
-                        <option value="#fd7e14">Orange</option>
-                        <option value="#20c997">Turkis</option>
-                        <option value="#6c757d">Grå</option>
-                    </select>
-                </div>
-
-                <div style="display: flex; gap: 15px; margin-top: 30px;">
-                    <button type="submit" class="btn success" style="flex: 1;">
-                        💾 Gem Kategori
-                    </button>
-                    <button type="button" class="btn" onclick="closeModal('createCategoryModal')" style="flex: 1;">
-                        ❌ Annuller
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Import Modal -->
-    <div id="importModal" class="modal">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeModal('importModal')">&times;</button>
-            <h2>📥 Importer Quiz Data</h2>
-            
-            <div class="form-group">
-                <label class="form-label">Vælg JSON fil</label>
-                <input type="file" class="form-input" id="importFile" accept=".json" onchange="previewImport()">
             </div>
+        </section>
+    </main>
 
-            <div id="importPreview" style="display: none;">
-                <h3>Preview:</h3>
-                <div id="previewContent" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 15px 0;"></div>
-            </div>
-
-            <div style="display: flex; gap: 15px; margin-top: 30px;">
-                <button type="button" class="btn success" onclick="importData()" style="flex: 1;">
-                    📥 Importer
-                </button>
-                <button type="button" class="btn" onclick="closeModal('importModal')" style="flex: 1;">
-                    ❌ Annuller
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Notification -->
-    <div id="notification" class="notification"></div>
+    <!-- Modals will be loaded by JavaScript -->
+    <div id="notification" class="notification" role="alert" aria-live="polite"></div>
 
     <script src="quiz.js"></script>
 </body>

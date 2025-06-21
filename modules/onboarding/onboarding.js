@@ -507,20 +507,60 @@ class OnboardingSystem {
     }
 
     async startLearning() {
-        // Save onboarding data
-        await this.saveOnboardingData();
-        
-        // Mark onboarding as completed
-        localStorage.setItem('examklar_onboarding_completed', 'true');
-        
-        // Redirect to main app
-        window.location.href = '../../index.html';
+        try {
+            // Show loading state
+            const button = document.querySelector('button[onclick="startLearning()"]');
+            if (button) {
+                button.innerHTML = '<span class="loading-luxury"></span> Gemmer...';
+                button.disabled = true;
+            }
+
+            // Save onboarding data
+            await this.saveOnboardingData();
+            
+            // Mark onboarding as completed
+            localStorage.setItem('examklar_onboarding_completed', 'true');
+            
+            // Short delay to ensure saving is complete
+            await this.delay(1000);
+            
+            // Success feedback
+            if (button) {
+                button.innerHTML = '✅ Færdig! Omdirigerer...';
+            }
+            
+            // Redirect to main app
+            setTimeout(() => {
+                window.location.href = '../../index.html';
+            }, 1500);
+            
+        } catch (error) {
+            console.error('❌ Error completing onboarding:', error);
+            
+            // Show error state
+            const button = document.querySelector('button[onclick="startLearning()"]');
+            if (button) {
+                button.innerHTML = '❌ Fejl - prøv igen';
+                button.disabled = false;
+            }
+        }
     }
 
     viewDashboard() {
-        this.saveOnboardingData();
-        localStorage.setItem('examklar_onboarding_completed', 'true');
-        window.location.href = '../dashboard/index.html';
+        try {
+            // Save onboarding data
+            this.saveOnboardingData();
+            
+            // Mark onboarding as completed
+            localStorage.setItem('examklar_onboarding_completed', 'true');
+            
+            // Redirect to dashboard
+            window.location.href = '../dashboard/index.html';
+        } catch (error) {
+            console.error('❌ Error completing onboarding:', error);
+            // Fallback redirect
+            window.location.href = '../../index.html';
+        }
     }
 
     async saveOnboardingData() {
@@ -534,6 +574,7 @@ class OnboardingSystem {
             name: this.userData.subject,
             description: `Eksamen om ${this.userData.daysToExam} dage`,
             color: 'blue',
+            emoji: this.userData.subjectEmoji,
             createdAt: new Date().toISOString(),
             examDate: this.userData.examDate,
             learningPlan: this.userData.learningPlan,
@@ -545,6 +586,9 @@ class OnboardingSystem {
         subjectManager.subjects.push(newSubject);
         localStorage.setItem('examklar_subjects', JSON.stringify(subjectManager.subjects));
         localStorage.setItem('examklar_current_subject', newSubject.id);
+
+        // Generate sample flashcards and quizzes based on subject
+        await this.generateSampleContent(newSubject.id);
 
         // Save content if any
         if (this.userData.content.length > 0) {
@@ -558,6 +602,134 @@ class OnboardingSystem {
 
         // Save onboarding completion data
         localStorage.setItem('examklar_onboarding_data', JSON.stringify(this.userData));
+        
+        console.log('✅ Onboarding data saved successfully');
+    }
+
+    async generateSampleContent(subjectId) {
+        // Generate sample flashcards
+        const sampleCards = this.generateSampleFlashcards();
+        localStorage.setItem(`examklar_flashcards_${subjectId}`, JSON.stringify(sampleCards));
+        
+        // Generate sample quizzes
+        const sampleQuizzes = this.generateSampleQuizzes();
+        localStorage.setItem(`examklar_quizzes_${subjectId}`, JSON.stringify(sampleQuizzes));
+        
+        console.log('✅ Sample content generated');
+    }
+
+    generateSampleFlashcards() {
+        const subject = this.userData.subject.toLowerCase();
+        
+        if (subject.includes('matematik')) {
+            return [
+                {
+                    id: 'card_1',
+                    front: 'Hvad er Pythagoras sætning?',
+                    back: 'a² + b² = c² hvor c er hypotenusen i en retvinklet trekant',
+                    category: 'geometri',
+                    difficulty: 2,
+                    created: new Date().toISOString()
+                },
+                {
+                    id: 'card_2',
+                    front: 'Hvordan løser man en andengradsligning?',
+                    back: 'Brug formlen: x = (-b ± √(b²-4ac)) / 2a',
+                    category: 'algebra',
+                    difficulty: 3,
+                    created: new Date().toISOString()
+                }
+            ];
+        }
+        
+        if (subject.includes('kemi')) {
+            return [
+                {
+                    id: 'card_1',
+                    front: 'Hvad er pH skalaen?',
+                    back: 'En skala fra 0-14 der måler surhed. 7 er neutral, under 7 er surt, over 7 er basisk',
+                    category: 'syre-base',
+                    difficulty: 2,
+                    created: new Date().toISOString()
+                },
+                {
+                    id: 'card_2',
+                    front: 'Hvad sker der ved en kemisk reaktion?',
+                    back: 'Atomer omarrangeres til nye molekyler, men intet atom går tabt (massens bevarelse)',
+                    category: 'reaktioner',
+                    difficulty: 1,
+                    created: new Date().toISOString()
+                }
+            ];
+        }
+        
+        // Default cards for any subject
+        return [
+            {
+                id: 'card_1',
+                front: `Hvilke grundlæggende koncepter er vigtige i ${this.userData.subject}?`,
+                back: 'Dette er en placeholder - tilføj dit eget indhold gennem flashcard modulet',
+                category: 'grundlag',
+                difficulty: 1,
+                created: new Date().toISOString()
+            },
+            {
+                id: 'card_2',
+                front: `Hvordan forbereder jeg mig bedst til ${this.userData.subject} eksamen?`,
+                back: 'Læs regelmæssigt, lav flashcards, tag quizzer og stil spørgsmål til AI assistenten',
+                category: 'metode',
+                difficulty: 1,
+                created: new Date().toISOString()
+            }
+        ];
+    }
+
+    generateSampleQuizzes() {
+        const subject = this.userData.subject.toLowerCase();
+        
+        if (subject.includes('matematik')) {
+            return [
+                {
+                    id: 'quiz_1',
+                    title: 'Grundlæggende Matematik',
+                    questions: [
+                        {
+                            id: 'q1',
+                            question: 'Hvad er 2 + 2?',
+                            options: ['3', '4', '5', '6'],
+                            correct: 1,
+                            explanation: '2 + 2 = 4. Dette er grundlæggende addition.'
+                        },
+                        {
+                            id: 'q2',
+                            question: 'Hvad er roden af 16?',
+                            options: ['2', '4', '6', '8'],
+                            correct: 1,
+                            explanation: '√16 = 4, fordi 4 × 4 = 16'
+                        }
+                    ],
+                    created: new Date().toISOString()
+                }
+            ];
+        }
+        
+        // Default quiz for any subject
+        return [
+            {
+                id: 'quiz_1',
+                title: `${this.userData.subject} - Intro Quiz`,
+                questions: [
+                    {
+                        id: 'q1',
+                        question: `Hvor godt kender du ${this.userData.subject}?`,
+                        options: ['Ikke så godt', 'Lidt', 'Ret godt', 'Meget godt'],
+                        correct: 2,
+                        explanation: 'Dette er en selvvurdering - vælg det niveau der passer dig bedst.'
+                    }
+                ],
+                created: new Date().toISOString()
+            }
+        ];
     }
 
     enableContinueButton(buttonId) {

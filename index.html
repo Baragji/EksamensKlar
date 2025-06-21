@@ -1,20 +1,21 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="da" class="smooth-scroll">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ExamKlar - Din Personlige Eksamen App</title>
-    <meta name="description" content="Lær hvilket som helst emne gennem daglige mikrolærings-sessioner med flashcards, quizzer og spaced repetition">
+    <title>ExamKlar - Eksklusiv AI-Drevet Eksamenplatform</title>
+    <meta name="description" content="Ultra-moderne AI-baseret eksamenplatform hvor du skaber personlige læringsplaner for ethvert emne med premium mikrolearning">
     
     <!-- PWA Meta Tags -->
-    <meta name="theme-color" content="#2563eb">
+    <meta name="theme-color" content="#6366f1">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="ExamKlar">
     
     <!-- Styles -->
     <link rel="stylesheet" href="styles/global.css">
     <link rel="stylesheet" href="styles/components.css">
+    <link rel="stylesheet" href="styles/premium.css">
     
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -22,139 +23,200 @@
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
 </head>
-<body>
-    <!-- Navigation Header -->
-    <header class="header">
-        <nav class="nav">
+<body class="gpu-accelerated">
+    <!-- Skip to Content Link -->
+    <a href="#main-content" class="skip-link">Spring til hovedindhold</a>
+    
+    <!-- Ultra-Premium Navigation -->
+    <header class="nav-luxury">
+        <nav class="nav container" role="navigation" aria-label="Hovednavigation">
             <div class="nav-brand">
-                <h1 class="logo">📚 ExamKlar</h1>
-                <span class="tagline">Din Personlige Eksamen App</span>
+                <h1 class="logo text-gradient glow">✨ ExamKlar</h1>
+                <span class="badge-luxury" aria-label="AI-drevet platform">AI-Powered</span>
             </div>
-            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
-                <span></span>
-                <span></span>
-                <span></span>
+            <button class="nav-toggle" id="navToggle" aria-label="Åbn navigation menu" aria-expanded="false">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
             </button>
         </nav>
     </header>
 
     <!-- Main Content -->
-    <main class="main" id="mainContent">
-        <!-- Landing Page Content -->
-        <section class="hero">
-            <div class="hero-content">
-                <h2 class="hero-title">Mester Dit Eksamen på Din Måde</h2>
-                <p class="hero-subtitle">
-                    Skab dine egne kurser og lær gennem daglige mikro-sessioner med spaced repetition, 
-                    interaktive flashcards og personlige quizzer.
-                </p>
-                <div class="hero-actions">
-                    <a href="modules/dashboard/index.html" class="btn btn-primary">
-                        📊 Se Dashboard
-                    </a>
-                    <a href="comprehensive-test.html" class="btn btn-secondary">
-                        🧪 Test Alt
-                    </a>
+    <main class="main" id="main-content">
+        <!-- Exclusive Hero Section -->
+        <section class="hero-luxury" role="banner" aria-labelledby="hero-title">
+            <div class="container">
+                <div class="hero-content">
+                    <h2 id="hero-title" class="hero-title-luxury">Revolutionér Din Eksamensforberedelse</h2>
+                    <p class="hero-subtitle-luxury">
+                        Benyt AI-teknologi til at skabe personaliserede læringsplaner for ethvert emne. 
+                        Premium mikrolearning med spaced repetition, adaptive quizzer og intelligente flashcards.
+                    </p>
+                    <div class="hero-actions" role="group" aria-label="Hovedhandlinger">
+                        <a href="modules/dashboard/index.html" class="btn-luxury" aria-describedby="start-desc">
+                            <span class="icon icon-dashboard" aria-hidden="true"></span>
+                            Start Læring
+                        </a>
+                        <span id="start-desc" class="sr-only">Gå til dashboard for at starte din læringsrejse</span>
+                        <a href="comprehensive-test.html" class="btn-luxury" style="background: var(--gradient-aurora);" aria-describedby="test-desc">
+                            <span class="icon icon-quiz" aria-hidden="true"></span>
+                            Test Platform
+                        </a>
+                        <span id="test-desc" class="sr-only">Test alle platformens funktioner</span>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Quick Stats -->
-        <section class="stats">
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <span class="stat-number" id="totalProgress">0%</span>
-                    <span class="stat-label">Samlet Fremskridt</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="currentStreak">0</span>
-                    <span class="stat-label">Dage i Træk</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="completedCards">0</span>
-                    <span class="stat-label">Gennemførte Cards</span>
+        <!-- Premium Performance Dashboard -->
+        <section class="stats luxury-section" role="region" aria-labelledby="stats-title">
+            <div class="container container-responsive">
+                <h3 id="stats-title" class="section-title text-gradient">Dine Resultater</h3>
+                <div class="stats-grid-luxury grid-responsive grid-3">
+                    <div class="luxury-card float mobile-full tablet-half desktop-third">
+                        <div class="stat-icon" aria-hidden="true">
+                            <span class="icon icon-xl text-gradient">📊</span>
+                        </div>
+                        <span class="stat-number text-gradient" id="totalProgress">0%</span>
+                        <span class="stat-label">Samlet Fremskridt</span>
+                        <div class="progress-luxury" data-progress="0" aria-label="0% fremskridt"></div>
+                    </div>
+                    <div class="luxury-card float mobile-full tablet-half desktop-third" style="animation-delay: 0.2s;">
+                        <div class="stat-icon" aria-hidden="true">
+                            <span class="icon icon-xl text-gradient">🔥</span>
+                        </div>
+                        <span class="stat-number text-gradient" id="currentStreak">0</span>
+                        <span class="stat-label">Dage i Træk</span>
+                        <div class="badge-luxury">Aktiv</div>
+                    </div>
+                    <div class="luxury-card float mobile-full tablet-full desktop-third" style="animation-delay: 0.4s;">
+                        <div class="stat-icon" aria-hidden="true">
+                            <span class="icon icon-xl text-gradient">🎯</span>
+                        </div>
+                        <span class="stat-number text-gradient" id="completedCards">0</span>
+                        <span class="stat-label">Mestrede Emner</span>
+                        <div class="shimmer" aria-hidden="true"></div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Module Navigation -->
-        <section class="modules">
-            <h3 class="modules-title">Læringsmoduler</h3>
-            <div class="modules-grid">
-                
-                <a href="modules/subjects/index.html" class="module-card featured">
-                    <div class="module-icon">📚</div>
-                    <h4 class="module-title">Mine Emner</h4>
-                    <p class="module-description">Opret og administrer dine egne læringsemner</p>
-                    <div class="module-status">
-                        <span class="status-badge premium">Ny</span>
-                    </div>
-                </a>
-                
-                <a href="modules/content/index.html" class="module-card">
-                    <div class="module-icon">📖</div>
-                    <h4 class="module-title">Dagligt Indhold</h4>
-                    <p class="module-description">Upload og læs læringsmaterialer med Markdown support</p>
-                    <div class="module-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 0%" id="contentProgress"></div>
+        <!-- Ultra-Premium Module Navigation -->
+        <section class="modules luxury-section" role="main" aria-labelledby="modules-title">
+            <div class="container">
+                <h3 id="modules-title" class="section-title text-gradient">Eksklusive Læringsmoduler</h3>
+                <nav class="modules-grid-luxury" role="navigation" aria-label="Læringsmoduler">
+                    
+                    <a href="modules/subjects/index.html" class="module-card-luxury featured glow" aria-describedby="subjects-desc">
+                        <div class="module-icon" aria-hidden="true">
+                            <span class="icon icon-2xl icon-subjects"></span>
                         </div>
-                        <span class="progress-text">User-generated content</span>
-                    </div>
-                </a>
-
-                <a href="modules/flashcards/index.html" class="module-card">
-                    <div class="module-icon">🗂️</div>
-                    <h4 class="module-title">Flashcards</h4>
-                    <p class="module-description">Opret og øv flashcards med spaced repetition</p>
-                    <div class="module-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 0%" id="flashcardsProgress"></div>
+                        <h4 class="module-title">Emnestyring</h4>
+                        <p id="subjects-desc" class="module-description">Skab og administrer ubegrænsede læringsemner med AI-assistance</p>
+                        <div class="module-status">
+                            <span class="badge-luxury">Premium</span>
                         </div>
-                        <span class="progress-text">Med spaced repetition</span>
-                    </div>
-                </a>
-
-                <a href="modules/quiz/index.html" class="module-card">
-                    <div class="module-icon">❓</div>
-                    <h4 class="module-title">Quiz</h4>
-                    <p class="module-description">Opret og tag quizzer med adaptive scoring</p>
-                    <div class="module-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 0%" id="quizProgress"></div>
+                    </a>
+                    
+                    <a href="modules/content/index.html" class="module-card-luxury" aria-describedby="content-desc">
+                        <div class="module-icon" aria-hidden="true">
+                            <span class="icon icon-2xl icon-brain"></span>
                         </div>
-                        <span class="progress-text">User-generated quizzes</span>
-                    </div>
-                </a>
+                        <h4 class="module-title">AI Indholdsmotor</h4>
+                        <p id="content-desc" class="module-description">Upload og analyser læringsmaterialer med AI-assisteret læring</p>
+                        <div class="module-status">
+                            <span class="badge-luxury">Smart</span>
+                        </div>
+                    </a>
 
-                <a href="modules/dashboard/index.html" class="module-card">
-                    <div class="module-icon">📊</div>
-                    <h4 class="module-title">Dashboard</h4>
-                    <p class="module-description">Se fremskridt, streaks og achievements</p>
-                    <div class="module-status">
-                        <span class="status-badge">Aktiv</span>
-                    </div>
-                </a>
+                    <a href="modules/flashcards/index.html" class="module-card-luxury" aria-describedby="flashcards-desc">
+                        <div class="module-icon" aria-hidden="true">
+                            <span class="icon icon-2xl icon-cards"></span>
+                        </div>
+                        <h4 class="module-title">Intelligente Flashcards</h4>
+                        <p id="flashcards-desc" class="module-description">Adaptive flashcards med spaced repetition og AI-optimering</p>
+                        <div class="progress-luxury" data-progress="65" aria-label="65% færdig"></div>
+                    </a>
 
-                <a href="modules/advanced/index.html" class="module-card">
-                    <div class="module-icon">🌟</div>
-                    <h4 class="module-title">Advanced Features</h4>
-                    <p class="module-description">Export/import, search, dark mode og mere</p>
-                    <div class="module-status">
-                        <span class="status-badge">Ny</span>
-                    </div>
-                </a>
+                    <a href="modules/quiz/index.html" class="module-card-luxury" aria-describedby="quiz-desc">
+                        <div class="module-icon" aria-hidden="true">
+                            <span class="icon icon-2xl icon-quiz"></span>
+                        </div>
+                        <h4 class="module-title">Adaptive Quizzer</h4>
+                        <p id="quiz-desc" class="module-description">AI-genererede quizzer der tilpasser sig dit niveau</p>
+                        <div class="progress-luxury" data-progress="45" aria-label="45% færdig"></div>
+                    </a>
 
-                <a href="modules/ai-assistant/index.html" class="module-card ai-featured">
-                    <div class="module-icon">🤖</div>
-                    <h4 class="module-title">AI Assistant</h4>
-                    <p class="module-description">Intelligent tutor der tilpasser sig dit emne med chat og smart feedback</p>
-                    <div class="module-status">
-                        <span class="status-badge premium">AI</span>
-                    </div>
-                </a>
+                    <a href="modules/dashboard/index.html" class="module-card-luxury" aria-describedby="dashboard-desc">
+                        <div class="module-icon" aria-hidden="true">
+                            <span class="icon icon-2xl icon-dashboard"></span>
+                        </div>
+                        <h4 class="module-title">Analytisk Dashboard</h4>
+                        <p id="dashboard-desc" class="module-description">Avanceret tracking, AI-insights og performance analytics</p>
+                        <div class="module-status">
+                            <span class="badge-luxury">Live</span>
+                        </div>
+                    </a>
 
+                    <a href="modules/advanced/index.html" class="module-card-luxury" aria-describedby="advanced-desc">
+                        <div class="module-icon" aria-hidden="true">
+                            <span class="icon icon-2xl">🌟</span>
+                        </div>
+                        <h4 class="module-title">Premium Features</h4>
+                        <p id="advanced-desc" class="module-description">Export/import, cloud sync, dark mode og exclusive tools</p>
+                        <div class="shimmer" aria-hidden="true"></div>
+                    </a>
+
+                    <a href="modules/ai-assistant/index.html" class="module-card-luxury ai-featured glow" aria-describedby="ai-desc">
+                        <div class="module-icon" aria-hidden="true">
+                            <span class="icon icon-2xl icon-ai"></span>
+                        </div>
+                        <h4 class="module-title">AI Tutor</h4>
+                        <p id="ai-desc" class="module-description">Personlig AI-tutor med avanceret chat og intelligent feedback</p>
+                        <div class="module-status">
+                            <span class="badge-luxury">Eksklusiv</span>
+                        </div>
+                    </a>
+
+                </nav>
             </div>
+        </section>
+
+        <!-- Premium Call-to-Action -->
+        <section class="cta-luxury">
+            <div class="container">
+                <div class="luxury-card cta-content">
+                    <h3 class="text-gradient">Klar til at revolutionere din læring?</h3>
+                    <p>Kom i gang med personaliserede AI-drevne læringsplaner og eksklusiv adgang til premium features</p>
+                    <div class="cta-actions">
+                        <a href="modules/onboarding/index.html" class="btn-luxury" aria-describedby="onboarding-desc">
+                            <span class="icon icon-rocket" aria-hidden="true"></span>
+                            Start Onboarding
+                        </a>
+                        <span id="onboarding-desc" class="sr-only">Begin din personaliserede læringsrejse</span>
+                        
+                        <a href="modules/subjects/index.html" class="btn-luxury" style="background: var(--gradient-luxury);" aria-describedby="subjects-btn-desc">
+                            <span class="icon icon-subjects" aria-hidden="true"></span>
+                            Opret Emne
+                        </a>
+                        <span id="subjects-btn-desc" class="sr-only">Opret dit første læringsemne</span>
+                        
+                        <a href="tools/ui-analyzer.html" class="btn-luxury" style="background: var(--gradient-aurora);" aria-describedby="analyzer-desc">
+                            <span class="icon icon-analytics" aria-hidden="true"></span>
+                            UI/UX Analyzer
+                        </a>
+                        <span id="analyzer-desc" class="sr-only">Analyser platformens design og brugeroplevelse</span>
+                        
+                        <a href="tools/automated-test-suite.html" class="btn-luxury" style="background: var(--gradient-ocean);" aria-describedby="tests-desc">
+                            <span class="icon icon-settings" aria-hidden="true"></span>
+                            Automated Tests
+                        </a>
+                        <span id="tests-desc" class="sr-only">Kør automatiserede tests af hele platformen</span>
+                    </div>
+                </div>
+            </div>
+        </section>
         </section>
 
         <!-- Advanced Features Quick Access -->
@@ -226,10 +288,10 @@
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js')
                     .then((registration) => {
-                        console.log('✅ Service Worker registered successfully:', registration.scope);
+                        // Service Worker registered successfully
                     })
                     .catch((error) => {
-                        console.log('❌ Service Worker registration failed:', error);
+                        // Service Worker registration failed
                     });
             });
         }

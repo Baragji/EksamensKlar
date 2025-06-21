@@ -1,21 +1,22 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="da" class="smooth-scroll">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Velkommen til ExamKlar! 🚀</title>
+    <title>Velkommen til ExamKlar Premium! ✨</title>
     <link rel="stylesheet" href="../../styles/global.css">
     <link rel="stylesheet" href="../../styles/components.css">
+    <link rel="stylesheet" href="../../styles/premium.css">
     <link rel="stylesheet" href="onboarding.css">
 </head>
-<body class="onboarding-body">
-    <!-- Onboarding Container -->
+<body class="onboarding-body gpu-accelerated">
+    <!-- Premium Onboarding Container -->
     <div class="onboarding-container">
         
-        <!-- Step 1: Welcome & AI Introduction -->
+        <!-- Step 1: Exclusive AI Welcome -->
         <div class="onboarding-step active" id="step-welcome">
-            <div class="step-content">
-                <div class="ai-avatar">
+            <div class="step-content luxury-card">
+                <div class="ai-avatar glow">
                     <div class="avatar-circle">
                         <span class="avatar-emoji">🤖</span>
                         <div class="pulse-ring"></div>
@@ -24,29 +25,30 @@
                     </div>
                 </div>
                 
-                <h1 class="onboarding-title">Hej! Jeg er din AI Study Assistant 👋</h1>
+                <h1 class="onboarding-title text-gradient">Velkommen til Din Eksklusive AI Tutor! ✨</h1>
                 <p class="onboarding-subtitle">
-                    Jeg hjælper dig med at skabe den perfekte læringsplan baseret på dit emne, 
-                    dit niveau og hvor lang tid du har til din eksamen.
+                    Jeg er din personlige AI-assistant, designet til at skabe ultra-personaliserede 
+                    læringsplaner der tilpasser sig dit emne, niveau og tempo.
                 </p>
                 
                 <div class="feature-preview">
-                    <div class="preview-card">
-                        <span class="preview-icon">📚</span>
-                        <span class="preview-text">Personlig læringsplan</span>
-                    </div>
-                    <div class="preview-card">
+                    <div class="preview-card luxury-card float">
                         <span class="preview-icon">🧠</span>
-                        <span class="preview-text">AI-drevet feedback</span>
+                        <span class="preview-text">AI-Drevet Læring</span>
                     </div>
-                    <div class="preview-card">
+                    <div class="preview-card luxury-card float" style="animation-delay: 0.2s;">
                         <span class="preview-icon">⚡</span>
-                        <span class="preview-text">Adaptiv sværhedsgrad</span>
+                        <span class="preview-text">Adaptiv Intelligence</span>
+                    </div>
+                    <div class="preview-card luxury-card float" style="animation-delay: 0.4s;">
+                        <span class="preview-icon">🎯</span>
+                        <span class="preview-text">Precision Learning</span>
                     </div>
                 </div>
                 
-                <button class="btn btn-primary btn-large" onclick="nextStep()">
-                    Lad os komme i gang! 🚀
+                <button class="btn-luxury" onclick="nextStep()">
+                    <span class="icon">🚀</span>
+                    Start Premium Oplevelse
                 </button>
             </div>
         </div>

@@ -3,21 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🗂️ Flashcards - ExamKlar</title>
+    <title>Flashcards - ExamKlar</title>
+    <link rel="stylesheet" href="../../styles/premium.css">
     <link rel="stylesheet" href="flashcards.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🗂️ Flashcards Manager</h1>
-            <p>Opret og administrer dine flashcards</p>
-        </header>
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
-        <div class="stats-overview">
-            <div class="stat-card">
-                <div class="stat-number" id="totalCards">0</div>
-                <div class="stat-label">Total Cards</div>
+    <!-- Luxury Navigation -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand" aria-label="ExamKlar home">
+                <span class="brand-text">ExamKlar</span>
+            </a>
+            
+            <div class="nav-links">
+                <a href="../dashboard/index.html" class="nav-link" aria-label="Dashboard">
+                    <i class="icon-dashboard" aria-hidden="true"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="../subjects/index.html" class="nav-link" aria-label="Subjects">
+                    <i class="icon-subjects" aria-hidden="true"></i>
+                    <span>Fag</span>
+                </a>
+                <a href="../flashcards/index.html" class="nav-link active" aria-label="Flashcards" aria-current="page">
+                    <i class="icon-flashcards" aria-hidden="true"></i>
+                    <span>Flashcards</span>
+                </a>
+                <a href="../quiz/index.html" class="nav-link" aria-label="Quiz">
+                    <i class="icon-quiz" aria-hidden="true"></i>
+                    <span>Quiz</span>
+                </a>
+                <a href="../ai-assistant/index.html" class="nav-link" aria-label="AI Assistant">
+                    <i class="icon-ai" aria-hidden="true"></i>
+                    <span>AI Assistant</span>
+                </a>
             </div>
+        </div>
+    </nav>
+                <a href="../../index.html" class="nav-link-luxury" aria-label="Tilbage til hovedside">
+                    <span class="icon icon-dashboard" aria-hidden="true"></span>
+                    Hjem
+                </a>
+                <h1 class="logo text-gradient">🗂️ Intelligente Flashcards</h1>
+                <span class="badge-luxury">AI-Powered</span>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main" id="main-content">
+        <div class="container container-responsive">
+            <!-- Hero Section -->
+            <section class="hero-luxury" role="banner" aria-labelledby="flashcards-title">
+                <div class="container">
+                    <div class="hero-content">
+                        <h2 id="flashcards-title" class="hero-title-luxury">Mester Dit Læringsmateriale</h2>
+                        <p class="hero-subtitle-luxury">
+                            Skab adaptive flashcards med spaced repetition og AI-optimering for maksimal hukommelse og effektiv læring.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Premium Stats Overview -->
+            <section class="stats luxury-section" role="region" aria-labelledby="stats-title">
+                <div class="container">
+                    <h3 id="stats-title" class="section-title text-gradient">Flashcard Analytics</h3>
+                    <div class="stats-grid-luxury grid-responsive grid-3">
+                        <div class="luxury-card float">
+                            <div class="stat-icon" aria-hidden="true">
+                                <span class="icon icon-xl text-gradient">🗂️</span>
+                            </div>
+                            <span class="stat-number text-gradient" id="totalCards">0</span>
+                            <span class="stat-label">Total Cards</span>
+                            <div class="progress-luxury" data-progress="0" aria-label="Card completion progress"></div>
+                        </div>
             <div class="stat-card">
                 <div class="stat-number" id="dueCards">0</div>
                 <div class="stat-label">Due Today</div>

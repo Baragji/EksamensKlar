@@ -4,200 +4,260 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🤖 AI Assistant - ExamKlar</title>
-    <link rel="stylesheet" href="../../styles/global.css">
+    <link rel="stylesheet" href="../../styles/premium.css">
     <link rel="stylesheet" href="ai-assistant.css">
 </head>
 <body>
-    <div class="ai-container">
-        <header class="ai-header">
-            <div class="header-content">
-                <h1>🤖 AI Assistant</h1>
-                <p>Din personlige protein purification tutor</p>
-                <div class="ai-status" id="ai-status">
-                    <span class="status-indicator online" id="status-indicator">🟢</span>
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Luxury Navigation -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand" aria-label="ExamKlar home">
+                <span class="brand-text">ExamKlar</span>
+            </a>
+            
+            <div class="nav-links">
+                <a href="../dashboard/index.html" class="nav-link" aria-label="Dashboard">
+                    <i class="icon-dashboard" aria-hidden="true"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="../subjects/index.html" class="nav-link" aria-label="Subjects">
+                    <i class="icon-subjects" aria-hidden="true"></i>
+                    <span>Fag</span>
+                </a>
+                <a href="../flashcards/index.html" class="nav-link" aria-label="Flashcards">
+                    <i class="icon-flashcards" aria-hidden="true"></i>
+                    <span>Flashcards</span>
+                </a>
+                <a href="../quiz/index.html" class="nav-link" aria-label="Quiz">
+                    <i class="icon-quiz" aria-hidden="true"></i>
+                    <span>Quiz</span>
+                </a>
+                <a href="../ai-assistant/index.html" class="nav-link active" aria-label="AI Assistant" aria-current="page">
+                    <i class="icon-ai" aria-hidden="true"></i>
+                    <span>AI Assistant</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main id="main-content" class="main-content">
+        <!-- Hero Section -->
+        <section class="hero-section" role="banner">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <i class="icon-ai gradient-text" aria-hidden="true"></i>
+                    AI Assistant
+                </h1>
+                <p class="hero-subtitle">Din personlige AI-tutor til eksamensforberedelse</p>
+                <div class="ai-status glass-card" id="ai-status" role="status" aria-live="polite">
+                    <span class="status-indicator online" id="status-indicator" aria-hidden="true"></span>
                     <span id="status-text">AI Services Online</span>
                 </div>
             </div>
-        </header>
+        </section>
 
         <!-- Quick Actions -->
-        <section class="quick-actions">
-            <h2>⚡ Quick Actions</h2>
-            <div class="action-grid">
-                <button class="action-card" onclick="openChat()">
-                    <div class="action-icon">💬</div>
-                    <h3>Chat with AI</h3>
-                    <p>Ask questions about protein purification</p>
-                </button>
-                
-                <button class="action-card" onclick="getSmartFeedback()">
-                    <div class="action-icon">💡</div>
-                    <h3>Smart Feedback</h3>
-                    <p>Get AI explanations for quiz answers</p>
-                </button>
-                
-                <button class="action-card" onclick="getLearningPath()">
-                    <div class="action-icon">🎯</div>
-                    <h3>Learning Path</h3>
-                    <p>Get personalized study recommendations</p>
-                </button>
-                
-                <button class="action-card" onclick="getPerformanceInsights()">
-                    <div class="action-icon">📊</div>
-                    <h3>Performance Insights</h3>
-                    <p>Analyze your learning progress</p>
-                </button>
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">
+                    <i class="icon-lightning" aria-hidden="true"></i>
+                    Quick Actions
+                </h2>
+                <div class="grid grid-4">
+                    <button class="glass-card card-hover" onclick="openChat()" aria-label="Chat with AI">
+                        <div class="card-content">
+                            <i class="icon-chat" aria-hidden="true"></i>
+                            <h3>Chat with AI</h3>
+                            <p>Still spørgsmål om dit fag</p>
+                        </div>
+                    </button>
+                    
+                    <button class="glass-card card-hover" onclick="getSmartFeedback()" aria-label="Get smart feedback">
+                        <div class="card-content">
+                            <i class="icon-lightbulb" aria-hidden="true"></i>
+                            <h3>Smart Feedback</h3>
+                            <p>Få AI-forklaringer til quiz svar</p>
+                        </div>
+                    </button>
+                    
+                    <button class="glass-card card-hover" onclick="getLearningPath()" aria-label="Get learning path">
+                        <div class="card-content">
+                            <i class="icon-target" aria-hidden="true"></i>
+                            <h3>Learning Path</h3>
+                            <p>Personaliserede studieforslag</p>
+                        </div>
+                    </button>
+                    
+                    <button class="glass-card card-hover" onclick="getPerformanceInsights()" aria-label="View performance insights">
+                        <div class="card-content">
+                            <i class="icon-analytics" aria-hidden="true"></i>
+                            <h3>Performance Insights</h3>
+                            <p>Analyser din læringsfremgang</p>
+                        </div>
+                    </button>
+                </div>
             </div>
         </section>
 
         <!-- AI Features Overview -->
-        <section class="features-overview">
-            <h2>🧠 AI Capabilities</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🧬</div>
-                    <h3>Protein Expert</h3>
-                    <p>Deep knowledge of protein biochemistry, purification techniques, and troubleshooting</p>
-                    <ul>
-                        <li>Structural biology concepts</li>
-                        <li>Chromatography principles</li>
-                        <li>Troubleshooting guidance</li>
-                        <li>Method optimization</li>
-                    </ul>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">🎓</div>
-                    <h3>Personal Tutor</h3>
-                    <p>Adaptive teaching that adjusts to your learning style and pace</p>
-                    <ul>
-                        <li>Personalized explanations</li>
-                        <li>Contextual feedback</li>
-                        <li>Difficulty adjustment</li>
-                        <li>Progress tracking</li>
-                    </ul>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">🔬</div>
-                    <h3>Lab Assistant</h3>
-                    <p>Practical help with experimental design and problem-solving</p>
-                    <ul>
-                        <li>Protocol suggestions</li>
-                        <li>Buffer calculations</li>
-                        <li>Troubleshooting steps</li>
-                        <li>Quality control tips</li>
-                    </ul>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">📈</div>
-                    <h3>Learning Analytics</h3>
-                    <p>Data-driven insights to optimize your study strategy</p>
-                    <ul>
-                        <li>Performance patterns</li>
-                        <li>Knowledge gaps</li>
-                        <li>Study recommendations</li>
-                        <li>Progress predictions</li>
-                    </ul>
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">
+                    <i class="icon-brain" aria-hidden="true"></i>
+                    AI Capabilities
+                </h2>
+                <div class="grid grid-2">
+                    <div class="glass-card">
+                        <div class="card-content">
+                            <i class="icon-science" aria-hidden="true"></i>
+                            <h3>Subject Expert</h3>
+                            <p>Dyb viden inden for dit fagområde og problemløsning</p>
+                            <ul class="feature-list">
+                                <li>Strukturelle koncepter</li>
+                                <li>Metodiske principper</li>
+                                <li>Fejlfinding og guidance</li>
+                                <li>Metode optimering</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-card">
+                        <div class="card-content">
+                            <i class="icon-graduation" aria-hidden="true"></i>
+                            <h3>Personal Tutor</h3>
+                            <p>Adaptiv undervisning der tilpasser sig din læringsstil</p>
+                            <ul class="feature-list">
+                                <li>Personaliserede forklaringer</li>
+                                <li>Kontekstuel feedback</li>
+                                <li>Sværhedsgrad tilpasning</li>
+                                <li>Fremgang tracking</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-card">
+                        <div class="card-content">
+                            <i class="icon-lab" aria-hidden="true"></i>
+                            <h3>Lab Assistant</h3>
+                            <p>Praktisk hjælp med procedurer og protokoller</p>
+                            <ul class="feature-list">
+                                <li>Step-by-step vejledning</li>
+                                <li>Sikkerhedsanbefalinger</li>
+                                <li>Resultat fortolkning</li>
+                                <li>Kvalitetskontrol</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-card">
+                        <div class="card-content">
+                            <i class="icon-strategy" aria-hidden="true"></i>
+                            <h3>Study Strategist</h3>
+                            <p>Intelligente studiestrategier baseret på din fremgang</p>
+                            <ul class="feature-list">
+                                <li>Læringsti optimering</li>
+                                <li>Svaghedsområde identifikation</li>
+                                <li>Revision planlægning</li>
+                                <li>Eksamen forberedelse</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- Recent Conversations -->
-        <section class="recent-conversations" id="recent-conversations" style="display: none;">
-            <h2>💬 Recent Conversations</h2>
-            <div class="conversation-list" id="conversation-list">
-                <!-- Conversations will be loaded here -->
+        <section class="section" id="recent-conversations" style="display: none;">
+            <div class="container">
+                <h2 class="section-title">
+                    <i class="icon-chat" aria-hidden="true"></i>
+                    Recent Conversations
+                </h2>
+                <div class="conversation-list" id="conversation-list">
+                    <!-- Conversations will be loaded here -->
+                </div>
             </div>
         </section>
 
         <!-- Settings -->
-        <section class="ai-settings">
-            <h2>⚙️ AI Settings</h2>
-            <div class="settings-grid">
-                <div class="setting-card">
-                    <h3>🔌 AI Provider</h3>
-                    <select id="ai-provider" onchange="updateAIProvider()">
-                        <option value="hybrid">🔄 Hybrid (Recommended)</option>
-                        <option value="openai">🌟 OpenAI GPT-4</option>
-                        <option value="local">🏠 Local AI (Free)</option>
-                        <option value="disabled">🚫 Disabled</option>
-                    </select>
-                    <p class="setting-description">Choose your preferred AI backend</p>
-                </div>
-                
-                <div class="setting-card">
-                    <h3>🎨 Response Style</h3>
-                    <select id="response-style" onchange="updateResponseStyle()">
-                        <option value="detailed">📚 Detailed & Educational</option>
-                        <option value="concise">⚡ Quick & Concise</option>
-                        <option value="conversational">💬 Conversational</option>
-                        <option value="technical">🔬 Technical & Precise</option>
-                    </select>
-                    <p class="setting-description">Adjust how AI responds to you</p>
-                </div>
-                
-                <div class="setting-card">
-                    <h3>💰 Usage Limits</h3>
-                    <input type="range" id="usage-limit" min="10" max="1000" value="100" onchange="updateUsageLimit()">
-                    <div class="limit-display">
-                        <span id="limit-value">100</span> requests/month
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">
+                    <i class="icon-settings" aria-hidden="true"></i>
+                    AI Settings
+                </h2>
+                <div class="grid grid-3">
+                    <div class="glass-card">
+                        <div class="card-content">
+                            <h3>
+                                <i class="icon-connection" aria-hidden="true"></i>
+                                AI Provider
+                            </h3>
+                            <select id="ai-provider" class="select-field" onchange="updateAIProvider()" aria-label="Choose AI provider">
+                                <option value="hybrid">Hybrid (Anbefalet)</option>
+                                <option value="openai">OpenAI GPT-4</option>
+                                <option value="local">Local AI (Gratis)</option>
+                                <option value="disabled">Deaktiveret</option>
+                            </select>
+                            <p class="text-secondary">Vælg din foretrukne AI backend</p>
+                        </div>
                     </div>
-                    <p class="setting-description">Control AI usage costs</p>
-                </div>
-                
-                <div class="setting-card">
-                    <h3>🔒 Privacy Mode</h3>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="privacy-mode" onchange="updatePrivacyMode()">
-                        <span class="toggle-slider"></span>
-                    </label>
-                    <p class="setting-description">Use only local AI processing</p>
+                    
+                    <div class="glass-card">
+                        <div class="card-content">
+                            <h3>
+                                <i class="icon-style" aria-hidden="true"></i>
+                                Response Style
+                            </h3>
+                            <select id="response-style" class="select-field" onchange="updateResponseStyle()" aria-label="Choose response style">
+                                <option value="detailed">Detaljeret & Uddannende</option>
+                                <option value="concise">Hurtig & Koncis</option>
+                                <option value="conversational">Samtale</option>
+                                <option value="technical">Teknisk & Præcis</option>
+                            </select>
+                            <p class="text-secondary">Juster hvordan AI svarer dig</p>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-card">
+                        <div class="card-content">
+                            <h3>
+                                <i class="icon-shield" aria-hidden="true"></i>
+                                Privacy Mode
+                            </h3>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="privacy-mode" onchange="updatePrivacyMode()" aria-label="Enable privacy mode">
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <p class="text-secondary">Brug kun lokal AI behandling</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- API Configuration (Hidden by default) -->
-        <section class="api-config" id="api-config" style="display: none;">
-            <h2>🔑 API Configuration</h2>
-            <div class="config-form">
-                <div class="form-group">
-                    <label for="openai-key">OpenAI API Key:</label>
-                    <input type="password" id="openai-key" placeholder="sk-..." onchange="saveAPIKey()">
-                    <p class="form-help">Your API key is stored locally and never sent to our servers</p>
-                </div>
-                
-                <div class="form-group">
-                    <label for="model-selection">Model:</label>
-                    <select id="model-selection" onchange="updateModel()">
-                        <option value="gpt-4">GPT-4 (Best quality)</option>
-                        <option value="gpt-3.5-turbo">GPT-3.5 Turbo (Faster)</option>
-                    </select>
+        <section class="section" id="api-config" style="display: none;">
+            <div class="container">
+                <h2 class="section-title">
+                    <i class="icon-key" aria-hidden="true"></i>
+                    API Configuration
+                </h2>
+                <div class="glass-card">
+                    <div class="card-content">
+                        <div class="form-group">
+                            <label for="openai-key" class="form-label">OpenAI API Key:</label>
+                            <input type="password" id="openai-key" class="input-field" placeholder="sk-..." onchange="saveAPIKey()" aria-describedby="api-key-help">
+                            <p id="api-key-help" class="text-secondary">Din API nøgle gemmes lokalt og sendes aldrig til vores servere</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
-
-        <!-- Navigation -->
-        <nav class="bottom-nav">
-            <a href="../../index.html" class="nav-item">
-                <span class="nav-icon">🏠</span>
-                <span class="nav-label">Home</span>
-            </a>
-            <a href="chat.html" class="nav-item">
-                <span class="nav-icon">💬</span>
-                <span class="nav-label">Chat</span>
-            </a>
-            <a href="#settings" class="nav-item">
-                <span class="nav-icon">⚙️</span>
-                <span class="nav-label">Settings</span>
-            </a>
-            <a href="tests/ai-test.html" class="nav-item">
-                <span class="nav-icon">🧪</span>
-                <span class="nav-label">Tests</span>
-            </a>
-        </nav>
-    </div>
+    </main>
 
     <script src="ai-assistant.js"></script>
 </body>
