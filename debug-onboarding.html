@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Onboarding Data Flow</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+        button { padding: 10px 15px; margin: 5px; cursor: pointer; }
+        .success { color: green; }
+        .error { color: red; }
+        .debug { background: #f5f5f5; padding: 10px; margin: 10px 0; white-space: pre-wrap; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Debug ExamKlar Onboarding Data Flow</h1>
+    
+    <div class="section">
+        <h2>1. Rens localStorage</h2>
+        <button onclick="clearStorage()">Rens Alt Data</button>
+        <div id="clearResult"></div>
+    </div>
+    
+    <div class="section">
+        <h2>2. Simuler Onboarding Data</h2>
+        <button onclick="createMockOnboardingData()">Opret Test Data</button>
+        <div id="mockResult"></div>
+    </div>
+    
+    <div class="section">
+        <h2>3. Test DataBridge</h2>
+        <button onclick="testDataBridge()">Test DataBridge.initializeFromOnboarding()</button>
+        <div id="bridgeResult"></div>
+    </div>
+    
+    <div class="section">
+        <h2>4. Inspicér Data</h2>
+        <button onclick="inspectData()">Vis Alle Data</button>
+        <div id="inspectResult" class="debug"></div>
+    </div>
+    
+    <div class="section">
+        <h2>5. Test Live Onboarding</h2>
+        <a href="modules/onboarding/" target="_blank">
+            <button>Åbn Live Onboarding</button>
+        </a>
+    </div>
+
+    <script src="core/data-bridge.js"></script>
+    <script>
+        function clearStorage() {
+            localStorage.clear();
+            document.getElementById('clearResult').innerHTML = '<span class="success">✅ localStorage ryddet</span>';
+            console.log('🧹 localStorage cleared');
+        }
+        
+        function createMockOnboardingData() {
+            const mockData = {
+                subject: "Matematik",
+                subjectEmoji: "🔢",
+                examDate: "2025-07-15",
+                daysToExam: 23,
+                content: [
+                    {
+                        type: 'text',
+                        content: 'Test matematik indhold',
+                        filename: 'test.txt'
+                    }
+                ],
+                learningPlan: {
+                    subject: "Matematik",
+                    daysToExam: 23,
+                    dailyTime: 30,
+                    weeklyGoal: 5,
+                    totalSessions: 16,
+                    modules: [
+                        { name: 'Grundlæggende koncepter', sessions: 7 },
+                        { name: 'Fordybelse og praksis', sessions: 9 }
+                    ],
+                    created: new Date().toISOString()
+                },
+                completed: true,
+                savedAt: new Date().toISOString()
+            };
+            
+            localStorage.setItem('examklar_onboarding_data', JSON.stringify(mockData));
+            
+            document.getElementById('mockResult').innerHTML = '<span class="success">✅ Mock onboarding data oprettet</span>';
+            console.log('📝 Mock onboarding data created:', mockData);
+        }
+        
+        function testDataBridge() {
+            if (!window.DataBridge) {
+                document.getElementById('bridgeResult').innerHTML = '<span class="error">❌ DataBridge ikke tilgængelig</span>';
+                return;
+            }
+            
+            const onboardingData = window.DataBridge.getOnboardingData();
+            console.log('🔍 Onboarding data found:', onboardingData);
+            
+            if (!onboardingData) {
+                document.getElementById('bridgeResult').innerHTML = '<span class="error">❌ Ingen onboarding data fundet</span>';
+                return;
+            }
+            
+            const result = window.DataBridge.initializeFromOnboarding();
+            
+            if (result) {
+                document.getElementById('bridgeResult').innerHTML = '<span class="success">✅ DataBridge initialisering succesfuld</span>';
+                console.log('✅ DataBridge initialization successful');
+            } else {
+                document.getElementById('bridgeResult').innerHTML = '<span class="error">❌ DataBridge initialisering fejlede</span>';
+                console.error('❌ DataBridge initialization failed');
+            }
+        }
+        
+        function inspectData() {
+            const keys = Object.keys(localStorage).filter(key => key.includes('examklar'));
+            let output = 'ExamKlar localStorage keys:\\n\\n';
+            
+            keys.forEach(key => {
+                const value = localStorage.getItem(key);
+                output += `${key}:\\n${value}\\n\\n`;
+            });
+            
+            if (keys.length === 0) {
+                output = 'Ingen ExamKlar data fundet i localStorage';
+            }
+            
+            document.getElementById('inspectResult').textContent = output;
+            console.log('🔍 All ExamKlar data:', keys.map(key => ({
+                key,
+                value: JSON.parse(localStorage.getItem(key) || 'null')
+            })));
+        }
+        
+        // Auto-inspect på page load
+        window.addEventListener('load', () => {
+            inspectData();
+        });
+    </script>
+</body>
+</html>
