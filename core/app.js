@@ -17,6 +17,14 @@ const app = {
         
         console.log('🚀 Initializing ExamKlar...');
         
+        // Check if this is a new user and redirect to onboarding
+        const hasCompletedOnboarding = localStorage.getItem('examklar_onboarding_completed');
+        if (!hasCompletedOnboarding) {
+            console.log('🎯 New user detected, redirecting to onboarding...');
+            window.location.href = 'modules/onboarding/index.html';
+            return;
+        }
+        
         // Update last active timestamp
         storage.updateLastActive();
         

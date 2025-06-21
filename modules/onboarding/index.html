@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velkommen til ExamKlar! 🚀</title>
+    <link rel="stylesheet" href="../../styles/global.css">
+    <link rel="stylesheet" href="../../styles/components.css">
+    <link rel="stylesheet" href="onboarding.css">
+</head>
+<body class="onboarding-body">
+    <!-- Onboarding Container -->
+    <div class="onboarding-container">
+        
+        <!-- Step 1: Welcome & AI Introduction -->
+        <div class="onboarding-step active" id="step-welcome">
+            <div class="step-content">
+                <div class="ai-avatar">
+                    <div class="avatar-circle">
+                        <span class="avatar-emoji">🤖</span>
+                        <div class="pulse-ring"></div>
+                        <div class="pulse-ring delay-1"></div>
+                        <div class="pulse-ring delay-2"></div>
+                    </div>
+                </div>
+                
+                <h1 class="onboarding-title">Hej! Jeg er din AI Study Assistant 👋</h1>
+                <p class="onboarding-subtitle">
+                    Jeg hjælper dig med at skabe den perfekte læringsplan baseret på dit emne, 
+                    dit niveau og hvor lang tid du har til din eksamen.
+                </p>
+                
+                <div class="feature-preview">
+                    <div class="preview-card">
+                        <span class="preview-icon">📚</span>
+                        <span class="preview-text">Personlig læringsplan</span>
+                    </div>
+                    <div class="preview-card">
+                        <span class="preview-icon">🧠</span>
+                        <span class="preview-text">AI-drevet feedback</span>
+                    </div>
+                    <div class="preview-card">
+                        <span class="preview-icon">⚡</span>
+                        <span class="preview-text">Adaptiv sværhedsgrad</span>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary btn-large" onclick="nextStep()">
+                    Lad os komme i gang! 🚀
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 2: Subject Selection -->
+        <div class="onboarding-step" id="step-subject">
+            <div class="step-content">
+                <div class="progress-bar-container">
+                    <div class="progress-bar-onboarding">
+                        <div class="progress-fill-onboarding" style="width: 25%"></div>
+                    </div>
+                    <span class="progress-text">1 af 4</span>
+                </div>
+                
+                <h2 class="step-title">Hvilket emne vil du mestre? 📚</h2>
+                <p class="step-subtitle">Vælg dit hovedemne eller opret et nyt</p>
+                
+                <div class="subject-selection">
+                    <div class="popular-subjects">
+                        <h3>Populære emner:</h3>
+                        <div class="subjects-grid">
+                            <button class="subject-option" data-subject="Matematik" data-emoji="📐">
+                                <span class="subject-emoji">📐</span>
+                                <span class="subject-name">Matematik</span>
+                            </button>
+                            <button class="subject-option" data-subject="Fysik" data-emoji="⚡">
+                                <span class="subject-emoji">⚡</span>
+                                <span class="subject-name">Fysik</span>
+                            </button>
+                            <button class="subject-option" data-subject="Kemi" data-emoji="🧪">
+                                <span class="subject-emoji">🧪</span>
+                                <span class="subject-name">Kemi</span>
+                            </button>
+                            <button class="subject-option" data-subject="Biologi" data-emoji="🧬">
+                                <span class="subject-emoji">🧬</span>
+                                <span class="subject-name">Biologi</span>
+                            </button>
+                            <button class="subject-option" data-subject="Dansk" data-emoji="🇩🇰">
+                                <span class="subject-emoji">🇩🇰</span>
+                                <span class="subject-name">Dansk</span>
+                            </button>
+                            <button class="subject-option" data-subject="Engelsk" data-emoji="🇬🇧">
+                                <span class="subject-emoji">🇬🇧</span>
+                                <span class="subject-name">Engelsk</span>
+                            </button>
+                            <button class="subject-option" data-subject="Historie" data-emoji="📜">
+                                <span class="subject-emoji">📜</span>
+                                <span class="subject-name">Historie</span>
+                            </button>
+                            <button class="subject-option" data-subject="Programmering" data-emoji="💻">
+                                <span class="subject-emoji">💻</span>
+                                <span class="subject-name">Programmering</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="custom-subject">
+                        <h3>Eller opret dit eget emne:</h3>
+                        <div class="custom-input-group">
+                            <input type="text" 
+                                   id="customSubject" 
+                                   placeholder="f.eks. Kemiteknik, Musikteori, Latin..."
+                                   class="form-input">
+                            <button class="btn btn-secondary" onclick="addCustomSubject()">
+                                ➕ Tilføj
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step-actions">
+                    <button class="btn btn-secondary" onclick="prevStep()">Tilbage</button>
+                    <button class="btn btn-primary" onclick="nextStep()" id="continueSubject" disabled>
+                        Fortsæt
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Content Upload -->
+        <div class="onboarding-step" id="step-content">
+            <div class="step-content">
+                <div class="progress-bar-container">
+                    <div class="progress-bar-onboarding">
+                        <div class="progress-fill-onboarding" style="width: 50%"></div>
+                    </div>
+                    <span class="progress-text">2 af 4</span>
+                </div>
+                
+                <h2 class="step-title">Upload dit pensum eller læringsmaterial 📄</h2>
+                <p class="step-subtitle">Jeg analyserer dit materiale og skaber personligt indhold</p>
+                
+                <div class="upload-options">
+                    <div class="upload-option">
+                        <div class="upload-icon">📁</div>
+                        <h3>Upload filer</h3>
+                        <p>PDF, Word, tekst eller billeder</p>
+                        <input type="file" id="fileUpload" multiple accept=".pdf,.doc,.docx,.txt,.md,.jpg,.png">
+                        <button class="btn btn-primary" onclick="document.getElementById('fileUpload').click()">
+                            Vælg filer
+                        </button>
+                    </div>
+                    
+                    <div class="upload-option">
+                        <div class="upload-icon">✏️</div>
+                        <h3>Skriv eller indsæt tekst</h3>
+                        <p>Kopier fra websites, noter eller bøger</p>
+                        <textarea id="textContent" 
+                                  placeholder="Indsæt dit læringsmateriale her...&#10;&#10;Jeg kan arbejde med alt fra simple noter til komplekse emner."></textarea>
+                        <button class="btn btn-primary" onclick="processText()">
+                            Tilføj tekst
+                        </button>
+                    </div>
+                    
+                    <div class="upload-option">
+                        <div class="upload-icon">🌐</div>
+                        <h3>Import fra web</h3>
+                        <p>Links til artikler, Wikipedia, etc.</p>
+                        <input type="url" id="webUrl" placeholder="https://...">
+                        <button class="btn btn-primary" onclick="importFromWeb()">
+                            Import link
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="content-preview" id="contentPreview" style="display: none;">
+                    <h3>📄 Uploadet materiale:</h3>
+                    <div class="preview-list" id="previewList"></div>
+                </div>
+                
+                <div class="step-actions">
+                    <button class="btn btn-secondary" onclick="prevStep()">Tilbage</button>
+                    <button class="btn btn-primary" onclick="nextStep()" id="continueContent">
+                        Fortsæt (kan også gøres senere)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 4: Exam Timeline -->
+        <div class="onboarding-step" id="step-timeline">
+            <div class="step-content">
+                <div class="progress-bar-container">
+                    <div class="progress-bar-onboarding">
+                        <div class="progress-fill-onboarding" style="width: 75%"></div>
+                    </div>
+                    <span class="progress-text">3 af 4</span>
+                </div>
+                
+                <h2 class="step-title">Hvornår er din eksamen? 📅</h2>
+                <p class="step-subtitle">Jeg laver en optimal læringsplan baseret på tiden du har</p>
+                
+                <div class="timeline-options">
+                    <div class="quick-options">
+                        <h3>Hurtige valg:</h3>
+                        <div class="quick-grid">
+                            <button class="timeline-option" data-days="7">
+                                <span class="timeline-emoji">⚡</span>
+                                <span class="timeline-text">1 uge</span>
+                                <span class="timeline-desc">Intensiv sprint</span>
+                            </button>
+                            <button class="timeline-option" data-days="14">
+                                <span class="timeline-emoji">🎯</span>
+                                <span class="timeline-text">2 uger</span>
+                                <span class="timeline-desc">Fokuseret prep</span>
+                            </button>
+                            <button class="timeline-option" data-days="30">
+                                <span class="timeline-emoji">📚</span>
+                                <span class="timeline-text">1 måned</span>
+                                <span class="timeline-desc">Grundig forberedelse</span>
+                            </button>
+                            <button class="timeline-option" data-days="90">
+                                <span class="timeline-emoji">🌱</span>
+                                <span class="timeline-text">3 måneder</span>
+                                <span class="timeline-desc">Dyb læring</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="custom-date">
+                        <h3>Eller vælg præcis dato:</h3>
+                        <div class="date-input-group">
+                            <input type="date" id="examDate" class="form-input">
+                            <button class="btn btn-secondary" onclick="calculateDays()">
+                                Beregn dage
+                            </button>
+                        </div>
+                        <div id="daysCalculated" class="days-result"></div>
+                    </div>
+                </div>
+                
+                <div class="timeline-preview" id="timelinePreview" style="display: none;">
+                    <h3>📅 Din læringsplan:</h3>
+                    <div class="plan-overview">
+                        <div class="plan-stat">
+                            <span class="stat-number" id="totalDays">0</span>
+                            <span class="stat-label">Dage total</span>
+                        </div>
+                        <div class="plan-stat">
+                            <span class="stat-number" id="dailyTime">20</span>
+                            <span class="stat-label">Min/dag</span>
+                        </div>
+                        <div class="plan-stat">
+                            <span class="stat-number" id="weeklyGoal">5</span>
+                            <span class="stat-label">Sessioner/uge</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step-actions">
+                    <button class="btn btn-secondary" onclick="prevStep()">Tilbage</button>
+                    <button class="btn btn-primary" onclick="nextStep()" id="continueTimeline" disabled>
+                        Fortsæt
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 5: AI Learning Path Generation -->
+        <div class="onboarding-step" id="step-generate">
+            <div class="step-content">
+                <div class="progress-bar-container">
+                    <div class="progress-bar-onboarding">
+                        <div class="progress-fill-onboarding" style="width: 100%"></div>
+                    </div>
+                    <span class="progress-text">4 af 4</span>
+                </div>
+                
+                <div class="generation-status" id="generationStatus">
+                    <!-- AI Thinking Animation -->
+                    <div class="ai-thinking">
+                        <div class="thinking-avatar">
+                            <span class="avatar-emoji">🤖</span>
+                            <div class="thinking-dots">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+                        
+                        <h2 class="thinking-title">Jeg skaber din personlige læringsplan...</h2>
+                        
+                        <div class="thinking-steps" id="thinkingSteps">
+                            <div class="thinking-step active">
+                                <span class="step-icon">📚</span>
+                                <span class="step-text">Analyserer dit emne og materiale</span>
+                            </div>
+                            <div class="thinking-step">
+                                <span class="step-icon">🎯</span>
+                                <span class="step-text">Optimerer baseret på tid til eksamen</span>
+                            </div>
+                            <div class="thinking-step">
+                                <span class="step-icon">🗂️</span>
+                                <span class="step-text">Genererer flashcards og quizzer</span>
+                            </div>
+                            <div class="thinking-step">
+                                <span class="step-icon">📊</span>
+                                <span class="step-text">Skaber progress tracking</span>
+                            </div>
+                            <div class="thinking-step">
+                                <span class="step-icon">✨</span>
+                                <span class="step-text">Færdiggør din læringsplan</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Success Result -->
+                    <div class="generation-result" id="generationResult" style="display: none;">
+                        <div class="success-animation">
+                            <div class="checkmark">✓</div>
+                        </div>
+                        
+                        <h2 class="result-title">Din læringsplan er klar! 🎉</h2>
+                        
+                        <div class="plan-summary" id="planSummary">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                        
+                        <div class="next-steps">
+                            <button class="btn btn-primary btn-large" onclick="startLearning()">
+                                🚀 Start læring nu!
+                            </button>
+                            <button class="btn btn-secondary" onclick="viewDashboard()">
+                                📊 Se dashboard
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Background Elements -->
+    <div class="background-elements">
+        <div class="floating-element" style="--delay: 0s; --duration: 20s;">📚</div>
+        <div class="floating-element" style="--delay: 5s; --duration: 25s;">🧠</div>
+        <div class="floating-element" style="--delay: 10s; --duration: 30s;">⚡</div>
+        <div class="floating-element" style="--delay: 15s; --duration: 22s;">🎯</div>
+    </div>
+
+    <script src="onboarding.js"></script>
+</body>
+</html>

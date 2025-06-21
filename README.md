@@ -1,6 +1,6 @@
-# ExamKlar - Proteinrensning Mikrolæring 📚
+# ExamKlar - Din Personlige Eksamen App 📚
 
-En modern, simpel mikrolærings platform til at mestre proteinrensning på 7 dage gennem interaktive flashcards, quizzer og spaced repetition.
+En moderne, AI-powered mikrolærings platform hvor du kan skabe dine egne kurser og mestre hvilket som helst emne gennem interaktive flashcards, quizzer og spaced repetition.
 
 ## 🎯 Filosofi: Simpel, Modulær, Effektiv
 
@@ -12,6 +12,7 @@ ExamKlar er bygget på princippet om **minimal kompleksitet, maksimal værdi**:
 - ✅ **Progressive enhancement** - Fungerer uden JavaScript, bedre med
 - ✅ **Mobile-first** - Optimeret til smartphones og tablets
 - ✅ **Offline-first** - Fungerer uden internetforbindelse
+- ✅ **User-generated content** - Skab dine egne læringsemner
 
 ## 🚀 Hurtig Start
 
