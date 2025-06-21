@@ -19,10 +19,24 @@ const DataBridge = {
         console.log('🔄 DataBridge: Initializing from onboarding...');
         
         const onboardingData = this.getOnboardingData();
+        console.log('🔍 DEBUG: Retrieved onboarding data:', onboardingData);
+        
         if (!onboardingData) {
             console.warn('⚠️ No onboarding data found');
+            // Additional debugging
+            const allKeys = Object.keys(localStorage).filter(key => key.includes('examklar'));
+            console.log('🔍 DEBUG: Available localStorage keys:', allKeys);
             return false;
         }
+
+        console.log('🔍 DEBUG: Onboarding data structure:', {
+            hasSubject: !!onboardingData.subject,
+            hasEmoji: !!onboardingData.subjectEmoji,
+            hasExamDate: !!onboardingData.examDate,
+            hasDaysToExam: !!onboardingData.daysToExam,
+            hasContent: !!(onboardingData.content && onboardingData.content.length > 0),
+            contentLength: onboardingData.content ? onboardingData.content.length : 0
+        });
 
         // Create unified training data structure
         const trainingData = {
@@ -72,11 +86,25 @@ const DataBridge = {
             }
         };
 
+        console.log('🔍 DEBUG: Created training data structure:', trainingData);
+
         // Save the unified training data
-        this.saveTrainingData(trainingData);
+        try {
+            this.saveTrainingData(trainingData);
+            console.log('✅ Training data saved successfully');
+        } catch (error) {
+            console.error('❌ Error saving training data:', error);
+            return false;
+        }
         
         // Update progress tracker
-        this.initializeProgressTracker();
+        try {
+            this.initializeProgressTracker();
+            console.log('✅ Progress tracker initialized successfully');
+        } catch (error) {
+            console.error('❌ Error initializing progress tracker:', error);
+            return false;
+        }
         
         console.log('✅ DataBridge: Training data initialized successfully');
         return true;

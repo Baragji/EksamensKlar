@@ -560,6 +560,10 @@ class OnboardingSystem {
             await this.saveOnboardingData();
             console.log('✅ Onboarding data saved');
             
+            // DEBUG: Check if data was actually saved
+            const savedData = localStorage.getItem('examklar_onboarding_data');
+            console.log('🔍 DEBUG: Saved onboarding data:', savedData ? JSON.parse(savedData) : 'NO DATA');
+            
             if (button) {
                 button.innerHTML = '<span class="loading-luxury"></span> Genererer læringsplan...';
             }
@@ -569,7 +573,14 @@ class OnboardingSystem {
             let initSuccess = false;
             if (window.DataBridge) {
                 console.log('🔄 Initializing training data...');
+                console.log('🔍 DEBUG: DataBridge available:', !!window.DataBridge);
+                
+                // Check if onboarding data exists before trying to initialize
+                const onboardingCheck = window.DataBridge.getOnboardingData();
+                console.log('🔍 DEBUG: Onboarding data check:', onboardingCheck);
+                
                 initSuccess = window.DataBridge.initializeFromOnboarding();
+                console.log('🔍 DEBUG: Initialization result:', initSuccess);
                 
                 if (initSuccess) {
                     console.log('✅ Training data initialized successfully');
@@ -579,7 +590,11 @@ class OnboardingSystem {
                     await this.delay(500);
                 } else {
                     console.error('❌ Failed to initialize training data');
+                    throw new Error('DataBridge initialization failed');
                 }
+            } else {
+                console.error('❌ DataBridge not available');
+                throw new Error('DataBridge not available');
             }
             
             // Mark onboarding as completed
@@ -598,12 +613,21 @@ class OnboardingSystem {
         } catch (error) {
             console.error('❌ Critical error in startLearning:', error);
             
-            // Show error to user
+            // Show detailed error to user in development
             const button = document.querySelector('button[onclick="startLearning()"]');
             if (button) {
                 button.innerHTML = '❌ Fejl opstået - prøver igen...';
                 button.disabled = false;
             }
+            
+            // Log full error details for debugging
+            console.error('Full error details:', {
+                message: error.message,
+                stack: error.stack,
+                userData: this.userData,
+                hasDataBridge: !!window.DataBridge,
+                onboardingData: localStorage.getItem('examklar_onboarding_data')
+            });
             
             // Don't redirect on error - let user try again
         }
@@ -614,17 +638,32 @@ class OnboardingSystem {
             // Save onboarding data
             this.saveOnboardingData();
             
+            // DEBUG: Check if data was actually saved
+            const savedData = localStorage.getItem('examklar_onboarding_data');
+            console.log('🔍 DEBUG: Saved onboarding data for dashboard:', savedData ? JSON.parse(savedData) : 'NO DATA');
+            
             // CRITICAL FIX: Ensure DataBridge initialization before redirect
             let initSuccess = false;
             if (window.DataBridge) {
                 console.log('🔄 Initializing training data for dashboard...');
+                console.log('🔍 DEBUG: DataBridge available for dashboard:', !!window.DataBridge);
+                
+                // Check if onboarding data exists before trying to initialize
+                const onboardingCheck = window.DataBridge.getOnboardingData();
+                console.log('🔍 DEBUG: Onboarding data check for dashboard:', onboardingCheck);
+                
                 initSuccess = window.DataBridge.initializeFromOnboarding();
+                console.log('🔍 DEBUG: Dashboard initialization result:', initSuccess);
                 
                 if (initSuccess) {
                     console.log('✅ Training data initialized for dashboard');
                 } else {
                     console.error('❌ Failed to initialize training data for dashboard');
+                    throw new Error('DataBridge initialization failed for dashboard');
                 }
+            } else {
+                console.error('❌ DataBridge not available for dashboard');
+                throw new Error('DataBridge not available for dashboard');
             }
             
             // Mark onboarding as completed
@@ -635,7 +674,17 @@ class OnboardingSystem {
             window.location.href = '../dashboard/index.html';
         } catch (error) {
             console.error('❌ Critical error in viewDashboard:', error);
-            alert('Der opstod en fejl. Prøv igen eller kontakt support.');
+            
+            // Log full error details for debugging
+            console.error('Full dashboard error details:', {
+                message: error.message,
+                stack: error.stack,
+                userData: this.userData,
+                hasDataBridge: !!window.DataBridge,
+                onboardingData: localStorage.getItem('examklar_onboarding_data')
+            });
+            
+            alert('Der opstod en fejl. Prøv igen eller kontakt support.\n\nFejl: ' + error.message);
         }
     }
 
@@ -677,7 +726,23 @@ class OnboardingSystem {
         }
 
         // Save onboarding completion data
-        localStorage.setItem('examklar_onboarding_data', JSON.stringify(this.userData));
+        const onboardingDataToSave = {
+            subject: this.userData.subject,
+            subjectEmoji: this.userData.subjectEmoji,
+            examDate: this.userData.examDate,
+            daysToExam: this.userData.daysToExam,
+            content: this.userData.content,
+            learningPlan: this.userData.learningPlan,
+            completed: true,
+            savedAt: new Date().toISOString()
+        };
+        
+        console.log('🔍 DEBUG: Saving onboarding data:', onboardingDataToSave);
+        localStorage.setItem('examklar_onboarding_data', JSON.stringify(onboardingDataToSave));
+        
+        // Verify it was saved
+        const verification = localStorage.getItem('examklar_onboarding_data');
+        console.log('🔍 DEBUG: Verification - saved data:', verification ? JSON.parse(verification) : 'FAILED TO SAVE');
         
         console.log('✅ Onboarding data saved successfully');
     }
