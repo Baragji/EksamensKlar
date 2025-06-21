@@ -1,0 +1,49 @@
+{
+  "day": 4,
+  "title": "Electrophoresis & Analysis",
+  "subtitle": "Analytiske teknikker til purification evaluering",
+  "duration": 20,
+  "difficulty": 2,
+  "objectives": [
+    "Udføre SDS-PAGE analyse",
+    "Tolke elektroforese resultater",
+    "Anvende native PAGE teknikker",
+    "Troubleshoot gel problemer"
+  ],
+  "sections": [
+    {
+      "id": "sds-page",
+      "title": "SDS-PAGE grundlæggende",
+      "type": "text", 
+      "duration": 6,
+      "content": "# SDS-PAGE Analysis\n\n## Princip og mekanisme\nSDS-PAGE (Sodium Dodecyl Sulfate Polyacrylamide Gel Electrophoresis) er den mest brugte analytiske metode i protein purification.\n\n### SDS funktion\n- **Denaturering**: Bryder non-covalente interaktioner\n- **Coating**: Negative SDS molekyler coater protein\n- **Uniform ladning**: Charge-to-mass ratio bliver konstant\n- **Reduction**: DTT eller β-mercaptoethanol bryder disulfid bonds\n\n### Gel system\n- **Stacking gel**: 4-5% acrylamide, pH 6.8\n- **Resolving gel**: 8-15% acrylamide, pH 8.8\n- **Gradient gels**: Bedre separation over bred range\n\n## Praktisk udførelse\n\n### Gel casting\n1. **Resolving gel**: Cast først, overlay med butanol\n2. **Stacking gel**: Cast efter polymerization\n3. **Comb insertion**: For sample wells\n4. **Aging**: 30+ min for komplet polymerization\n\n### Sample preparation\n- **Sample buffer**: Tris-HCl, SDS, glycerol, tracking dye\n- **Reducing agent**: DTT eller β-mercaptoethanol\n- **Heating**: 95°C for 5 min for komplet denaturering\n- **Loading volume**: 10-20 μl per well\n\n### Running conditions\n- **Voltage**: Start 80V (stacking), 120V (resolving)\n- **Current limit**: 30-40 mA per gel\n- **Running time**: 1-2 timer\n- **Temperature**: Køl til 4°C for bedste resultater\n\n## Molecular weight determination\n\n### Standard curve\n- **Protein markers**: Kendte molecular weights\n- **Log MW vs. Rf plot**: Lineær relationship\n- **Rf calculation**: Migration distance/total gel length\n- **Accuracy**: ±10% under optimale conditions"
+    },
+    {
+      "id": "native-page",
+      "title": "Native PAGE og andre teknikker",
+      "type": "text",
+      "duration": 5,
+      "content": "# Native PAGE Techniques\n\n## Native PAGE\n- **Princip**: Separation uden denaturering\n- **Bevarer**: Protein komplekser og aktivitet\n- **Challenges**: Variable charge-to-mass ratios\n- **Applications**: Protein-protein interactions\n\n## Blue Native PAGE\n- **Coomassie addition**: Giver negative ladning\n- **Mild conditions**: Bevarer komplekser\n- **Applications**: Membrane protein komplekser\n\n## Isoelectric Focusing (IEF)\n- **pH gradient**: Proteiner migrerer til deres pI\n- **Høj resolution**: Kan separere proteins med pI forskelle på 0.01\n- **2D-PAGE**: IEF efterfulgt af SDS-PAGE\n\n## Western Blotting\n- **Transfer**: Proteiner fra gel til membran\n- **Detection**: Specifik antistof binding\n- **Applications**: Protein identifikation og quantification"
+    },
+    {
+      "id": "result-interpretation",
+      "title": "Resultat tolkning",
+      "type": "text",
+      "duration": 5,
+      "content": "# Gel Result Interpretation\n\n## Purity assessment\n- **Target band**: Intensitet og scharphed\n- **Contaminant bands**: Antal og intensitet\n- **Purity estimation**: Target/(Target+Contaminants) × 100%\n\n## Common observations\n- **Multiple bands**: Degradation, isoforms, eller contaminants\n- **Smearing**: Overloading eller degradation\n- **No bands**: Loading problem eller migration issues\n\n## Troubleshooting\n- **Poor resolution**: Optimere gel concentration\n- **Band distortion**: Check sample preparation\n- **Background**: Optimere staining procedure"
+    },
+    {
+      "id": "quantification",
+      "title": "Protein quantification",
+      "type": "text", 
+      "duration": 4,
+      "content": "# Protein Quantification\n\n## Bradford Assay\n- **Princip**: Coomassie binding til basicaminosyrer\n- **Advantages**: Hurtig, simpel\n- **Limitations**: Protein composition afhængig\n\n## BCA Assay\n- **Princip**: Copper reduction af protein\n- **Advantages**: Mindre composition afhængig\n- **Compatible**: Med mange buffers\n\n## UV280 Absorption\n- **Princip**: Aromatiske aminosyrer absorberer ved 280 nm\n- **Advantages**: Non-destructive, hurtig\n- **Requirements**: Kendt extinction coefficient"
+    }
+  ],
+  "quiz": ["q4-1", "q4-2", "q4-3", "q4-4"],
+  "flashcards": ["card4-1", "card4-2", "card4-3", "card4-4", "card4-5"],
+  "nextDay": {
+    "day": 5,
+    "title": "Troubleshooting & Problem Solving"
+  }
+}

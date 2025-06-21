@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🗂️ Flashcards - ExamKlar</title>
+    <link rel="stylesheet" href="flashcards.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🗂️ Flashcards Manager</h1>
+            <p>Opret og administrer dine flashcards</p>
+        </header>
+
+        <div class="stats-overview">
+            <div class="stat-card">
+                <div class="stat-number" id="totalCards">0</div>
+                <div class="stat-label">Total Cards</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="dueCards">0</div>
+                <div class="stat-label">Due Today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="masteredCards">0</div>
+                <div class="stat-label">Mastered</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="successRate">0%</div>
+                <div class="stat-label">Success Rate</div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button onclick="showCreateCard()" class="btn-primary">
+                ➕ Create New Card
+            </button>
+            <button onclick="startReview()" class="btn-success" id="reviewBtn">
+                🎯 Start Review
+            </button>
+            <button onclick="showImportExport()" class="btn-secondary">
+                📤 Import/Export
+            </button>
+        </div>
+
+        <!-- Create Card Modal -->
+        <div id="createCardModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>➕ Create New Flashcard</h2>
+                    <span class="close" onclick="hideCreateCard()">&times;</span>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="cardFront">📖 Front (Question/Term):</label>
+                        <textarea id="cardFront" rows="3" placeholder="Enter question or term...
+                        
+Tip: Du kan bruge Markdown:
+**Bold text**
+*Italic text*"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cardBack">💡 Back (Answer/Definition):</label>
+                        <textarea id="cardBack" rows="4" placeholder="Enter answer or definition..."></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cardCategory">🏷️ Category:</label>
+                            <select id="cardCategory">
+                                <option value="custom">Custom Cards</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cardDifficulty">🎯 Initial Difficulty:</label>
+                            <select id="cardDifficulty">
+                                <option value="1">⭐ Easy</option>
+                                <option value="2" selected>⭐⭐ Medium</option>
+                                <option value="3">⭐⭐⭐ Hard</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cardHint">💭 Hint (Optional):</label>
+                        <input type="text" id="cardHint" placeholder="Enter a helpful hint...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cardTags">🏷️ Tags (comma-separated):</label>
+                        <input type="text" id="cardTags" placeholder="tag1, tag2, tag3">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button onclick="hideCreateCard()" class="btn-secondary">Cancel</button>
+                    <button onclick="createCard()" class="btn-primary">Create Card</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cards List -->
+        <div class="cards-section">
+            <div class="section-header">
+                <h2>📚 Your Flashcards</h2>
+                <div class="filter-controls">
+                    <select id="categoryFilter" onchange="filterCards()">
+                        <option value="">All Categories</option>
+                    </select>
+                    <select id="difficultyFilter" onchange="filterCards()">
+                        <option value="">All Difficulties</option>
+                        <option value="1">⭐ Easy</option>
+                        <option value="2">⭐⭐ Medium</option>
+                        <option value="3">⭐⭐⭐ Hard</option>
+                    </select>
+                    <input type="text" id="searchCards" placeholder="🔍 Search cards..." onkeyup="filterCards()">
+                </div>
+            </div>
+
+            <div id="cardsList" class="cards-grid">
+                <div class="empty-state">
+                    <div class="empty-icon">🗂️</div>
+                    <h3>No flashcards yet</h3>
+                    <p>Create your first flashcard to get started!</p>
+                    <button onclick="showCreateCard()" class="btn-primary">Create First Card</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <button onclick="exportCards()" class="btn-outline">📤 Export Cards</button>
+            <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importCards(this)">
+            <button onclick="document.getElementById('importFile').click()" class="btn-outline">📥 Import Cards</button>
+            <button onclick="clearAllCards()" class="btn-outline btn-danger">🗑️ Clear All</button>
+        </div>
+    </div>
+
+    <script src="flashcards.js"></script>
+</body>
+</html>

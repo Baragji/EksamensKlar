@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Manager - ExamKlar</title>
+    <link rel="stylesheet" href="content.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Content Manager</h1>
+            <p>Upload og organiser dit læringsindhold</p>
+        </header>
+
+        <div class="upload-section">
+            <h2>🔝 Upload Nyt Indhold</h2>
+            
+            <div class="upload-form">
+                <div class="form-group">
+                    <label for="dayTitle">📖 Lesson Title:</label>
+                    <input type="text" id="dayTitle" placeholder="f.eks. Protein Basics">
+                </div>
+
+                <div class="form-group">
+                    <label for="dayContent">📝 Indhold (Markdown supported):</label>
+                    <textarea id="dayContent" rows="10" placeholder="Skriv dit læringsindhold her...
+
+Du kan bruge Markdown:
+# Overskrift
+## Underoverskrift
+**Fed tekst**
+*Kursiv*
+- Liste punkt
+1. Nummereret liste
+
+[Link](http://example.com)
+"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="estimatedTime">⏱️ Estimeret læsetid (minutter):</label>
+                    <input type="number" id="estimatedTime" min="1" max="180" value="15">
+                </div>
+
+                <div class="form-group">
+                    <label for="difficulty">🎯 Sværhedsgrad:</label>
+                    <select id="difficulty">
+                        <option value="1">⭐ Begynder</option>
+                        <option value="2">⭐⭐ Mellem</option>
+                        <option value="3">⭐⭐⭐ Avanceret</option>
+                    </select>
+                </div>
+
+                <button onclick="addContent()" class="btn-primary">
+                    ➕ Tilføj Indhold
+                </button>
+            </div>
+        </div>
+
+        <div class="content-list">
+            <h2>📋 Eksisterende Indhold</h2>
+            <div id="contentList">
+                <div class="empty-state">
+                    <p>📭 Intet indhold endnu. Upload dit første lesson!</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button onclick="exportData()" class="btn-secondary">
+                📤 Export Data
+            </button>
+            <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(this)">
+            <button onclick="document.getElementById('importFile').click()" class="btn-secondary">
+                📥 Import Data
+            </button>
+            <button onclick="clearAllData()" class="btn-danger">
+                🗑️ Slet Alt
+            </button>
+        </div>
+    </div>
+
+    <script src="content.js"></script>
+</body>
+</html>

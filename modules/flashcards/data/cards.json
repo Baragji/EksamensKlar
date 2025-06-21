@@ -1,0 +1,22 @@
+{
+  "flashcards": [],
+  "categories": [
+    {
+      "id": "custom",
+      "name": "Custom Cards",
+      "description": "User-created flashcards",
+      "color": "#3498db"
+    }
+  ],
+  "settings": {
+    "defaultCategory": "custom",
+    "spacedRepetitionEnabled": true,
+    "showHints": true,
+    "autoAdvance": false
+  },
+  "metadata": {
+    "version": "1.0",
+    "lastUpdated": "2025-06-21",
+    "totalCards": 0
+  }
+}

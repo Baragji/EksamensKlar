@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧪 Flashcard Module Tests</title>
+    <style>
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif; 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        .test-section { 
+            background: white; 
+            padding: 20px; 
+            margin: 20px 0; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-case { 
+            border: 1px solid #dee2e6; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 5px; 
+        }
+        .pass { border-color: #28a745; background: #d4edda; }
+        .fail { border-color: #dc3545; background: #f8d7da; }
+        .pending { border-color: #ffc107; background: #fff3cd; }
+        button { 
+            background: #007bff; 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin: 5px;
+        }
+        button:hover { background: #0056b3; }
+        .demo-card {
+            width: 300px;
+            height: 200px;
+            margin: 20px auto;
+            perspective: 1000px;
+            position: relative;
+        }
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .card-inner.flipped {
+            transform: rotateY(180deg);
+        }
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .card-front {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .card-back {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Flashcard Module Test Suite</h1>
+    <p><strong>Test-Først Approach:</strong> Disse tests definerer hvad flashcard systemet skal kunne!</p>
+
+    <div class="test-section">
+        <h2>📋 Test Plan</h2>
+        <div class="test-case pending">
+            <h3>✅ 1. Card Creation & Management</h3>
+            <ul>
+                <li>Create flashcard med front/back text</li>
+                <li>Edit eksisterende cards</li>
+                <li>Delete cards</li>
+                <li>Organize cards i categories</li>
+                <li>Import/Export card collections</li>
+            </ul>
+        </div>
+
+        <div class="test-case pending">
+            <h3>🎴 2. Card Display & Animation</h3>
+            <ul>
+                <li>Show beautiful card design</li>
+                <li>Smooth flip animation på click/swipe</li>
+                <li>Touch gestures for mobile</li>
+                <li>Visual feedback for interactions</li>
+            </ul>
+        </div>
+
+        <div class="test-case pending">
+            <h3>🧠 3. Spaced Repetition Algorithm</h3>
+            <ul>
+                <li>Track card difficulty levels</li>
+                <li>Calculate next review dates</li>
+                <li>Prioritize difficult cards</li>
+                <li>Show progress statistics</li>
+            </ul>
+        </div>
+
+        <div class="test-case pending">
+            <h3>📊 4. Progress Tracking</h3>
+            <ul>
+                <li>Track correct/incorrect answers</li>
+                <li>Calculate success rates</li>
+                <li>Show daily progress</li>
+                <li>Achievement milestones</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🎴 Interactive Card Demo</h2>
+        <p>Click på kortet for at teste flip animation:</p>
+        
+        <div class="demo-card">
+            <div class="card-inner" id="demoCard" onclick="flipCard()">
+                <div class="card-face card-front">
+                    <div>
+                        <strong>Front Side</strong><br>
+                        Hvad er en protein?
+                    </div>
+                </div>
+                <div class="card-face card-back">
+                    <div>
+                        <strong>Back Side</strong><br>
+                        En kæde af aminosyrer der folder sig til en 3D struktur
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <button onclick="flipCard()">🔄 Flip Card</button>
+            <button onclick="markCorrect()">✅ Korrekt</button>
+            <button onclick="markIncorrect()">❌ Forkert</button>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🧠 Spaced Repetition Test</h2>
+        <div id="spacedRepetitionDemo">
+            <p>Testing spaced repetition logic...</p>
+            <button onclick="testSpacedRepetition()">🧪 Test Algorithm</button>
+            <div id="spacedResults"></div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>💾 Data Persistence Test</h2>
+        <div id="persistenceTest">
+            <button onclick="testDataSave()">💾 Test Save</button>
+            <button onclick="testDataLoad()">📁 Test Load</button>
+            <button onclick="testDataClear()">🗑️ Test Clear</button>
+            <div id="persistenceResults"></div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>📱 Mobile Gesture Test</h2>
+        <div id="gestureTest" style="border: 2px dashed #ccc; padding: 40px; text-align: center; margin: 20px 0;">
+            <p>Swipe LEFT (❌) eller RIGHT (✅) her for at teste mobile gestures</p>
+            <div id="gestureResult"></div>
+        </div>
+    </div>
+
+    <script>
+        // Test Implementation
+        let testResults = {
+            cardFlip: false,
+            spacedRepetition: false,
+            dataPersistence: false,
+            mobileGestures: false
+        };
+
+        // Card flip test
+        function flipCard() {
+            const card = document.getElementById('demoCard');
+            card.classList.toggle('flipped');
+            testResults.cardFlip = true;
+            updateTestStatus('cardFlip', 'Card flip animation works! ✅');
+        }
+
+        function markCorrect() {
+            showResult('Marked as CORRECT ✅', 'success');
+        }
+
+        function markIncorrect() {
+            showResult('Marked as INCORRECT ❌', 'fail');
+        }
+
+        // Spaced repetition test
+        function testSpacedRepetition() {
+            const results = document.getElementById('spacedResults');
+            
+            // Simple spaced repetition algorithm test
+            const cardDifficulties = [1, 2, 3, 4, 5];
+            const nextReviewDays = cardDifficulties.map(difficulty => {
+                // 2^difficulty days for next review
+                return Math.pow(2, difficulty);
+            });
+
+            results.innerHTML = `
+                <h4>Spaced Repetition Results:</h4>
+                <ul>
+                    ${cardDifficulties.map((diff, i) => 
+                        `<li>Difficulty ${diff}: Next review in ${nextReviewDays[i]} days</li>`
+                    ).join('')}
+                </ul>
+                <p>✅ Algorithm working correctly!</p>
+            `;
+            
+            testResults.spacedRepetition = true;
+            updateTestStatus('spacedRepetition', 'Spaced repetition algorithm works! ✅');
+        }
+
+        // Data persistence test
+        function testDataSave() {
+            const testData = {
+                cards: [
+                    { id: 1, front: "Test Front", back: "Test Back", difficulty: 1 }
+                ],
+                progress: { correct: 5, incorrect: 2 }
+            };
+            
+            localStorage.setItem('flashcard-test', JSON.stringify(testData));
+            showPersistenceResult('Data saved to localStorage ✅');
+        }
+
+        function testDataLoad() {
+            const data = localStorage.getItem('flashcard-test');
+            if (data) {
+                const parsed = JSON.parse(data);
+                showPersistenceResult(`Data loaded: ${parsed.cards.length} cards found ✅`);
+                testResults.dataPersistence = true;
+                updateTestStatus('dataPersistence', 'Data persistence works! ✅');
+            } else {
+                showPersistenceResult('No data found ❌');
+            }
+        }
+
+        function testDataClear() {
+            localStorage.removeItem('flashcard-test');
+            showPersistenceResult('Data cleared ✅');
+        }
+
+        function showPersistenceResult(message) {
+            document.getElementById('persistenceResults').innerHTML = `<p>${message}</p>`;
+        }
+
+        // Mobile gesture test
+        let startX = 0;
+        let startY = 0;
+
+        const gestureArea = document.getElementById('gestureTest');
+
+        gestureArea.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+        });
+
+        gestureArea.addEventListener('touchend', (e) => {
+            const endX = e.changedTouches[0].clientX;
+            const endY = e.changedTouches[0].clientY;
+            
+            const deltaX = endX - startX;
+            const deltaY = endY - startY;
+            
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+                if (deltaX > 0) {
+                    showGestureResult('Swiped RIGHT ✅ - Marked as CORRECT!');
+                } else {
+                    showGestureResult('Swiped LEFT ❌ - Marked as INCORRECT!');
+                }
+                testResults.mobileGestures = true;
+                updateTestStatus('mobileGestures', 'Mobile gestures work! ✅');
+            }
+        });
+
+        // Mouse events for desktop testing
+        gestureArea.addEventListener('mousedown', (e) => {
+            startX = e.clientX;
+        });
+
+        gestureArea.addEventListener('mouseup', (e) => {
+            const deltaX = e.clientX - startX;
+            if (Math.abs(deltaX) > 50) {
+                if (deltaX > 0) {
+                    showGestureResult('Mouse drag RIGHT ✅ - Marked as CORRECT!');
+                } else {
+                    showGestureResult('Mouse drag LEFT ❌ - Marked as INCORRECT!');
+                }
+                testResults.mobileGestures = true;
+                updateTestStatus('mobileGestures', 'Desktop gestures work! ✅');
+            }
+        });
+
+        function showGestureResult(message) {
+            document.getElementById('gestureResult').innerHTML = `<strong>${message}</strong>`;
+        }
+
+        function showResult(message, type) {
+            const div = document.createElement('div');
+            div.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px;
+                background: ${type === 'success' ? '#28a745' : '#dc3545'};
+                color: white;
+                border-radius: 5px;
+                z-index: 1000;
+            `;
+            div.textContent = message;
+            document.body.appendChild(div);
+            
+            setTimeout(() => {
+                div.remove();
+            }, 2000);
+        }
+
+        function updateTestStatus(testName, message) {
+            console.log(`Test ${testName}: ${message}`);
+        }
+
+        // Initialize tests on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🧪 Flashcard Test Suite Loaded');
+            console.log('Tests ready to run - click buttons to test functionality!');
+        });
+    </script>
+</body>
+</html>

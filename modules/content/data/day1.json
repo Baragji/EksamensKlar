@@ -1,0 +1,67 @@
+{
+  "day": 1,
+  "title": "Day 1 - Tilføj Dit Eget Indhold",
+  "subtitle": "Upload og organiser dit læringsmateriale",
+  "duration": 0,
+  "difficulty": 1,
+  "userContent": true,
+  "objectives": [],
+  "sections": [
+    {
+      "id": "placeholder",
+      "title": "📝 Tilføj Dit Første Afsnit",
+      "type": "empty",
+      "content": "Klik 'Rediger' for at tilføje dit eget indhold...",
+      "userGenerated": true
+    }
+  ],
+  "quiz": [],
+  "flashcards": [],
+  "notes": ""
+}
+  "flashcards": ["card1-1", "card1-2", "card1-3", "card1-4", "card1-5", "card1-6"],
+  "practicalExercise": {
+    "title": "Identificer separation strategi",
+    "description": "Givet protein egenskaber, vælg optimal purification approach",
+    "estimatedTime": 5
+  },
+  "keyTerms": [
+    "aminosyrer",
+    "polypeptid",
+    "primær struktur",
+    "sekundær struktur", 
+    "tertiær struktur",
+    "ion exchange",
+    "size exclusion",
+    "hydrophobic interaction",
+    "affinity chromatografi",
+    "isoelectric point"
+  ],
+  "nextDay": {
+    "day": 2,
+    "title": "Purification Methods & Strategy",
+    "preview": "I morgen dykker vi dybere ned i specifikke purification metoder og hvordan man designer en optimal strategi."
+  },
+  "resources": {
+    "additionalReading": [
+      "Berg et al. - Biochemistry Ch. 3: Protein Structure",
+      "Janson - Protein Purification Ch. 1: Introduction"
+    ],
+    "videos": [
+      "protein-structure-3d.mp4",
+      "chromatography-basics.mp4"
+    ],
+    "exercises": [
+      "protein-identification-quiz.html",
+      "structure-prediction-tool.html"
+    ]
+  },
+  "metadata": {
+    "created": "2025-06-21",
+    "lastUpdated": "2025-06-21",
+    "reviewedBy": "Dr. Protein Expert",
+    "difficulty": 1,
+    "estimatedSuccessRate": 85,
+    "prerequisiteKnowledge": ["basic-biochemistry", "protein-basics"]
+  }
+}

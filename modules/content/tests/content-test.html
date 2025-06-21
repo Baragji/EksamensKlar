@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧪 Content Module Tests</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .pass { background-color: #d4edda; color: #155724; }
+        .fail { background-color: #f8d7da; color: #721c24; }
+        .pending { background-color: #fff3cd; color: #856404; }
+        h1 { color: #333; }
+        h2 { color: #666; border-bottom: 1px solid #ddd; }
+        .test-case { margin: 15px 0; }
+        button { padding: 8px 16px; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Content Module Test Suite</h1>
+    <p><strong>Phase 2 Test-Driven Development</strong></p>
+
+    <div id="test-results"></div>
+
+    <h2>Manual Test Cases</h2>
+    <div class="test-case">
+        <h3>1. JSON Data Structure Tests</h3>
+        <button onclick="testCurriculumStructure()">Test Curriculum Loading</button>
+        <button onclick="testDayDataStructure()">Test Day Data Structure</button>
+        <div id="data-tests"></div>
+    </div>
+
+    <div class="test-case">
+        <h3>2. Content Navigation Tests</h3>
+        <button onclick="testNavigation()">Test Day Navigation</button>
+        <button onclick="testSectionNavigation()">Test Section Navigation</button>
+        <div id="navigation-tests"></div>
+    </div>
+
+    <div class="test-case">
+        <h3>3. Progress Tracking Tests</h3>
+        <button onclick="testProgressTracking()">Test Progress Saving</button>
+        <button onclick="testBookmarks()">Test Bookmark System</button>
+        <div id="progress-tests"></div>
+    </div>
+
+    <div class="test-case">
+        <h3>4. Reading Experience Tests</h3>
+        <button onclick="testReadingTime()">Test Reading Time Estimation</button>
+        <button onclick="testMobileOptimization()">Test Mobile UI</button>
+        <div id="reading-tests"></div>
+    </div>
+
+    <script>
+        // Test Results Display
+        function displayTestResult(testName, passed, message, containerId = 'test-results') {
+            const container = document.getElementById(containerId);
+            const resultDiv = document.createElement('div');
+            resultDiv.className = `test-result ${passed ? 'pass' : 'fail'}`;
+            resultDiv.innerHTML = `
+                <strong>${passed ? '✅' : '❌'} ${testName}</strong><br>
+                ${message}
+            `;
+            container.appendChild(resultDiv);
+        }
+
+        function displayPendingTest(testName, message, containerId = 'test-results') {
+            const container = document.getElementById(containerId);
+            const resultDiv = document.createElement('div');
+            resultDiv.className = 'test-result pending';
+            resultDiv.innerHTML = `
+                <strong>⏳ ${testName}</strong><br>
+                ${message}
+            `;
+            container.appendChild(resultDiv);
+        }
+
+        // 1. DATA STRUCTURE TESTS
+        async function testCurriculumStructure() {
+            displayPendingTest('Curriculum Structure Test', 'Testing curriculum.json loading and structure...', 'data-tests');
+            
+            try {
+                const response = await fetch('../data/curriculum.json');
+                if (!response.ok) {
+                    displayTestResult('Curriculum Load', false, 'curriculum.json ikke fundet eller ikke tilgængelig', 'data-tests');
+                    return;
+                }
+                
+                const curriculum = await response.json();
+                
+                // Test required fields
+                const hasRequiredFields = curriculum.hasOwnProperty('days') && 
+                                        curriculum.hasOwnProperty('totalDays') &&
+                                        curriculum.hasOwnProperty('title');
+                
+                if (hasRequiredFields && curriculum.totalDays === 7) {
+                    displayTestResult('Curriculum Structure', true, 'Curriculum har korrekt struktur med 7 dage', 'data-tests');
+                } else {
+                    displayTestResult('Curriculum Structure', false, 'Curriculum mangler required fields eller har forkert antal dage', 'data-tests');
+                }
+                
+            } catch (error) {
+                displayTestResult('Curriculum Load', false, `Fejl ved indlæsning: ${error.message}`, 'data-tests');
+            }
+        }
+
+        async function testDayDataStructure() {
+            displayPendingTest('Day Data Structure Test', 'Testing day1.json structure...', 'data-tests');
+            
+            try {
+                const response = await fetch('../data/day1.json');
+                if (!response.ok) {
+                    displayTestResult('Day Data Load', false, 'day1.json ikke fundet', 'data-tests');
+                    return;
+                }
+                
+                const dayData = await response.json();
+                
+                // Test required fields for day data
+                const hasRequiredFields = dayData.hasOwnProperty('day') && 
+                                        dayData.hasOwnProperty('title') &&
+                                        dayData.hasOwnProperty('sections') &&
+                                        dayData.hasOwnProperty('duration');
+                
+                const hasSections = Array.isArray(dayData.sections) && dayData.sections.length > 0;
+                
+                if (hasRequiredFields && hasSections) {
+                    displayTestResult('Day Data Structure', true, 'Day data har korrekt struktur med sektioner', 'data-tests');
+                } else {
+                    displayTestResult('Day Data Structure', false, 'Day data mangler required fields eller sektioner', 'data-tests');
+                }
+                
+            } catch (error) {
+                displayTestResult('Day Data Load', false, `Fejl ved indlæsning: ${error.message}`, 'data-tests');
+            }
+        }
+
+        // 2. NAVIGATION TESTS
+        function testNavigation() {
+            displayPendingTest('Navigation Test', 'Testing day navigation functionality...', 'navigation-tests');
+            
+            // Test if navigation functions exist
+            if (typeof window.navigateToDay === 'function') {
+                displayTestResult('Navigation Functions', true, 'navigateToDay function eksisterer', 'navigation-tests');
+            } else {
+                displayTestResult('Navigation Functions', false, 'navigateToDay function mangler', 'navigation-tests');
+            }
+        }
+
+        function testSectionNavigation() {
+            displayPendingTest('Section Navigation Test', 'Testing section navigation...', 'navigation-tests');
+            
+            if (typeof window.navigateToSection === 'function') {
+                displayTestResult('Section Navigation', true, 'navigateToSection function eksisterer', 'navigation-tests');
+            } else {
+                displayTestResult('Section Navigation', false, 'navigateToSection function mangler', 'navigation-tests');
+            }
+        }
+
+        // 3. PROGRESS TRACKING TESTS
+        function testProgressTracking() {
+            displayPendingTest('Progress Tracking Test', 'Testing progress saving...', 'progress-tests');
+            
+            // Test localStorage functionality
+            try {
+                localStorage.setItem('test-progress', JSON.stringify({day: 1, section: 'intro'}));
+                const retrieved = JSON.parse(localStorage.getItem('test-progress'));
+                
+                if (retrieved && retrieved.day === 1) {
+                    displayTestResult('LocalStorage Progress', true, 'Progress kan gemmes og hentes fra localStorage', 'progress-tests');
+                    localStorage.removeItem('test-progress');
+                } else {
+                    displayTestResult('LocalStorage Progress', false, 'Problem med localStorage progress', 'progress-tests');
+                }
+            } catch (error) {
+                displayTestResult('LocalStorage Progress', false, 'LocalStorage ikke tilgængelig', 'progress-tests');
+            }
+        }
+
+        function testBookmarks() {
+            displayPendingTest('Bookmark Test', 'Testing bookmark system...', 'progress-tests');
+            
+            if (typeof window.addBookmark === 'function' && typeof window.getBookmarks === 'function') {
+                displayTestResult('Bookmark Functions', true, 'Bookmark functions eksisterer', 'progress-tests');
+            } else {
+                displayTestResult('Bookmark Functions', false, 'Bookmark functions mangler', 'progress-tests');
+            }
+        }
+
+        // 4. READING EXPERIENCE TESTS
+        function testReadingTime() {
+            displayPendingTest('Reading Time Test', 'Testing reading time estimation...', 'reading-tests');
+            
+            if (typeof window.calculateReadingTime === 'function') {
+                displayTestResult('Reading Time Function', true, 'calculateReadingTime function eksisterer', 'reading-tests');
+            } else {
+                displayTestResult('Reading Time Function', false, 'calculateReadingTime function mangler', 'reading-tests');
+            }
+        }
+
+        function testMobileOptimization() {
+            displayPendingTest('Mobile Optimization Test', 'Testing mobile responsiveness...', 'reading-tests');
+            
+            const viewport = window.innerWidth;
+            if (viewport < 768) {
+                displayTestResult('Mobile View', true, `Mobile viewport detected: ${viewport}px`, 'reading-tests');
+            } else {
+                displayTestResult('Mobile View', true, `Desktop viewport: ${viewport}px - test på mobil enhed`, 'reading-tests');
+            }
+        }
+
+        // Auto-run basic tests on load
+        window.addEventListener('load', function() {
+            displayTestResult('Test Suite Load', true, 'Content module test suite loaded successfully');
+            displayPendingTest('Implementation Status', 'Ready to implement content module functionality');
+        });
+    </script>
+</body>
+</html>

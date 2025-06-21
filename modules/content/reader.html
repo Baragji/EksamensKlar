@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Reader - ExamKlar</title>
+    <link rel="stylesheet" href="content.css">
+    <style>
+        /* Reader-specific styles */
+        .reader-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .reader-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .reader-nav {
+            background: #f8f9fa;
+            padding: 15px 30px;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .reader-content {
+            padding: 40px;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .reader-content h1,
+        .reader-content h2,
+        .reader-content h3 {
+            color: #2c3e50;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .reader-content h1 {
+            font-size: 2.2rem;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .reader-content h2 {
+            font-size: 1.8rem;
+            color: #34495e;
+        }
+
+        .reader-content h3 {
+            font-size: 1.4rem;
+            color: #7f8c8d;
+        }
+
+        .reader-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .reader-content strong {
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        .reader-content em {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        .reader-content ul,
+        .reader-content ol {
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+
+        .reader-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #ecf0f1;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .reading-meta {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .nav-btn.prev {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .nav-btn.next {
+            background: #3498db;
+            color: white;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+
+        .bookmark-btn {
+            background: #f39c12;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .bookmark-btn:hover {
+            background: #e67e22;
+            transform: translateY(-1px);
+        }
+
+        .bookmark-btn.bookmarked {
+            background: #27ae60;
+        }
+
+        @media (max-width: 768px) {
+            .reader-content {
+                padding: 25px;
+                font-size: 1rem;
+            }
+
+            .reader-nav {
+                padding: 10px 15px;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .reader-header {
+                padding: 20px;
+            }
+
+            .reader-content h1 {
+                font-size: 1.8rem;
+            }
+
+            .reader-content h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="reader-container">
+            <div class="reader-header">
+                <div class="reading-meta">
+                    <span id="dayInfo">📖 Loading...</span>
+                    <span id="timeInfo">⏱️ -- min</span>
+                    <span id="difficultyInfo">🎯 --</span>
+                </div>
+                <h1 id="contentTitle">Loading Content...</h1>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+
+            <div class="reader-nav">
+                <button class="nav-btn prev" id="prevBtn" onclick="previousDay()" disabled>
+                    ← Forrige Day
+                </button>
+                
+                <button class="bookmark-btn" id="bookmarkBtn" onclick="toggleBookmark()">
+                    🔖 Bookmark
+                </button>
+                
+                <button class="nav-btn next" id="nextBtn" onclick="nextDay()" disabled>
+                    Næste Day →
+                </button>
+            </div>
+
+            <div class="reader-content" id="readerContent">
+                <p>Loading content...</p>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="index.html" class="btn-secondary">← Tilbage til Content Manager</a>
+        </div>
+    </div>
+
+    <script>
+        class ContentReader {
+            constructor() {
+                this.currentDay = this.getDayFromURL() || 1;
+                this.curriculum = this.loadCurriculum();
+                this.bookmarks = this.loadBookmarks();
+                this.init();
+            }
+
+            init() {
+                this.loadContent();
+                this.updateNavigation();
+                this.updateProgress();
+                this.markAsRead();
+            }
+
+            getDayFromURL() {
+                const params = new URLSearchParams(window.location.search);
+                return parseInt(params.get('day')) || null;
+            }
+
+            loadCurriculum() {
+                const stored = localStorage.getItem('examklar-content');
+                if (stored) {
+                    return JSON.parse(stored);
+                }
+                return { days: [] };
+            }
+
+            loadBookmarks() {
+                const stored = localStorage.getItem('examklar-bookmarks');
+                return stored ? JSON.parse(stored) : [];
+            }
+
+            saveBookmarks() {
+                localStorage.setItem('examklar-bookmarks', JSON.stringify(this.bookmarks));
+            }
+
+            getCurrentDay() {
+                return this.curriculum.days.find(day => day.day === this.currentDay);
+            }
+
+            loadContent() {
+                const day = this.getCurrentDay();
+                
+                if (!day) {
+                    document.getElementById('readerContent').innerHTML = `
+                        <div style="text-align: center; padding: 60px 20px;">
+                            <h2>📭 Ingen content fundet</h2>
+                            <p>Day ${this.currentDay} eksisterer ikke endnu.</p>
+                            <a href="index.html" class="btn-primary">← Tilbage til Content Manager</a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Update header info
+                document.getElementById('dayInfo').textContent = `📖 Day ${day.day}`;
+                document.getElementById('timeInfo').textContent = `⏱️ ${day.duration} min`;
+                document.getElementById('difficultyInfo').textContent = `🎯 ${'⭐'.repeat(day.difficulty)}`;
+                document.getElementById('contentTitle').textContent = day.title;
+
+                // Convert markdown to HTML and display
+                document.getElementById('readerContent').innerHTML = this.markdownToHtml(day.content);
+
+                // Update bookmark button
+                this.updateBookmarkButton();
+
+                // Update page title
+                document.title = `${day.title} - ExamKlar`;
+            }
+
+            markdownToHtml(markdown) {
+                return markdown
+                    .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+                    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+                    .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+                    .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
+                    .replace(/\*(.*?)\*/gim, '<em>$1</em>')
+                    .replace(/\[(.*?)\]\((.*?)\)/gim, '<a href="$2" target="_blank">$1</a>')
+                    .replace(/^- (.*$)/gim, '<li>$1</li>')
+                    .replace(/^(\d+)\. (.*$)/gim, '<li>$1</li>')
+                    .replace(/(<li>.*<\/li>)/gis, '<ul>$1</ul>')
+                    .replace(/\n\n/gim, '</p><p>')
+                    .replace(/^(?!<[uh]|<li)([^<\n]+)$/gim, '<p>$1</p>')
+                    .replace(/\n/gim, '<br>');
+            }
+
+            updateNavigation() {
+                const prevBtn = document.getElementById('prevBtn');
+                const nextBtn = document.getElementById('nextBtn');
+
+                // Previous button
+                const hasPrevious = this.curriculum.days.some(day => day.day === this.currentDay - 1);
+                prevBtn.disabled = !hasPrevious;
+                
+                // Next button
+                const hasNext = this.curriculum.days.some(day => day.day === this.currentDay + 1);
+                nextBtn.disabled = !hasNext;
+            }
+
+            updateProgress() {
+                const totalDays = this.curriculum.days.length;
+                const progress = totalDays > 0 ? (this.currentDay / totalDays) * 100 : 0;
+                document.getElementById('progressFill').style.width = `${Math.min(progress, 100)}%`;
+            }
+
+            updateBookmarkButton() {
+                const btn = document.getElementById('bookmarkBtn');
+                const isBookmarked = this.bookmarks.includes(this.currentDay);
+                
+                if (isBookmarked) {
+                    btn.textContent = '🔖 Bookmarked';
+                    btn.classList.add('bookmarked');
+                } else {
+                    btn.textContent = '🔖 Bookmark';
+                    btn.classList.remove('bookmarked');
+                }
+            }
+
+            toggleBookmark() {
+                const index = this.bookmarks.indexOf(this.currentDay);
+                
+                if (index > -1) {
+                    this.bookmarks.splice(index, 1);
+                } else {
+                    this.bookmarks.push(this.currentDay);
+                }
+                
+                this.saveBookmarks();
+                this.updateBookmarkButton();
+                
+                // Show notification
+                const message = index > -1 ? '🔖 Bookmark fjernet' : '🔖 Side bookmarked';
+                this.showNotification(message);
+            }
+
+            markAsRead() {
+                // Track reading progress
+                let readDays = JSON.parse(localStorage.getItem('examklar-read-days') || '[]');
+                if (!readDays.includes(this.currentDay)) {
+                    readDays.push(this.currentDay);
+                    localStorage.setItem('examklar-read-days', JSON.stringify(readDays));
+                }
+
+                // Update reading timestamp
+                const readingSession = {
+                    day: this.currentDay,
+                    timestamp: new Date().toISOString(),
+                    duration: 0 // Could track actual reading time
+                };
+
+                let sessions = JSON.parse(localStorage.getItem('examklar-reading-sessions') || '[]');
+                sessions.push(readingSession);
+                
+                // Keep only last 100 sessions
+                if (sessions.length > 100) {
+                    sessions = sessions.slice(-100);
+                }
+                
+                localStorage.setItem('examklar-reading-sessions', JSON.stringify(sessions));
+            }
+
+            previousDay() {
+                if (this.currentDay > 1) {
+                    window.location.href = `reader.html?day=${this.currentDay - 1}`;
+                }
+            }
+
+            nextDay() {
+                const maxDay = Math.max(...this.curriculum.days.map(d => d.day), 0);
+                if (this.currentDay < maxDay) {
+                    window.location.href = `reader.html?day=${this.currentDay + 1}`;
+                }
+            }
+
+            showNotification(message) {
+                const notification = document.createElement('div');
+                notification.className = 'notification notification-info';
+                notification.textContent = message;
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.remove();
+                }, 2000);
+            }
+        }
+
+        // Global functions
+        let contentReader;
+
+        function previousDay() {
+            contentReader.previousDay();
+        }
+
+        function nextDay() {
+            contentReader.nextDay();
+        }
+
+        function toggleBookmark() {
+            contentReader.toggleBookmark();
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            contentReader = new ContentReader();
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                previousDay();
+            } else if (e.key === 'ArrowRight') {
+                nextDay();
+            } else if (e.key === 'b' || e.key === 'B') {
+                toggleBookmark();
+            }
+        });
+    </script>
+</body>
+</html>

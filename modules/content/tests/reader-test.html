@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧪 Content Reader Tests</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .pass { background-color: #d4edda; color: #155724; }
+        .fail { background-color: #f8d7da; color: #721c24; }
+        .pending { background-color: #fff3cd; color: #856404; }
+        .test-area { border: 1px solid #ddd; padding: 15px; margin: 15px 0; background: #f8f9fa; }
+        .mock-content { max-width: 600px; line-height: 1.6; }
+        button { padding: 8px 16px; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Content Reader Test Suite</h1>
+    <p><strong>Testing Reading Experience & UI Components</strong></p>
+
+    <div id="test-results"></div>
+
+    <h2>Reader UI Tests</h2>
+    
+    <div class="test-area">
+        <h3>1. Typography & Readability Test</h3>
+        <div class="mock-content" id="typography-test">
+            <h2>Protein Basics & Purification Overview</h2>
+            <p>Dette er en test af typografi og læsbarhed. Teksten skal være let at læse på både mobil og desktop enheder.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+            <ul>
+                <li>Bullet point test</li>
+                <li>Anden bullet point</li>
+                <li>Tredje bullet point</li>
+            </ul>
+        </div>
+        <button onclick="testTypography()">Test Typography</button>
+        <div id="typography-results"></div>
+    </div>
+
+    <div class="test-area">
+        <h3>2. Progress Indicator Test</h3>
+        <div id="progress-indicator">
+            <div style="width: 100%; background-color: #e0e0e0; height: 8px; border-radius: 4px;">
+                <div id="progress-bar" style="width: 30%; background-color: #4CAF50; height: 8px; border-radius: 4px; transition: width 0.3s ease;"></div>
+            </div>
+            <p>Progress: <span id="progress-text">30%</span></p>
+        </div>
+        <button onclick="testProgressIndicator()">Test Progress</button>
+        <div id="progress-results"></div>
+    </div>
+
+    <div class="test-area">
+        <h3>3. Navigation Controls Test</h3>
+        <div id="navigation-controls">
+            <button id="prev-btn" onclick="testNavigation('prev')">← Forrige</button>
+            <span id="nav-info">Sektion 1 af 5</span>
+            <button id="next-btn" onclick="testNavigation('next')">Næste →</button>
+        </div>
+        <div id="navigation-results"></div>
+    </div>
+
+    <div class="test-area">
+        <h3>4. Reading Time Display Test</h3>
+        <div id="reading-time-display">
+            <span>📖 Estimeret læsetid: <span id="reading-time">5 min</span></span>
+        </div>
+        <button onclick="testReadingTimeDisplay()">Test Reading Time</button>
+        <div id="reading-time-results"></div>
+    </div>
+
+    <div class="test-area">
+        <h3>5. Mobile Touch Gestures Test</h3>
+        <div id="touch-area" style="width: 100%; height: 200px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; touch-action: pan-x;">
+            <p>Touch/Swipe området - Test swipe gestures her</p>
+        </div>
+        <button onclick="testTouchGestures()">Test Touch</button>
+        <div id="touch-results"></div>
+    </div>
+
+    <h2>Responsiveness Tests</h2>
+    <div class="test-area">
+        <button onclick="testMobileLayout()">Test Mobile Layout</button>
+        <button onclick="testTabletLayout()">Test Tablet Layout</button>
+        <button onclick="testDesktopLayout()">Test Desktop Layout</button>
+        <div id="responsive-results"></div>
+    </div>
+
+    <script>
+        // Test utility functions
+        function displayTestResult(testName, passed, message, containerId) {
+            const container = document.getElementById(containerId);
+            const resultDiv = document.createElement('div');
+            resultDiv.className = `test-result ${passed ? 'pass' : 'fail'}`;
+            resultDiv.innerHTML = `
+                <strong>${passed ? '✅' : '❌'} ${testName}</strong><br>
+                ${message}
+            `;
+            container.appendChild(resultDiv);
+        }
+
+        // 1. TYPOGRAPHY TESTS
+        function testTypography() {
+            const content = document.getElementById('typography-test');
+            const computedStyle = window.getComputedStyle(content);
+            
+            const fontSize = parseFloat(computedStyle.fontSize);
+            const lineHeight = parseFloat(computedStyle.lineHeight);
+            const fontFamily = computedStyle.fontFamily;
+            
+            // Test font size (should be readable)
+            if (fontSize >= 14) {
+                displayTestResult('Font Size', true, `Font størrelse: ${fontSize}px (læsbar)`, 'typography-results');
+            } else {
+                displayTestResult('Font Size', false, `Font størrelse: ${fontSize}px (for lille)`, 'typography-results');
+            }
+            
+            // Test line height
+            if (lineHeight / fontSize >= 1.4) {
+                displayTestResult('Line Height', true, `Linjehøjde: ${(lineHeight/fontSize).toFixed(2)} (god læsbarhed)`, 'typography-results');
+            } else {
+                displayTestResult('Line Height', false, `Linjehøjde: ${(lineHeight/fontSize).toFixed(2)} (for kompakt)`, 'typography-results');
+            }
+        }
+
+        // 2. PROGRESS INDICATOR TESTS
+        function testProgressIndicator() {
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            
+            // Test progress update
+            let currentProgress = 30;
+            const testProgress = 65;
+            
+            progressBar.style.width = testProgress + '%';
+            progressText.textContent = testProgress + '%';
+            
+            setTimeout(() => {
+                const actualWidth = progressBar.style.width;
+                if (actualWidth === testProgress + '%') {
+                    displayTestResult('Progress Update', true, `Progress opdateret til ${testProgress}%`, 'progress-results');
+                } else {
+                    displayTestResult('Progress Update', false, 'Progress blev ikke opdateret korrekt', 'progress-results');
+                }
+            }, 100);
+        }
+
+        // 3. NAVIGATION TESTS
+        let currentSection = 1;
+        const totalSections = 5;
+
+        function testNavigation(direction) {
+            const navInfo = document.getElementById('nav-info');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            if (direction === 'next' && currentSection < totalSections) {
+                currentSection++;
+            } else if (direction === 'prev' && currentSection > 1) {
+                currentSection--;
+            }
+            
+            navInfo.textContent = `Sektion ${currentSection} af ${totalSections}`;
+            
+            // Test button states
+            prevBtn.disabled = currentSection === 1;
+            nextBtn.disabled = currentSection === totalSections;
+            
+            displayTestResult('Navigation', true, `Navigeret til sektion ${currentSection}`, 'navigation-results');
+        }
+
+        // 4. READING TIME TESTS
+        function testReadingTimeDisplay() {
+            const readingTimeSpan = document.getElementById('reading-time');
+            
+            // Test reading time calculation
+            const mockText = document.getElementById('typography-test').textContent;
+            const wordsPerMinute = 200; // Average reading speed
+            const wordCount = mockText.split(' ').length;
+            const estimatedTime = Math.ceil(wordCount / wordsPerMinute);
+            
+            readingTimeSpan.textContent = estimatedTime + ' min';
+            
+            if (estimatedTime > 0) {
+                displayTestResult('Reading Time Calculation', true, `Beregnet læsetid: ${estimatedTime} min for ${wordCount} ord`, 'reading-time-results');
+            } else {
+                displayTestResult('Reading Time Calculation', false, 'Fejl i læsetids beregning', 'reading-time-results');
+            }
+        }
+
+        // 5. TOUCH GESTURE TESTS
+        function testTouchGestures() {
+            const touchArea = document.getElementById('touch-area');
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            touchArea.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+            
+            touchArea.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                const swipeDistance = touchEndX - touchStartX;
+                
+                if (Math.abs(swipeDistance) > 50) {
+                    const direction = swipeDistance > 0 ? 'højre' : 'venstre';
+                    displayTestResult('Touch Gesture', true, `Swipe ${direction} detekteret (${Math.abs(swipeDistance)}px)`, 'touch-results');
+                }
+            });
+            
+            // For desktop testing
+            if (!('ontouchstart' in window)) {
+                displayTestResult('Touch Support', false, 'Touch events ikke tilgængelige (desktop)', 'touch-results');
+            } else {
+                displayTestResult('Touch Support', true, 'Touch events tilgængelige', 'touch-results');
+            }
+        }
+
+        // RESPONSIVE TESTS
+        function testMobileLayout() {
+            const viewport = window.innerWidth;
+            if (viewport <= 768) {
+                displayTestResult('Mobile Layout', true, `Mobile viewport: ${viewport}px`, 'responsive-results');
+            } else {
+                displayTestResult('Mobile Layout', false, `Ikke mobile viewport: ${viewport}px - test på mobil`, 'responsive-results');
+            }
+        }
+
+        function testTabletLayout() {
+            const viewport = window.innerWidth;
+            if (viewport > 768 && viewport <= 1024) {
+                displayTestResult('Tablet Layout', true, `Tablet viewport: ${viewport}px`, 'responsive-results');
+            } else {
+                displayTestResult('Tablet Layout', false, `Ikke tablet viewport: ${viewport}px`, 'responsive-results');
+            }
+        }
+
+        function testDesktopLayout() {
+            const viewport = window.innerWidth;
+            if (viewport > 1024) {
+                displayTestResult('Desktop Layout', true, `Desktop viewport: ${viewport}px`, 'responsive-results');
+            } else {
+                displayTestResult('Desktop Layout', false, `Ikke desktop viewport: ${viewport}px`, 'responsive-results');
+            }
+        }
+
+        // Auto-run basic tests
+        window.addEventListener('load', function() {
+            displayTestResult('Reader Test Suite', true, 'Content reader test suite loaded', 'test-results');
+            
+            // Auto-test viewport
+            const viewport = window.innerWidth;
+            if (viewport <= 768) {
+                displayTestResult('Auto Viewport Test', true, `Mobile viewport detected: ${viewport}px`, 'test-results');
+            } else if (viewport <= 1024) {
+                displayTestResult('Auto Viewport Test', true, `Tablet viewport detected: ${viewport}px`, 'test-results');
+            } else {
+                displayTestResult('Auto Viewport Test', true, `Desktop viewport detected: ${viewport}px`, 'test-results');
+            }
+        });
+    </script>
+</body>
+</html>

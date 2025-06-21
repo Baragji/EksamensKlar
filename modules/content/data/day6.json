@@ -1,0 +1,42 @@
+{
+  "day": 6,
+  "title": "Optimization & Scale-up",
+  "subtitle": "Fra lab scale til production",
+  "duration": 22,
+  "difficulty": 3,
+  "objectives": [
+    "Optimere purification conditions",
+    "Scale-up fra lab til production",
+    "Implementere quality control",
+    "Forstå regulatory requirements"
+  ],
+  "sections": [
+    {
+      "id": "process-optimization",
+      "title": "Process optimization principper",
+      "type": "text",
+      "duration": 8,
+      "content": "# Process Optimization\n\n## Design of Experiments (DOE)\n- **Factorial design**: Test multiple variabler samtidig\n- **Response surface**: Find optimal conditions\n- **Statistical significance**: Identificer kritiske parametre\n\n## Critical Process Parameters\n- **pH**: ±0.1 pH kan påvirke performance dramatisk\n- **Conductivity**: Binding og elution behavior\n- **Flow rate**: Resolution vs. throughput\n- **Temperature**: Stabilitet og binding\n\n## Quality by Design (QbD)\n- **Define**: Target product profile\n- **Identify**: Critical quality attributes\n- **Understand**: Process parameter impacts\n- **Control**: Within acceptable ranges"
+    },
+    {
+      "id": "scale-up",
+      "title": "Scale-up strategier",
+      "type": "text",
+      "duration": 8,
+      "content": "# Scale-up Principles\n\n## Geometric scaling\n- **Column diameter**: Area scales med batch størrelse\n- **Column height**: Bevares for at maintaine resolution\n- **Flow rate**: Linear velocity konstant\n\n## Process scaling\n- **Mass transfer**: Kan ændres ved scale-up\n- **Mixing**: Vigtigere ved større volumen\n- **Heat transfer**: Kan blive limitation\n\n## Validation approach\n- **Pilot scale**: 10-100x lab scale\n- **Performance qualification**: Sammenlign metrics\n- **Robustness testing**: Variation tolerance"
+    },
+    {
+      "id": "quality-control",
+      "title": "Quality control implementering",
+      "type": "text",
+      "duration": 6,
+      "content": "# Quality Control\n\n## In-process monitoring\n- **UV280**: Real-time protein monitoring\n- **Conductivity**: Salt gradient tracking\n- **pH**: Process parameter verification\n\n## Release testing\n- **Purity**: SDS-PAGE, HPLC\n- **Activity**: Functional assays\n- **Endotoxin**: For pharmaceutical applications\n- **Bioburden**: Microbial contamination\n\n## Stability testing\n- **Accelerated**: Elevated temperature\n- **Real-time**: Storage conditions\n- **Stress**: Extreme conditions testing"
+    }
+  ],
+  "quiz": ["q6-1", "q6-2", "q6-3"],
+  "flashcards": ["card6-1", "card6-2", "card6-3", "card6-4"],
+  "nextDay": {
+    "day": 7,
+    "title": "Advanced Techniques & Future Trends"
+  }
+}

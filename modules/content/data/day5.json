@@ -1,0 +1,42 @@
+{
+  "day": 5,
+  "title": "Troubleshooting & Problem Solving",
+  "subtitle": "Diagnose og løs almindelige purification problemer",
+  "duration": 18,
+  "difficulty": 3,
+  "objectives": [
+    "Diagnosticere purification problemer",
+    "Optimere column performance", 
+    "Løse almindelige chromatography issues",
+    "Implementere systematisk troubleshooting"
+  ],
+  "sections": [
+    {
+      "id": "common-problems",
+      "title": "Almindelige problemer og løsninger",
+      "type": "text",
+      "duration": 7,
+      "content": "# Common Purification Problems\n\n## Lav yield problemer\n\n### Protein degradation\n- **Symptoms**: Faldende aktivitet, multiple bands på gel\n- **Causes**: Protease aktivitet, pH ekstremer\n- **Solutions**: Protease inhibitors, optimal pH, lav temperatur\n\n### Aggregation\n- **Symptoms**: Protein i void volume, turbidity\n- **Causes**: Hydrofobe interaktioner, forkert pH\n- **Solutions**: Salt optimization, DTT addition, pH adjustment\n\n### Binding for stærk\n- **Symptoms**: Protein eluerer ikke, eller kræver harsh conditions\n- **Solutions**: Optimere elution gradient, ændre buffer system\n\n## Lav purity problemer\n\n### Co-elution af contaminants\n- **Diagnosis**: SDS-PAGE viser multiple bands\n- **Solutions**: Shallow gradient, ændre pH, alternative matrix\n\n### Incomplete binding\n- **Symptoms**: Target protein i flow-through\n- **Solutions**: Check pH, reducere salt, optimere loading\n\n### Column contamination\n- **Symptoms**: Uventet peaks, batch-to-batch variation\n- **Solutions**: Stringent washing, CIP procedures"
+    },
+    {
+      "id": "systematic-troubleshooting",
+      "title": "Systematisk troubleshooting approach",
+      "type": "text",
+      "duration": 6,
+      "content": "# Systematic Troubleshooting\n\n## 1. Problem identification\n- **Document symptoms**: Præcis beskrivelse\n- **Compare til normal**: Hvad er anderledes?\n- **Reproduce issue**: Er problemet reproducerbart?\n\n## 2. Root cause analysis\n- **5 Why technique**: Fortsæt med at spørge \"hvorfor?\"\n- **Fishbone diagram**: Kategoriser mulige årsager\n- **Change analysis**: Hvad er ændret siden sidste success?\n\n## 3. Hypothesis testing\n- **One variable ad gangen**: Isoler variabler\n- **Control experiments**: Sammenlign med kendt good conditions\n- **Document results**: Systematisk data collection\n\n## 4. Solution implementation\n- **Pilot scale først**: Test løsning på lille skala\n- **Validation**: Bekræft solution virker reproducerbart\n- **Document protocol**: Update procedures"
+    },
+    {
+      "id": "optimization-strategies",
+      "title": "Optimization strategier",
+      "type": "text",
+      "duration": 5,
+      "content": "# Optimization Strategies\n\n## Buffer optimization\n- **pH scouting**: Test ±0.5 pH enheder\n- **Salt type**: NaCl vs. KCl vs. phosphate\n- **Additives**: DTT, EDTA, glycerol\n\n## Gradient optimization\n- **Slope**: Shallow gradients → højere resolution\n- **Hold steps**: Plateau for svær-at-eluere proteiner\n- **Multi-step**: Kombinere steep og shallow regioner\n\n## Load optimization\n- **Dynamic capacity**: Test forskellige loads\n- **Breakthrough curves**: Find optimal loading\n- **Sample conditioning**: Pre-treatment for bedre binding"
+    }
+  ],
+  "quiz": ["q5-1", "q5-2", "q5-3"],
+  "flashcards": ["card5-1", "card5-2", "card5-3", "card5-4"],
+  "nextDay": {
+    "day": 6,
+    "title": "Optimization & Scale-up"
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "day": 2,
+  "title": "Purification Methods & Strategy",
+  "subtitle": "Design din purification strategi",
+  "duration": 20,
+  "difficulty": 2,
+  "objectives": [
+    "Sammenlign forskellige purification metoder",
+    "Design systematisk purification strategi",
+    "Forstå method selection criteria",
+    "Optimere step sequence"
+  ],
+  "sections": [
+    {
+      "id": "method-overview",
+      "title": "Oversigt over metoder",
+      "type": "text",
+      "duration": 5,
+      "content": "# Purification Methods Overview\n\n## Chromatografi metoder\n\n### Ion Exchange Chromatografi (IEX)\n- **Princip**: Separation baseret på ladning\n- **Typer**: Anion exchange (positiv matrix), Cation exchange (negativ matrix)\n- **Fordele**: Høj kapacitet, skalerbar, billig\n- **Anvendelse**: Ofte første eller andet step\n\n### Size Exclusion Chromatografi (SEC)\n- **Princip**: Separation baseret på molekylær størrelse\n- **Fordele**: Mild, bevarer aktivitet, predictable\n- **Begrænsninger**: Lav kapacitet, begrænset resolution\n- **Anvendelse**: Polishing step, buffer exchange\n\n### Hydrophobic Interaction Chromatografi (HIC)\n- **Princip**: Separation baseret på hydrofobicitet\n- **Salt krav**: Høj salt koncentration for binding\n- **Fordele**: Mild, komplementær til IEX\n- **Anvendelse**: Intermediate purification\n\n### Affinity Chromatografi\n- **Princip**: Specifik biologisk interaktion\n- **Eksempler**: Protein A, heparin, metal affinity\n- **Fordele**: Meget høj specificitet\n- **Udfordringer**: Dyre matrices, elution conditions\n\n## Non-chromatographic metoder\n\n### Precipitation\n- **Ammonium sulfat**: Klassisk salting-out\n- **PEG precipitation**: Mild, size-selective\n- **pH precipitation**: Ved isoelectric point\n\n### Elektroforese\n- **Preparativ**: Native PAGE, IEF\n- **Analytisk**: SDS-PAGE, Western blot\n- **Fordele**: Høj resolution\n- **Begrænsninger**: Lav throughput"
+    },
+    {
+      "id": "strategy-design",
+      "title": "Design af purification strategi",
+      "type": "text",
+      "duration": 6,
+      "content": "# Strategy Design\n\n## Step 1: Protein karakterisering\n\n### Fysisk-kemiske egenskaber\n- **Molekylvægt**: Bestemmer SEC behavior\n- **Isoelectric point (pI)**: Kritisk for IEX selection\n- **Hydrofobicitet**: Påvirker HIC og RPC performance\n- **Stabilitet**: pH, temperatur, salt tolerance\n\n### Biologiske egenskaber\n- **Binding partners**: Potentielle affinity ligands\n- **Substrat specificitet**: Kan bruges til affinity\n- **Strukturelle features**: Tags, domains\n\n## Step 2: Source material analyse\n\n### Cell type og expression level\n- **E. coli**: Høj expression, simple purification\n- **Eukaryotic cells**: Korrekt folding, post-translational modifications\n- **Expression level**: Påvirker første step valg\n\n### Contaminant profil\n- **Major contaminants**: Design steps til at fjerne disse\n- **Similar proteins**: Kræver høj resolution metoder\n- **Nucleic acids**: Kan kræve nuclease treatment\n\n## Step 3: Method selection\n\n### Orthogonal separation\n- **Første step**: Baseret på mest distinctive property\n- **Efterfølgende steps**: Ortogonale egenskaber\n- **Eksempel**: IEX → HIC → SEC\n\n### Praktiske overvejelser\n- **Throughput krav**: Påvirker column size\n- **Renhedskrav**: Bestemmer antal steps\n- **Budget**: Påvirker method selection\n- **Timeline**: Fast methods vs. high resolution"
+    },
+    {
+      "id": "method-selection",
+      "title": "Method selection criteria",
+      "type": "text",
+      "duration": 5,
+      "content": "# Method Selection Criteria\n\n## Protein egenskaber som driver\n\n### pI baseret selection\n- **pI < 6**: Starte med cation exchange\n- **pI > 8**: Starte med anion exchange\n- **pI 6-8**: Overvej andre metoder først\n\n### Størrelse baseret selection\n- **Små proteiner (<20 kDa)**: SEC mindre effektiv\n- **Store proteiner (>100 kDa)**: SEC meget effektiv\n- **Medium størrelse**: Kombiner med andre metoder\n\n### Hydrofobicitet assessment\n- **Membrane proteiner**: HIC ofte nødvendig\n- **Meget hydrofobe**: RPC kan være nødvendig\n- **Hydrophile**: HIC mindre nyttig\n\n## Contaminant consideration\n\n### Nucleic acid removal\n- **DNA/RNA**: Ion exchange ved lav salt\n- **Alternativ**: Polyethyleneimine precipitation\n- **Enzymatisk**: DNase/RNase treatment\n\n### Host cell protein removal\n- **E. coli**: Typisk lave pI proteiner\n- **Mammalian**: Mere diverse contaminants\n- **Yeast**: Høj carbohydrate indhold\n\n## Practical constraints\n\n### Scale considerations\n- **Lab scale**: Fleksibilitet vigtigst\n- **Pilot scale**: Reproducerbarhed fokus\n- **Production**: Cost-effectiveness kritisk\n\n### Regulatory requirements\n- **Research grade**: 85-95% renhed\n- **Pharmaceutical**: >99% + endotoxin testing\n- **Diagnostic**: Funktionel renhed vigtigst"
+    },
+    {
+      "id": "optimization",
+      "title": "Strategy optimization",
+      "type": "text",
+      "duration": 4,
+      "content": "# Strategy Optimization\n\n## Performance metrics\n\n### Yield optimization\n- **Recovery**: % af aktivitet bevaret\n- **Step yield**: Per step recovery\n- **Total yield**: Samlet process recovery\n- **Target**: >50% total yield\n\n### Purity assessment\n- **SDS-PAGE**: Visual renhed vurdering\n- **Analytical HPLC**: Quantitativ renhed\n- **Activity assay**: Funktionel renhed\n- **Mass spectrometry**: Molekylær identitet\n\n## Common optimization strategies\n\n### Buffer optimization\n- **pH**: Påvirker protein ladning og stabilitet\n- **Salt type og koncentration**: Påvirker binding\n- **Additives**: DTT, glycerol for stabilitet\n\n### Gradient optimization\n- **Linear vs. step gradients**: Resolution vs. speed\n- **Gradient length**: Shallow = høj resolution\n- **Flow rate**: Langsom = bedre separation\n\n### Load optimization\n- **Dynamic capacity**: Maximum load ved given renhed\n- **Breakthrough**: Punkt hvor purity falder\n- **Overload**: Kan forværre separation\n\n## Troubleshooting common issues\n\n### Lav yield\n- **Protein degradation**: Tilføj protease inhibitors\n- **Aggregation**: Optimere buffer conditions\n- **Binding for stærk**: Optimere elution\n\n### Lav purity\n- **Co-elution**: Optimere gradient\n- **Contaminant binding**: Ændre wash conditions\n- **Behov for extra step**: Tilføje polishing step"
+    }
+  ],
+  "quiz": ["q2-1", "q2-2", "q2-3", "q2-4", "q2-5"],
+  "flashcards": ["card2-1", "card2-2", "card2-3", "card2-4", "card2-5", "card2-6"],
+  "practicalExercise": {
+    "title": "Design purification strategi case study",
+    "description": "Givet protein egenskaber og constraints, design komplet purification workflow",
+    "estimatedTime": 8
+  },
+  "keyTerms": [
+    "orthogonal separation",
+    "dynamic capacity",
+    "breakthrough",
+    "step yield",
+    "resolution",
+    "recovery",
+    "method selection",
+    "purity assessment"
+  ],
+  "nextDay": {
+    "day": 3,
+    "title": "Chromatography Techniques",
+    "preview": "Dyk dybt ned i de vigtigste chromatografi teknikker og deres praktiske anvendelse."
+  }
+}

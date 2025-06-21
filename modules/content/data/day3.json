@@ -1,0 +1,65 @@
+{
+  "day": 3,
+  "title": "Chromatography Techniques",
+  "subtitle": "Mestre de vigtigste separation teknikker",
+  "duration": 25,
+  "difficulty": 3,
+  "objectives": [
+    "Mestre ion exchange chromatography",
+    "Forstå size exclusion chromatography",
+    "Anvende hydrophobic interaction chromatography",
+    "Sammenligne forskellige chromatografi modes"
+  ],
+  "sections": [
+    {
+      "id": "ion-exchange",
+      "title": "Ion Exchange Chromatography (IEX)",
+      "type": "text",
+      "duration": 8,
+      "content": "# Ion Exchange Chromatography\n\n## Princip og teori\n\n### Grundlæggende mekanisme\n- **Elektrostatisk interaktion** mellem ladet protein og matrix\n- **Reversibel binding** styret af pH og ionisk styrke\n- **Competitive elution** med salt eller pH ændring\n\n### Protein ladning og pH\n- **Ved pH < pI**: Protein positivt ladet → binder til cation exchanger\n- **Ved pH > pI**: Protein negativt ladet → binder til anion exchanger\n- **Ved pH = pI**: Ingen net ladning → ingen binding\n\n## Matrix typer\n\n### Anion exchangers (positive matrices)\n- **DEAE** (Diethylaminoethyl): Svag base, pKa ~9\n- **Q** (Quaternary amine): Stærk base, altid positivt ladet\n- **Anvendelse**: Proteiner med pI < working pH\n\n### Cation exchangers (negative matrices)\n- **CM** (Carboxymethyl): Svag syre, pKa ~4\n- **S** (Sulfonate): Stærk syre, altid negativt ladet\n- **Anvendelse**: Proteiner med pI > working pH\n\n## Practical implementation\n\n### Column preparation\n1. **Equilibration**: 5 column volumes start buffer\n2. **pH check**: Kritisk for reproducerbare resultater\n3. **Conductivity check**: Lav salt for binding\n\n### Sample application\n- **Buffer matching**: Sample og column buffer skal matche\n- **Conductivity**: <2-3 mS/cm for stærk binding\n- **pH adjustment**: Kritisk parameter\n- **Flow rate**: 1-2 column volumes/hour\n\n### Elution strategies\n- **Salt gradient**: NaCl 0→1 M over 10-20 CV\n- **pH gradient**: Ændre protein ladning\n- **Step elution**: Hurtigere, lavere resolution\n- **Linear gradient**: Høj resolution, langsom\n\n### Optimization parametre\n- **pH**: ±0.5 enheder kan give dramatisk forskellige resultater\n- **Salt type**: NaCl, KCl vs. MgCl2, CaCl2\n- **Gradient slope**: Shallow = høj resolution\n- **Load amount**: Overload reducerer resolution"
+    },
+    {
+      "id": "size-exclusion",
+      "title": "Size Exclusion Chromatography (SEC)",
+      "type": "text",
+      "duration": 6,
+      "content": "# Size Exclusion Chromatography\n\n## Princip og separation mekanisme\n\n### Molecular sieving\n- **Store molekyler**: Kan ikke trænge ind i porer → elutes tidligt\n- **Små molekyler**: Trænger ind i alle porer → elutes sent\n- **Medium molekyler**: Partiel penetration → elutes mellem\n\n### Theoretical plates\n- **Van Deemter equation**: Beskriver band broadening\n- **Optimal flow rate**: Balance mellem diffusion og mass transfer\n- **Column length**: Længere = bedre resolution\n\n## Matrix selection\n\n### Gel typer\n- **Sephadex**: Cross-linked dextran, for småmolekyler\n- **Sepharose**: Agarose based, for proteiner\n- **Superdex**: Composite, høj resolution\n- **Bio-Gel**: Polyacrylamide, forskellige porøsiteter\n\n### Fractionation range\n- **Superdex 75**: 3-70 kDa optimal\n- **Superdex 200**: 10-600 kDa optimal\n- **Sepharose 6**: 10-4000 kDa range\n\n## Practical considerations\n\n### Buffer selection\n- **Isosmotic**: Fysiologisk salt koncentration\n- **pH stability**: Protein stability range\n- **Additives**: DTT, EDTA for stabilitet\n\n### Column operation\n- **Sample volume**: <2% af column volume\n- **Flow rate**: Optimere for resolution\n- **Temperature**: Konstant for reproducerbarhed\n\n### Applications\n- **Polishing step**: Final purification\n- **Buffer exchange**: Ændre buffer sammensætning\n- **Desalting**: Fjerne små molekyler\n- **Molecular weight estimation**: Kalibrere med standards\n\n### Limitations\n- **Lav kapacitet**: Kun 5-10% af IEX\n- **Dilution**: Sample bliver fortyndet\n- **Resolution**: Begrænset for lignende størrelser\n- **Cost**: Dyre matrices"
+    },
+    {
+      "id": "hydrophobic-interaction",
+      "title": "Hydrophobic Interaction Chromatography (HIC)",
+      "type": "text",
+      "duration": 6,
+      "content": "# Hydrophobic Interaction Chromatography\n\n## Princip og mekanisme\n\n### Hydrophobic effect\n- **High salt conditions**: Fremmer hydrophobic interactions\n- **Water structure**: Salt organiserer vand molekyler\n- **Protein conformation**: Eksponerer hydrophobic patches\n- **Reversible binding**: Reducere salt eller tilføje chaotrope\n\n### Hofmeister series\n- **Salt effectiveness**: (NH4)2SO4 > NaCl > MgCl2\n- **Kosmotropic salts**: Stabiliserer protein struktur\n- **Chaotropic agents**: Destabiliserer hydrophobic interactions\n\n## Matrix design\n\n### Ligand hydrofobicitet (stigende)\n- **Ether**: Mindst hydrofob\n- **Propyl**: Medium hydrofobicitet\n- **Butyl**: Høj hydrofobicitet\n- **Phenyl**: Aromatisk, meget hydrofob\n- **Octyl**: Stærkest hydrofob\n\n### Matrix selection\n- **Start med mindst hydrofob**: Ether eller propyl\n- **Titrer hydrofobicitet**: Baseret på binding/elution\n- **Low substitution**: Mindre aggregation\n\n## Operational parameters\n\n### Loading conditions\n- **Salt koncentration**: 0.5-2 M ammonium sulfat\n- **pH**: Protein stability range\n- **Temperature**: Lavere = stærkere binding\n\n### Elution strategies\n- **Decreasing salt**: Linear eller step gradient\n- **Chaotropic agents**: Urea, guanidine (mild denaturering)\n- **Organic solvents**: Ethylene glycol, propanol\n- **pH change**: Kan påvirke hydrofobicitet\n\n### Sample preparation\n- **Salt addition**: Gradvist for at undgå precipitation\n- **Filtration**: Fjerne precipitater\n- **Temperature equilibration**: Før loading\n\n## Applications og fordele\n\n### Ideal applications\n- **Efter IEX**: Ortogonal til ladning separation\n- **Membrane proteins**: Naturligt hydrofobe\n- **Partially denatured proteins**: Eksponerede hydrophobic regions\n\n### Fordele\n- **Mild conditions**: Bevarer protein aktivitet\n- **High capacity**: Sammenlignelig med IEX\n- **Scalable**: Fungerer godt ved stor skala\n- **Orthogonal**: Komplementær til andre metoder\n\n### Limitations\n- **Salt requirements**: Høj salt kan påvirke protein\n- **Aggregation**: Risiko ved for hydrofobe matrices\n- **Method development**: Kræver optimization"
+    },
+    {
+      "id": "method-comparison",
+      "title": "Sammenligning af chromatografi metoder",
+      "type": "text",
+      "duration": 5,
+      "content": "# Chromatography Method Comparison\n\n## Performance karakteristika\n\n### Resolution power\n- **IEX**: Høj resolution for ladnings forskelle\n- **SEC**: Medium resolution for størrelses forskelle\n- **HIC**: Variabel, afhænger af hydrofobicitet forskelle\n- **Affinity**: Ekstrem høj for specifik binding\n\n### Capacity\n- **IEX**: Højest (10-100 mg protein/ml matrix)\n- **HIC**: Høj (5-50 mg/ml)\n- **SEC**: Lavest (1-5 mg/ml)\n- **Affinity**: Variabel (1-20 mg/ml)\n\n### Scalability\n- **IEX**: Excellent scalability\n- **HIC**: God scalability\n- **SEC**: Moderat scalability\n- **Affinity**: Begrænset af ligand cost\n\n## Method selection matrix\n\n### Primary separation (capture)\n- **IEX**: Første valg for de fleste proteiner\n- **Affinity**: Hvis specifik ligand tilgængelig\n- **HIC**: For hydrofobe proteiner\n- **Precipitation**: For bulk fractionation\n\n### Intermediate purification\n- **HIC**: Ortogonal til IEX\n- **SEC**: For size-based cleanup\n- **Different IEX mode**: Anion→Cation eller omvendt\n\n### Polishing step\n- **SEC**: Buffer exchange + final cleanup\n- **High-resolution IEX**: Fine-tuning\n- **Chromatofocusing**: Isoelectric point based\n\n## Cost considerations\n\n### Matrix cost (stigende)\n1. **IEX matrices**: Billigst\n2. **SEC matrices**: Medium cost\n3. **HIC matrices**: Højere cost\n4. **Affinity matrices**: Dyreste\n\n### Operational cost\n- **Buffer consumption**: SEC bruger mest\n- **Regeneration**: IEX letteste at regenerere\n- **Cleaning**: Affinity kræver special procedures\n\n## Integration strategies\n\n### Classical approach\n1. **IEX capture**: Høj kapacitet concentration\n2. **HIC intermediate**: Orthogonal cleanup\n3. **SEC polishing**: Final purification\n\n### Alternative approaches\n- **Affinity-based**: Start med specifik affinity\n- **Size-first**: Start med SEC for rough fractionation\n- **Precipitation-first**: Bulk removal af contaminants\n\n### Method development workflow\n1. **Karakteriser protein**: pI, størrelse, hydrofobicitet\n2. **Screen metoder**: Small scale tests\n3. **Optimize conditions**: Buffer, gradient, load\n4. **Scale up**: Maintain performance\n5. **Validate**: Reproducerbarhed og robusthed"
+    }
+  ],
+  "quiz": ["q3-1", "q3-2", "q3-3", "q3-4", "q3-5", "q3-6"],
+  "flashcards": ["card3-1", "card3-2", "card3-3", "card3-4", "card3-5", "card3-6", "card3-7", "card3-8"],
+  "practicalExercise": {
+    "title": "Chromatography method selection simulator",
+    "description": "Interactive tool til at vælge optimal chromatography strategy baseret på protein egenskaber",
+    "estimatedTime": 10
+  },
+  "keyTerms": [
+    "ion exchange",
+    "size exclusion", 
+    "hydrophobic interaction",
+    "dynamic capacity",
+    "resolution",
+    "orthogonal separation",
+    "gradient elution",
+    "matrix selection"
+  ],
+  "nextDay": {
+    "day": 4,
+    "title": "Electrophoresis & Analysis",
+    "preview": "Lær analytiske teknikker til at evaluere purification success og troubleshoot problemer."
+  }
+}
