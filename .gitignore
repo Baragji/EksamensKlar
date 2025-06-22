@@ -119,6 +119,26 @@ coverage/
 *-actual.png
 *-diff.png
 
+# Additional test files and directories
+tests/
+test-*.html
+debug-*.html
+*.spec.js
+*.spec.ts
+*-snapshots/
+.last-run.json
+error-context.md
+
+# Test archives and temporary test files
+tests/archived/
+tests/final-structure-test.spec.js-snapshots/
+tests/ui-summary.spec.js-snapshots/
+
+# Specific test files
+comprehensive-test.html
+ui-analyzer.html
+automated-test-suite.html
+
 # Documentation build files
 docs/_build/
 
