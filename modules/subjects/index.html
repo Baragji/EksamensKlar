@@ -42,11 +42,6 @@
 
     <!-- Main Content -->
     <main class="main" id="main-content">
-            </div>
-        </nav>
-    </header>
-
-    <main class="main" id="main-content">
         <!-- Create New Subject Section -->
         <section class="create-subject luxury-section" role="region" aria-labelledby="create-title">
             <div class="container container-responsive">
@@ -60,33 +55,41 @@
                                    required aria-describedby="name-help">
                             <small id="name-help" class="form-help">Vælg et beskrivende navn for dit læringsemne</small>
                         </div>
-                
-                <div class="form-group">
-                    <label for="subjectDescription">Beskrivelse:</label>
-                    <textarea id="subjectDescription" placeholder="Kort beskrivelse af hvad du vil lære..."></textarea>
+                        
+                        <div class="form-group">
+                            <label for="subjectDescription" class="form-label">Beskrivelse:</label>
+                            <textarea id="subjectDescription" class="input-luxury" 
+                                      placeholder="Kort beskrivelse af hvad du vil lære..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subjectColor" class="form-label">Farve:</label>
+                            <select id="subjectColor" class="input-luxury">
+                                <option value="blue">🔵 Blå</option>
+                                <option value="green">🟢 Grøn</option>
+                                <option value="red">🔴 Rød</option>
+                                <option value="purple">🟣 Lilla</option>
+                                <option value="orange">🟠 Orange</option>
+                                <option value="yellow">🟡 Gul</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="btn-luxury">
+                            <span class="icon">➕</span>
+                            Opret Emne
+                        </button>
+                    </form>
                 </div>
-                
-                <div class="form-group">
-                    <label for="subjectColor">Farve:</label>
-                    <select id="subjectColor">
-                        <option value="blue">🔵 Blå</option>
-                        <option value="green">🟢 Grøn</option>
-                        <option value="red">🔴 Rød</option>
-                        <option value="purple">🟣 Lilla</option>
-                        <option value="orange">🟠 Orange</option>
-                        <option value="yellow">🟡 Gul</option>
-                    </select>
-                </div>
-                
-                <button type="submit" class="btn btn-primary">➕ Opret Emne</button>
-            </form>
+            </div>
         </section>
 
         <!-- Subjects List -->
-        <section class="subjects-list">
-            <h2>Dine Emner</h2>
-            <div id="subjectsList" class="subjects-grid">
-                <!-- Subjects will be loaded here -->
+        <section class="subjects-list luxury-section" role="region" aria-labelledby="subjects-title">
+            <div class="container container-responsive">
+                <h2 id="subjects-title" class="section-title text-gradient">Dine Emner</h2>
+                <div id="subjectsList" class="subjects-grid">
+                    <!-- Subjects will be loaded here -->
+                </div>
             </div>
         </section>
 
@@ -147,7 +150,7 @@
             <span class="nav-icon">📊</span>
             <span class="nav-label">Dashboard</span>
         </a>
-    </main>
+    </nav>
 
     <script>
         // Dark Mode Toggle System

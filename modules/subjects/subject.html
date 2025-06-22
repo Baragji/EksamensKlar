@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="da" class="smooth-scroll">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emne Detaljer - ExamKlar</title>
+    <link rel="stylesheet" href="../../styles/global.css">
+    <link rel="stylesheet" href="../../styles/components.css">
+    <link rel="stylesheet" href="../../styles/premium.css">
+    <link rel="stylesheet" href="subjects.css">
+</head>
+<body class="gpu-accelerated">
+    <!-- Skip to Content Link -->
+    <a href="#main-content" class="skip-link">Spring til hovedindhold</a>
+    
+    <!-- Dark Mode Toggle -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Skift til mørk/lys tilstand" title="Skift tema">
+        <span id="themeIcon">🌙</span>
+    </button>
+    
+    <!-- Ultra-Premium Navigation -->
+    <header class="nav-luxury">
+        <nav class="nav container" role="navigation" aria-label="Hovednavigation">
+            <div class="nav-brand">
+                <div class="logo text-gradient glow">✨ ExamKlar</div>
+                <span class="badge-luxury" id="subjectBadge">Emne Detaljer</span>
+            </div>
+            <div class="nav-actions">
+                <a href="index.html" class="btn-luxury-small" aria-label="Tilbage til emner">
+                    <span class="icon">📚</span>
+                    Emner
+                </a>
+                <a href="../dashboard/index.html" class="btn-luxury-small">
+                    <span class="icon">📊</span>
+                    Dashboard
+                </a>
+                <a href="../../index.html" class="btn-luxury-small" aria-label="Tilbage til forside">
+                    <span class="icon">🏠</span>
+                    Forside
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main" id="main-content">
+        <!-- Subject Header -->
+        <section class="subject-header-section luxury-section" role="region" aria-labelledby="subject-title">
+            <div class="container container-responsive">
+                <div class="subject-header-card luxury-card">
+                    <div class="subject-icon-large" id="subjectIcon">📚</div>
+                    <div class="subject-info">
+                        <h1 id="subject-title" class="section-title text-gradient">Indlæser emne...</h1>
+                        <p id="subject-description" class="subject-description">Henter emne detaljer...</p>
+                        <div class="subject-meta">
+                            <span class="meta-item">
+                                <span class="meta-icon">📅</span>
+                                <span id="created-date">Oprettet: --</span>
+                            </span>
+                            <span class="meta-item">
+                                <span class="meta-icon">👁️</span>
+                                <span id="last-accessed">Sidst åbnet: --</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="subject-actions">
+                        <button class="btn-luxury" onclick="editSubject()">
+                            <span class="icon">✏️</span>
+                            Rediger Emne
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Subject Statistics -->
+        <section class="subject-stats-section luxury-section" role="region" aria-labelledby="stats-title">
+            <div class="container container-responsive">
+                <h2 id="stats-title" class="section-title">Emne Statistikker</h2>
+                <div class="stats-grid">
+                    <div class="stat-card luxury-card">
+                        <div class="stat-icon">📄</div>
+                        <div class="stat-info">
+                            <span class="stat-number" id="content-count">0</span>
+                            <span class="stat-label">Indhold</span>
+                        </div>
+                    </div>
+                    <div class="stat-card luxury-card">
+                        <div class="stat-icon">🃏</div>
+                        <div class="stat-info">
+                            <span class="stat-number" id="flashcard-count">0</span>
+                            <span class="stat-label">Flashcards</span>
+                        </div>
+                    </div>
+                    <div class="stat-card luxury-card">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-info">
+                            <span class="stat-number" id="quiz-count">0</span>
+                            <span class="stat-label">Quiz</span>
+                        </div>
+                    </div>
+                    <div class="stat-card luxury-card">
+                        <div class="stat-icon">⏱️</div>
+                        <div class="stat-info">
+                            <span class="stat-number" id="study-time">0</span>
+                            <span class="stat-label">Timer studeret</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Learning Activities -->
+        <section class="activities-section luxury-section" role="region" aria-labelledby="activities-title">
+            <div class="container container-responsive">
+                <h2 id="activities-title" class="section-title">Læringsaktiviteter</h2>
+                <div class="activities-grid">
+                    <div class="activity-card luxury-card">
+                        <div class="activity-icon">📖</div>
+                        <div class="activity-info">
+                            <h3>Læs Indhold</h3>
+                            <p>Gennemgå dit læringsmateriale og noter</p>
+                        </div>
+                        <a href="../content/index.html" class="btn-luxury-small">
+                            <span class="icon">📖</span>
+                            Start Læsning
+                        </a>
+                    </div>
+                    
+                    <div class="activity-card luxury-card">
+                        <div class="activity-icon">🃏</div>
+                        <div class="activity-info">
+                            <h3>Flashcards</h3>
+                            <p>Øv med interaktive flashcards</p>
+                        </div>
+                        <a href="../flashcards/index.html" class="btn-luxury-small">
+                            <span class="icon">🃏</span>
+                            Start Flashcards
+                        </a>
+                    </div>
+                    
+                    <div class="activity-card luxury-card">
+                        <div class="activity-icon">🎯</div>
+                        <div class="activity-info">
+                            <h3>Tag Quiz</h3>
+                            <p>Test din viden med adaptive quiz</p>
+                        </div>
+                        <a href="../quiz/index.html" class="btn-luxury-small">
+                            <span class="icon">🎯</span>
+                            Start Quiz
+                        </a>
+                    </div>
+                    
+                    <div class="activity-card luxury-card">
+                        <div class="activity-icon">🤖</div>
+                        <div class="activity-info">
+                            <h3>AI Assistant</h3>
+                            <p>Få hjælp fra din personlige AI tutor</p>
+                        </div>
+                        <a href="../ai-assistant/index.html" class="btn-luxury-small">
+                            <span class="icon">🤖</span>
+                            Chat med AI
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Activity -->
+        <section class="recent-activity-section luxury-section" role="region" aria-labelledby="recent-title">
+            <div class="container container-responsive">
+                <h2 id="recent-title" class="section-title">Seneste Aktivitet</h2>
+                <div class="recent-activity-card luxury-card">
+                    <div id="recent-activity-list" class="activity-list">
+                        <div class="empty-state">
+                            <div class="empty-icon">📊</div>
+                            <h3>Ingen aktivitet endnu</h3>
+                            <p>Start med at læse indhold eller tage en quiz for at se din aktivitet her</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="quick-actions-section luxury-section" role="region" aria-labelledby="actions-title">
+            <div class="container container-responsive">
+                <h2 id="actions-title" class="section-title">Hurtige Handlinger</h2>
+                <div class="quick-actions-grid">
+                    <button class="action-btn luxury-card" onclick="addContent()">
+                        <span class="action-icon">➕</span>
+                        <span class="action-text">Tilføj Indhold</span>
+                    </button>
+                    <button class="action-btn luxury-card" onclick="createFlashcard()">
+                        <span class="action-icon">🃏</span>
+                        <span class="action-text">Opret Flashcard</span>
+                    </button>
+                    <button class="action-btn luxury-card" onclick="generateQuiz()">
+                        <span class="action-icon">🎯</span>
+                        <span class="action-text">Generer Quiz</span>
+                    </button>
+                    <button class="action-btn luxury-card" onclick="exportSubject()">
+                        <span class="action-icon">📤</span>
+                        <span class="action-text">Eksporter Data</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="../../index.html" class="nav-item">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">Hjem</span>
+        </a>
+        <a href="index.html" class="nav-item active">
+            <span class="nav-icon">📚</span>
+            <span class="nav-label">Emner</span>
+        </a>
+        <a href="../dashboard/index.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">Dashboard</span>
+        </a>
+    </nav>
+
+    <!-- Scripts -->
+    <script>
+        // Dark Mode Toggle System
+        function initializeDarkMode() {
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            
+            const savedTheme = localStorage.getItem('examklar-theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const currentTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+            
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            updateThemeIcon(currentTheme);
+            
+            themeToggle?.addEventListener('click', () => {
+                const current = document.documentElement.getAttribute('data-theme');
+                const newTheme = current === 'dark' ? 'light' : 'dark';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('examklar-theme', newTheme);
+                updateThemeIcon(newTheme);
+                
+                themeToggle.style.transform = 'scale(0.8)';
+                setTimeout(() => themeToggle.style.transform = 'scale(1)', 150);
+            });
+        }
+        
+        function updateThemeIcon(theme) {
+            const themeIcon = document.getElementById('themeIcon');
+            if (themeIcon) {
+                themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+            }
+        }
+
+        // Subject Management
+        class SubjectDetailManager {
+            constructor() {
+                this.subjectId = this.getSubjectIdFromUrl();
+                this.subject = null;
+                this.init();
+            }
+
+            getSubjectIdFromUrl() {
+                const urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get('id');
+            }
+
+            init() {
+                if (!this.subjectId) {
+                    this.showError('Intet emne ID fundet');
+                    return;
+                }
+
+                this.loadSubject();
+                this.loadSubjectStats();
+                this.loadRecentActivity();
+            }
+
+            loadSubject() {
+                const subjects = JSON.parse(localStorage.getItem('examklar_subjects') || '[]');
+                this.subject = subjects.find(s => s.id === this.subjectId);
+
+                if (!this.subject) {
+                    this.showError('Emne ikke fundet');
+                    return;
+                }
+
+                this.renderSubject();
+            }
+
+            renderSubject() {
+                // Update page title
+                document.title = `${this.subject.name} - ExamKlar`;
+                
+                // Update header
+                document.getElementById('subject-title').textContent = this.subject.name;
+                document.getElementById('subject-description').textContent = this.subject.description;
+                document.getElementById('subjectBadge').textContent = this.subject.name;
+                
+                // Update icon
+                const icon = this.getSubjectEmoji(this.subject.name);
+                document.getElementById('subjectIcon').textContent = icon;
+                
+                // Update meta information
+                const createdDate = new Date(this.subject.createdAt).toLocaleDateString('da-DK');
+                const lastAccessed = this.subject.lastAccessed ? 
+                    new Date(this.subject.lastAccessed).toLocaleDateString('da-DK') : 'Aldrig';
+                
+                document.getElementById('created-date').textContent = `Oprettet: ${createdDate}`;
+                document.getElementById('last-accessed').textContent = `Sidst åbnet: ${lastAccessed}`;
+                
+                // Update last accessed time
+                this.updateLastAccessed();
+            }
+
+            loadSubjectStats() {
+                if (!this.subject) return;
+
+                // Update stats
+                document.getElementById('content-count').textContent = this.subject.contentCount || 0;
+                document.getElementById('flashcard-count').textContent = this.subject.flashcardCount || 0;
+                document.getElementById('quiz-count').textContent = this.subject.quizCount || 0;
+                
+                // Calculate study time
+                const studyTime = this.subject.stats?.totalStudyTime || 0;
+                const hours = Math.floor(studyTime / 60);
+                document.getElementById('study-time').textContent = hours;
+            }
+
+            loadRecentActivity() {
+                // This would load recent activity from localStorage
+                // For now, show empty state
+                const activityList = document.getElementById('recent-activity-list');
+                // Keep the empty state for now
+            }
+
+            updateLastAccessed() {
+                if (!this.subject) return;
+                
+                this.subject.lastAccessed = new Date().toISOString();
+                
+                // Update in localStorage
+                const subjects = JSON.parse(localStorage.getItem('examklar_subjects') || '[]');
+                const index = subjects.findIndex(s => s.id === this.subjectId);
+                if (index !== -1) {
+                    subjects[index] = this.subject;
+                    localStorage.setItem('examklar_subjects', JSON.stringify(subjects));
+                }
+            }
+
+            getSubjectEmoji(name) {
+                const name_lower = name.toLowerCase();
+                
+                // Math/Science emojis
+                if (name_lower.includes('matematik') || name_lower.includes('math')) return '📐';
+                if (name_lower.includes('fysik') || name_lower.includes('physics')) return '⚡';
+                if (name_lower.includes('kemi') || name_lower.includes('chemistry')) return '🧪';
+                if (name_lower.includes('biologi') || name_lower.includes('biology')) return '🧬';
+                if (name_lower.includes('protein')) return '🧬';
+                
+                // Languages
+                if (name_lower.includes('engelsk') || name_lower.includes('english')) return '🇬🇧';
+                if (name_lower.includes('dansk') || name_lower.includes('danish')) return '🇩🇰';
+                if (name_lower.includes('tysk') || name_lower.includes('german')) return '🇩🇪';
+                if (name_lower.includes('fransk') || name_lower.includes('french')) return '🇫🇷';
+                if (name_lower.includes('spansk') || name_lower.includes('spanish')) return '🇪🇸';
+                
+                // Other subjects
+                if (name_lower.includes('historie') || name_lower.includes('history')) return '📜';
+                if (name_lower.includes('geografi') || name_lower.includes('geography')) return '🌍';
+                if (name_lower.includes('filosofi') || name_lower.includes('philosophy')) return '💭';
+                if (name_lower.includes('økonomi') || name_lower.includes('economics')) return '💰';
+                if (name_lower.includes('psykologi') || name_lower.includes('psychology')) return '🧠';
+                if (name_lower.includes('kunst') || name_lower.includes('art')) return '🎨';
+                if (name_lower.includes('musik') || name_lower.includes('music')) return '🎵';
+                if (name_lower.includes('sport') || name_lower.includes('fitness')) return '⚽';
+                
+                // Programming/Tech
+                if (name_lower.includes('programmering') || name_lower.includes('programming')) return '💻';
+                if (name_lower.includes('javascript') || name_lower.includes('js')) return '🟨';
+                if (name_lower.includes('python')) return '🐍';
+                if (name_lower.includes('html') || name_lower.includes('css')) return '🌐';
+                
+                // Default
+                return '📚';
+            }
+
+            showError(message) {
+                document.getElementById('subject-title').textContent = 'Fejl';
+                document.getElementById('subject-description').textContent = message;
+                
+                // Hide other sections
+                document.querySelector('.subject-stats-section').style.display = 'none';
+                document.querySelector('.activities-section').style.display = 'none';
+                document.querySelector('.recent-activity-section').style.display = 'none';
+                document.querySelector('.quick-actions-section').style.display = 'none';
+            }
+        }
+
+        // Quick Action Functions
+        function editSubject() {
+            if (window.subjectDetailManager && window.subjectDetailManager.subject) {
+                const subject = window.subjectDetailManager.subject;
+                const newName = prompt('Nyt navn:', subject.name);
+                if (newName && newName.trim() && newName.trim() !== subject.name) {
+                    subject.name = newName.trim();
+                    
+                    // Update in localStorage
+                    const subjects = JSON.parse(localStorage.getItem('examklar_subjects') || '[]');
+                    const index = subjects.findIndex(s => s.id === subject.id);
+                    if (index !== -1) {
+                        subjects[index] = subject;
+                        localStorage.setItem('examklar_subjects', JSON.stringify(subjects));
+                        window.subjectDetailManager.renderSubject();
+                        showNotification('Emne opdateret! ✏️');
+                    }
+                }
+            }
+        }
+
+        function addContent() {
+            showNotification('Indhold funktion kommer snart! 📄');
+        }
+
+        function createFlashcard() {
+            showNotification('Flashcard funktion kommer snart! 🃏');
+        }
+
+        function generateQuiz() {
+            showNotification('Quiz generator kommer snart! 🎯');
+        }
+
+        function exportSubject() {
+            if (window.subjectDetailManager && window.subjectDetailManager.subject) {
+                const subject = window.subjectDetailManager.subject;
+                const blob = new Blob([JSON.stringify(subject, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${subject.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_backup.json`;
+                a.click();
+                
+                URL.revokeObjectURL(url);
+                showNotification('Emne eksporteret! 📤');
+            }
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--primary-color);
+                color: white;
+                padding: 12px 20px;
+                border-radius: 8px;
+                box-shadow: var(--shadow-md);
+                z-index: 1000;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeDarkMode();
+            window.subjectDetailManager = new SubjectDetailManager();
+        });
+    </script>
+
+    <!-- Add CSS animations -->
+    <style>
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        .subject-header-card {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .subject-icon-large {
+            font-size: 4rem;
+            width: 5rem;
+            height: 5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-primary);
+            border-radius: 1rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .subject-info {
+            flex: 1;
+        }
+
+        .subject-meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-secondary);
+            border-radius: 0.5rem;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .activity-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+        }
+
+        .activity-icon {
+            font-size: 2rem;
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-accent);
+            border-radius: 0.5rem;
+        }
+
+        .activity-info {
+            flex: 1;
+        }
+
+        .activity-info h3 {
+            margin: 0 0 0.5rem 0;
+            color: var(--text-primary);
+        }
+
+        .activity-info p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1.5rem;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .action-icon {
+            font-size: 2rem;
+        }
+
+        .action-text {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            margin: 0 0 0.5rem 0;
+            color: var(--text-primary);
+        }
+
+        .empty-state p {
+            margin: 0;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .subject-header-card {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .subject-meta {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .activities-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-actions-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</body>
+</html>
