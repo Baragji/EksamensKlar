@@ -110,9 +110,14 @@ temp/
 *.backup
 *.bak
 
-# Test files (if added later)
+# Playwright test results and reports
 test-results/
+playwright-report/
 coverage/
+
+# Test snapshots should be committed, but we ignore temp ones
+*-actual.png
+*-diff.png
 
 # Documentation build files
 docs/_build/
