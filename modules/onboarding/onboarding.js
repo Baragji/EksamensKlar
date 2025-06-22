@@ -188,25 +188,33 @@ class OnboardingSystem {
     }
 
     processFile(file) {
-        const reader = new FileReader();
+        // TIER 1 FIX: Don't store large file content in localStorage to avoid quota errors
+        // Only store metadata and create object URL for temporary access
+        const objectUrl = URL.createObjectURL(file);
         
-        reader.onload = (e) => {
-            const content = {
-                name: file.name,
-                type: file.type,
-                size: file.size,
-                content: e.target.result,
-                processed: false
-            };
-            
-            this.userData.content.push(content);
-            this.updateContentPreview();
+        const content = {
+            name: file.name,
+            type: file.type,
+            size: file.size,
+            objectUrl: objectUrl, // Temporary URL for this session
+            content: file.size < 50000 ? null : '[Large file - content will be processed later]', // Only store small files
+            processed: false,
+            isLargeFile: file.size >= 50000
         };
         
-        if (file.type.startsWith('text/')) {
+        // For small text files, still read content
+        if (file.type.startsWith('text/') && file.size < 50000) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                content.content = e.target.result;
+                this.userData.content.push(content);
+                this.updateContentPreview();
+            };
             reader.readAsText(file);
         } else {
-            reader.readAsDataURL(file);
+            // For large files or non-text files, just store metadata
+            this.userData.content.push(content);
+            this.updateContentPreview();
         }
     }
 
@@ -556,7 +564,7 @@ class OnboardingSystem {
                 button.disabled = true;
             }
 
-            // Save onboarding data FIRST
+            // TIER 1 FIX: Save onboarding data FIRST and wait for completion
             await this.saveOnboardingData();
             console.log('✅ Onboarding data saved');
             
@@ -567,9 +575,9 @@ class OnboardingSystem {
             if (button) {
                 button.innerHTML = '<span class="loading-luxury"></span> Genererer læringsplan...';
             }
-            await this.delay(800); // Give user feedback
+            await this.delay(300); // Reduced delay but still give user feedback
             
-            // CRITICAL FIX: Ensure DataBridge initialization completes BEFORE redirect
+            // TIER 1 CRITICAL FIX: Ensure DataBridge initialization completes BEFORE redirect
             let initSuccess = false;
             if (window.DataBridge) {
                 console.log('🔄 Initializing training data...');
@@ -579,15 +587,16 @@ class OnboardingSystem {
                 const onboardingCheck = window.DataBridge.getOnboardingData();
                 console.log('🔍 DEBUG: Onboarding data check:', onboardingCheck);
                 
-                initSuccess = window.DataBridge.initializeFromOnboarding();
-                console.log('🔍 DEBUG: Initialization result:', initSuccess);
+                // AWAIT the initialization to complete before proceeding
+                initSuccess = await this.initializeDataBridgeAsync();
+                console.log('🔍 DEBUG: Async initialization result:', initSuccess);
                 
                 if (initSuccess) {
                     console.log('✅ Training data initialized successfully');
                     if (button) {
                         button.innerHTML = '<span class="loading-luxury"></span> Forbereder dashboard...';
                     }
-                    await this.delay(500);
+                    await this.delay(300);
                 } else {
                     console.error('❌ Failed to initialize training data');
                     throw new Error('DataBridge initialization failed');
@@ -597,28 +606,31 @@ class OnboardingSystem {
                 throw new Error('DataBridge not available');
             }
             
-            // Mark onboarding as completed
+            // Mark onboarding as completed AFTER successful initialization
             localStorage.setItem('examklar_onboarding_completed', 'true');
             
             // Success feedback before redirect
             if (button) {
                 button.innerHTML = '✅ Færdig! Starter din læringsrejse...';
             }
-            await this.delay(1000);
+            await this.delay(500);
             
-            // ONLY redirect after data is ready
+            // ONLY redirect after data is ready and verified
             console.log('🚀 Redirecting to main app with initialized data');
             window.location.href = '../../index.html';
             
         } catch (error) {
             console.error('❌ Critical error in startLearning:', error);
             
-            // Show detailed error to user in development
+            // Show detailed error to user
             const button = document.querySelector('button[onclick="startLearning()"]');
             if (button) {
-                button.innerHTML = '❌ Fejl opstået - prøver igen...';
+                button.innerHTML = '❌ Fejl opstået - prøv igen';
                 button.disabled = false;
             }
+            
+            // Show user-friendly error message
+            alert(`Der opstod en fejl under opsætningen:\n\n${error.message}\n\nPrøv venligst igen eller kontakt support hvis problemet fortsætter.`);
             
             // Log full error details for debugging
             console.error('Full error details:', {
@@ -628,14 +640,28 @@ class OnboardingSystem {
                 hasDataBridge: !!window.DataBridge,
                 onboardingData: localStorage.getItem('examklar_onboarding_data')
             });
-            
-            // Don't redirect on error - let user try again
         }
+    }
+
+    // TIER 1 FIX: New async wrapper for DataBridge initialization
+    async initializeDataBridgeAsync() {
+        return new Promise((resolve) => {
+            try {
+                // Give a small delay to ensure localStorage operations complete
+                setTimeout(() => {
+                    const result = window.DataBridge.initializeFromOnboarding();
+                    resolve(result);
+                }, 100);
+            } catch (error) {
+                console.error('❌ Error in DataBridge async initialization:', error);
+                resolve(false);
+            }
+        });
     }
 
     async viewDashboard() {
         try {
-            // Save onboarding data (wait for completion)
+            // TIER 1 FIX: Save onboarding data and wait for completion
             await this.saveOnboardingData();
             
             // DEBUG: Check if data was actually saved
@@ -645,7 +671,7 @@ class OnboardingSystem {
             // Add a small delay to ensure localStorage write completes
             await this.delay(100);
             
-            // CRITICAL FIX: Ensure DataBridge initialization before redirect
+            // TIER 1 CRITICAL FIX: Ensure DataBridge initialization before redirect
             let initSuccess = false;
             if (window.DataBridge) {
                 console.log('🔄 Initializing training data for dashboard...');
@@ -655,8 +681,9 @@ class OnboardingSystem {
                 const onboardingCheck = window.DataBridge.getOnboardingData();
                 console.log('🔍 DEBUG: Onboarding data check for dashboard:', onboardingCheck);
                 
-                initSuccess = window.DataBridge.initializeFromOnboarding();
-                console.log('🔍 DEBUG: Dashboard initialization result:', initSuccess);
+                // AWAIT the initialization to complete before proceeding
+                initSuccess = await this.initializeDataBridgeAsync();
+                console.log('🔍 DEBUG: Dashboard async initialization result:', initSuccess);
                 
                 if (initSuccess) {
                     console.log('✅ Training data initialized for dashboard');
@@ -669,7 +696,7 @@ class OnboardingSystem {
                 throw new Error('DataBridge not available for dashboard');
             }
             
-            // Mark onboarding as completed
+            // Mark onboarding as completed AFTER successful initialization
             localStorage.setItem('examklar_onboarding_completed', 'true');
             
             // Redirect to dashboard only after data is ready
@@ -677,6 +704,9 @@ class OnboardingSystem {
             window.location.href = '../dashboard/index.html';
         } catch (error) {
             console.error('❌ Critical error in viewDashboard:', error);
+            
+            // Show user-friendly error message
+            alert(`Der opstod en fejl under opsætningen af dashboard:\n\n${error.message}\n\nPrøv venligst igen eller kontakt support hvis problemet fortsætter.`);
             
             // Log full error details for debugging
             console.error('Full dashboard error details:', {
@@ -686,8 +716,6 @@ class OnboardingSystem {
                 hasDataBridge: !!window.DataBridge,
                 onboardingData: localStorage.getItem('examklar_onboarding_data')
             });
-            
-            alert('Der opstod en fejl. Prøv igen eller kontakt support.\n\nFejl: ' + error.message);
         }
     }
 
@@ -720,34 +748,101 @@ class OnboardingSystem {
         // Generate sample flashcards and quizzes based on subject
         await this.generateSampleContent(newSubject.id);
 
-        // Save content if any
+        // TIER 1 FIX: Save content metadata only (not large file content)
         if (this.userData.content.length > 0) {
             this.userData.content.forEach((content, index) => {
+                // Only save metadata and small file content to avoid quota issues
+                const contentToSave = {
+                    name: content.name,
+                    type: content.type,
+                    size: content.size,
+                    processed: content.processed,
+                    isLargeFile: content.isLargeFile || false,
+                    // Only include content for small files
+                    content: content.isLargeFile ? '[Large file - will be processed on access]' : content.content
+                };
+                
                 localStorage.setItem(
                     `examklar_content_${newSubject.id}_${index}`,
-                    JSON.stringify(content)
+                    JSON.stringify(contentToSave)
                 );
             });
         }
 
-        // Save onboarding completion data - ensure all critical fields are present
+        // TIER 1 FIX: Save onboarding completion data with better structure and error handling
         const onboardingDataToSave = {
             subject: this.userData.subject || 'Ukendt Emne',
             subjectEmoji: this.userData.subjectEmoji || '📚',
             examDate: this.userData.examDate || null,
             daysToExam: this.userData.daysToExam || 14,
-            content: this.userData.content || [],
+            // Store content metadata only to avoid quota issues
+            content: this.userData.content.map(item => ({
+                name: item.name,
+                type: item.type,
+                size: item.size,
+                isLargeFile: item.isLargeFile || false
+            })) || [],
             learningPlan: this.userData.learningPlan || null,
             completed: true,
-            savedAt: new Date().toISOString()
+            savedAt: new Date().toISOString(),
+            subjectId: newSubject.id
         };
         
         console.log('🔍 DEBUG: Saving onboarding data:', onboardingDataToSave);
-        localStorage.setItem('examklar_onboarding_data', JSON.stringify(onboardingDataToSave));
         
-        // Verify it was saved
-        const verification = localStorage.getItem('examklar_onboarding_data');
-        console.log('🔍 DEBUG: Verification - saved data:', verification ? JSON.parse(verification) : 'FAILED TO SAVE');
+        try {
+            localStorage.setItem('examklar_onboarding_data', JSON.stringify(onboardingDataToSave));
+            
+            // Verify it was saved
+            const verification = localStorage.getItem('examklar_onboarding_data');
+            if (!verification) {
+                throw new Error('Failed to save onboarding data to localStorage');
+            }
+            
+            const parsedVerification = JSON.parse(verification);
+            console.log('🔍 DEBUG: Verification - saved data:', parsedVerification);
+            
+            // Double-check critical fields
+            if (!parsedVerification.subject || !parsedVerification.subjectId) {
+                throw new Error('Critical onboarding data missing after save');
+            }
+            
+        } catch (error) {
+            console.error('❌ Error saving onboarding data:', error);
+            
+            // If localStorage is full, try to clean up and retry
+            if (error.name === 'QuotaExceededError') {
+                console.log('🔧 Attempting to clean up localStorage due to quota error...');
+                
+                // Remove any temporary or old data
+                const keysToRemove = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key && (key.includes('temp_') || key.includes('backup_'))) {
+                        keysToRemove.push(key);
+                    }
+                }
+                
+                keysToRemove.forEach(key => localStorage.removeItem(key));
+                
+                // Try saving again with minimal data
+                const minimalData = {
+                    subject: this.userData.subject,
+                    subjectEmoji: this.userData.subjectEmoji,
+                    examDate: this.userData.examDate,
+                    daysToExam: this.userData.daysToExam,
+                    content: [], // Skip content on quota error
+                    completed: true,
+                    savedAt: new Date().toISOString(),
+                    subjectId: newSubject.id
+                };
+                
+                localStorage.setItem('examklar_onboarding_data', JSON.stringify(minimalData));
+                console.log('✅ Saved minimal onboarding data after cleanup');
+            } else {
+                throw error; // Re-throw other errors
+            }
+        }
         
         console.log('✅ Onboarding data saved successfully');
     }

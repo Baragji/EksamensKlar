@@ -8,6 +8,13 @@
     <link rel="stylesheet" href="../../styles/components.css">
     <link rel="stylesheet" href="../../styles/premium.css">
     <link rel="stylesheet" href="onboarding.css">
+    
+    <!-- TIER 2 FIX: Load core scripts for consistent functionality -->
+    <script src="../../core/utils.js" defer></script>
+    <script src="../../core/accessibility.js" defer></script>
+    <script src="../../core/storage.js" defer></script>
+    <script src="../../core/data-bridge.js" defer></script>
+    <script src="../../core/performance.js" defer></script>
 </head>
 <body class="onboarding-body gpu-accelerated">
     <!-- Skip to Content Link -->
@@ -364,9 +371,7 @@
         <div class="floating-element" style="--delay: 15s; --duration: 22s;">🎯</div>
     </div>
 
-    <script src="../../core/utils.js"></script>
-    <script src="../../core/storage.js"></script>
-    <script src="../../core/data-bridge.js"></script>
+    <!-- TIER 2 FIX: Load onboarding script after core scripts are loaded -->
     <script src="onboarding.js"></script>
 </body>
 </html>
