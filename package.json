@@ -3,12 +3,18 @@
   "version": "0.5.0",
   "description": "Personlig eksamen app med flashcards, quiz og AI assistance",
   "main": "index.html",
+  "type": "module",
   "scripts": {
     "start": "python -m http.server 8080",
     "test": "playwright test",
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",
-    "install-playwright": "npx playwright install"
+    "test:ui-crawl": "playwright test tests/ui-crawl.spec.ts",
+    "test:update-snapshots": "playwright test --update-snapshots",
+    "test:crawl-baseline": "playwright test tests/ui-crawl.spec.ts --update-snapshots",
+    "install-playwright": "npx playwright install",
+    "serve-diffs": "node server.js",
+    "ui-diff-server": "node server.js"
   },
   "keywords": [
     "education",
@@ -20,7 +26,9 @@
   "author": "ExamKlar Team",
   "license": "MIT",
   "devDependencies": {
-    "@playwright/test": "^1.40.0"
+    "@playwright/test": "^1.40.0",
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
   },
   "engines": {
     "node": ">=16.0.0"

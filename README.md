@@ -1,467 +1,156 @@
-# ExamKlar - Din Personlige Eksamen App 📚
+# 🎓 ExamKlar - AI-Powered Learning Platform
 
-En moderne, AI-powered mikrolærings platform hvor du kan skabe dine egne kurser og mestre hvilket som helst emne gennem interaktive flashcards, quizzer og spaced repetition.
+En avanceret læringsplatform med AI-drevet personalisering for eksamensforberedelse.
 
-## 🎯 Filosofi: Simpel, Modulær, Effektiv
-
-ExamKlar er bygget på princippet om **minimal kompleksitet, maksimal værdi**:
-
-- ✅ **Ingen build tools** - Åbn bare `index.html` i browseren
-- ✅ **Ingen dependencies** - Kun vanilla HTML, CSS og JavaScript 
-- ✅ **Modulær arkitektur** - Hver feature kan udvikles uafhængigt
-- ✅ **Progressive enhancement** - Fungerer uden JavaScript, bedre med
-- ✅ **Mobile-first** - Optimeret til smartphones og tablets
-- ✅ **Offline-first** - Fungerer uden internetforbindelse
-- ✅ **User-generated content** - Skab dine egne læringsemner
-
-## 🚀 Hurtig Start
-
-```bash
-# 1. Clone eller download projektet
-git clone <repo-url>
-
-# 2. Åbn i browser - INGEN INSTALLATION NØDVENDIG!
-open index.html
-
-# Eller start en lokal server (valgfrit)
-python -m http.server 8000
-# Gå til http://localhost:8000
-```
-
-## 📁 Projekt Struktur
+## 📁 Projektstruktur
 
 ```
-examklar-web/
-├── index.html                    # Hovedside med navigation
-├── manifest.json                 # PWA manifest
+ExamKlar/
+├── 📋 README.md                      # Dette dokument
+├── 🏠 index.html                     # Hovedside
+├── ⚙️ package.json                   # Node.js dependencies
+├── 🎭 playwright.config.js           # Test konfiguration
+├── 📄 manifest.json                  # PWA manifest
+├── 🔧 server.js                      # Udviklings server
+├── 💾 sw.js                          # Service Worker
 │
-├── core/                         # Kerne funktionalitet
-│   ├── app.js                   # Hoved app logik og routing
-│   ├── storage.js               # localStorage management
-│   └── utils.js                 # Hjælpe funktioner
+├── 📁 core/                          # Kerne funktionalitet
+│   ├── app.js                        # Hoved app logik
+│   ├── storage.js                    # Data persistering
+│   ├── utils.js                      # Utility funktioner
+│   └── ...                          # Andre kerne filer
 │
-├── styles/                       # CSS styling
-│   ├── global.css               # Globale styles og variabler
-│   └── components.css           # Genbrugelige komponenter
+├── 📁 modules/                       # Feature moduler
+│   ├── onboarding/                   # ✅ Onboarding flow (EXCELLENT)
+│   ├── subjects/                     # 📚 Emne håndtering
+│   ├── flashcards/                   # 🗂️ Flashcard system
+│   ├── quiz/                         # 🎯 Quiz system
+│   ├── dashboard/                    # 📊 Analytics dashboard
+│   ├── content/                      # 📖 Content management
+│   └── ai-assistant/                 # 🤖 AI tutor
 │
-├── modules/                      # Selvstændige læringsmoduler
-│   ├── content/                 # Dagligt læringsindhold
-│   ├── flashcards/              # Interaktive flashcards
-│   ├── quiz/                    # Quiz system
-│   └── dashboard/               # Fremskridt dashboard
+├── 📁 styles/                        # CSS styling
+│   ├── global.css                    # Global styles
+│   ├── components.css                # Component styles
+│   └── premium.css                   # Premium styling
 │
-└── assets/                       # Statiske ressourcer
-    ├── images/
-    ├── icons/
-    └── fonts/
+├── 📁 assets/                        # Statiske filer
+│   ├── icons/                        # Ikoner
+│   └── images/                       # Billeder
+│
+├── 📁 tests/                         # Test suite
+│   ├── ui-visual-regression.spec.js  # Visual regression tests
+│   ├── ui-summary.spec.js            # UI summary tests
+│   └── archived/                     # Arkiverede tests
+│
+├── 📁 docs/                          # Dokumentation
+│   ├── FINAL-UI-ASSESSMENT.md        # UI analyse rapport
+│   ├── UI-INCONSISTENCY-REPORT.md    # UI inkonsistens rapport
+│   └── archived/                     # Arkiverede dokumenter
+│
+└── 📁 tools/                         # Udviklings værktøjer
+    ├── ui-analyzer.html              # UI analyse værktøj
+    └── automated-test-suite.html     # Test suite
 ```
 
-## 🧩 Moduler
+## 🚀 Quick Start
 
-### 📖 Content Module
-**Status:** ✅ FULDT IMPLEMENTERET
-- User-generated content system med editor
-- Komplet reader interface med progress tracking
-- JSON-baseret content management
-- Cross-module data integration via DataBridge
-
-### 🗂️ Flashcards Module  
-**Status:** ✅ FULDT IMPLEMENTERET (767 linjer JS)
-- Interaktive flashcards med swipe/click animations
-- Spaced repetition algoritme implementeret
-- User-generated card creation system
-- localStorage persistence og DataBridge integration
-
-### ❓ Quiz Module
-**Status:** ✅ FULDT IMPLEMENTERET (870 linjer JS)
-- User-generated questions management system
-- Adaptive scoring og feedback system
-- Kategorier, tags og difficulty levels
-- Comprehensive statistics tracking
-
-### 📊 Dashboard Module
-**Status:** ✅ FULDT IMPLEMENTERET (456 linjer JS)
-- Real-time progress charts og analytics
-- Streak counter og achievement system  
-- Goal setting og tracking
-- Cross-module data aggregation
-
-### 🤖 AI Assistant Module
-**Status:** ✅ FULDT IMPLEMENTERET (480 linjer JS)
-- Multiple AI providers (OpenAI, Local, Hybrid)
-- Backup response system (85% coverage)
-- Privacy controls og usage management
-- Conversation history og context awareness
-
-### 📚 Subject Management
-**Status:** ✅ FULDT IMPLEMENTERET (417 linjer JS)
-- Create custom learning subjects
-- Color coding og emoji assignment
-- Subject analytics og management
-- Cross-module subject context
-
-### 📊 Dashboard Module
-**Status:** 🚧 Under udvikling
-- Komplet fremskridts oversigt
-- Læringsstatistikker og grafer
-- Streak counter og badges
-- Personaliserede anbefalinger
-
-## 🛠 Teknisk Stack
-
-| Komponent | Teknologi | Rationale |
-|-----------|-----------|-----------|
-| **Frontend** | Vanilla HTML/CSS/JS | Zero dependencies, maximum performance |
-| **Styling** | CSS Custom Properties | Modern, maintainable styling |
-| **State Management** | localStorage + JSON | Simple, persistent, offline-first |
-| **Routing** | URL params + History API | SEO-friendly, bookmarkable |
-| **Module Loading** | Dynamic imports | Lazy loading, smaller initial bundle |
-| **PWA** | Service Worker + Manifest | App-like experience, offline support |
-| **Deployment** | GitHub Pages / Netlify | Zero-config, automatic deployment |
-
-## 📱 Progressive Web App Features
-
-ExamKlar fungerer som en rigtig app:
-
-- **🏠 Add to Home Screen** - Installer som app på telefon/tablet
-- **⚡ Offline Support** - Fungerer uden internet efter første besøg  
-- **🔄 Background Sync** - Synkroniserer data når online igen
-- **📬 Push Notifications** - Daily study reminders (valgfrit)
-- **⌨️ Keyboard Shortcuts** - Hurtig navigation (Alt + 1-5)
-- **🎨 Theme Support** - Light/dark mode baseret på system
-
-## 🗄 Data Management
-
-### Local Storage Structure
-```javascript
-// User Progress
-examklar_user_progress: {
-    totalDaysCompleted: 0,
-    currentDay: 1,
-    completedModules: [],
-    streakCount: 0,
-    lastActiveDate: "2024-01-15T10:30:00Z"
-}
-
-// Flashcard Data  
-examklar_flashcard_data: {
-    completed: ["card-1", "card-2"],
-    favorites: ["card-5"],
-    difficult: ["card-10"],
-    lastReviewed: {
-        "card-1": "2024-01-15T09:30:00Z"
-    }
-}
-
-// Spaced Repetition
-examklar_spaced_repetition: {
-    cards: {
-        "card-1": {
-            interval: 3,
-            nextReview: "2024-01-18T09:30:00Z",
-            easeFactor: 2.5
-        }
-    }
-}
-```
-
-### Spaced Repetition Algorithm (2357 Method)
-```javascript
-// Intervals: 2, 3, 5, 7, 14, 30, 60 days
-const intervals = [2, 3, 5, 7, 14, 30, 60];
-
-function calculateNextReview(difficulty, currentInterval) {
-    if (difficulty === 'easy') return intervals[Math.min(currentInterval + 2, intervals.length - 1)];
-    if (difficulty === 'medium') return intervals[Math.min(currentInterval + 1, intervals.length - 1)];
-    if (difficulty === 'hard') return intervals[Math.max(currentInterval - 1, 0)];
-}
-```
-
-## 🎨 Design System
-
-### Color Palette
-```css
-:root {
-    --primary-color: #2563eb;    /* Blue 600 */
-    --secondary-color: #7c3aed;  /* Purple 600 */
-    --accent-color: #10b981;     /* Green 500 */
-    --warning-color: #f59e0b;    /* Yellow 500 */
-    --error-color: #ef4444;      /* Red 500 */
-    
-    --text-primary: #1f2937;     /* Gray 800 */
-    --text-secondary: #6b7280;   /* Gray 500 */
-    --bg-primary: #ffffff;       /* White */
-    --bg-secondary: #f8fafc;     /* Gray 50 */
-}
-```
-
-### Typography Scale
-```css
-:root {
-    --font-size-xs: 0.75rem;     /* 12px */
-    --font-size-sm: 0.875rem;    /* 14px */
-    --font-size-base: 1rem;      /* 16px */
-    --font-size-lg: 1.125rem;    /* 18px */
-    --font-size-xl: 1.25rem;     /* 20px */
-    --font-size-2xl: 1.5rem;     /* 24px */
-    --font-size-3xl: 1.875rem;   /* 30px */
-}
-```
-
-### Component Library
-- **Buttons:** `.btn`, `.btn-primary`, `.btn-secondary`
-- **Cards:** `.card`, `.module-card`, `.stat-card`  
-- **Progress:** `.progress-bar`, `.progress-fill`
-- **Alerts:** `.alert`, `.alert-success`, `.alert-warning`
-- **Forms:** `.form-group`, `.form-input`, `.form-label`
-
-## 🚀 Development Workflow
-
-### 1. Start Simple
+### Installation
 ```bash
-# Åbn index.html direkte i browser
-open index.html
-
-# Eller brug en simpel server
-python -m http.server 8000
+npm install
+npx playwright install
 ```
 
-### 2. Udvikl Moduler Uafhængigt
+### Udvikling
 ```bash
-# Arbejd på ét modul ad gangen
-# Eksempel: content module
-cd modules/content/
-# Edit index.html, content.js, data/*.json
+# Start udviklings server
+npm start
+# eller
+node server.js
+
+# Åben i browser
+http://localhost:8080
 ```
 
-### 3. Test Løbende
+### Testing
 ```bash
-# Ingen build step - bare refresh browser
-# Test på forskellige devices med browser dev tools
+# Kør alle tests
+npm test
+
+# Kør specifikke UI tests
+npx playwright test tests/ui-summary.spec.js
+npx playwright test tests/ui-visual-regression.spec.js
 ```
 
-### 4. Deploy Automatisk
-```bash
-git add .
-git commit -m "Added flashcard module"
-git push origin main
-# Automatic deploy via GitHub Pages
-```
+## 📊 Nuværende Status
 
-## 📈 Performance Optimizations
+### ✅ Fungerer Godt
+- **Onboarding**: Excellent design og UX - bruges som baseline
+- **Grundlæggende navigation**: Fungerer på tværs af moduler
+- **PWA features**: Service worker og manifest
 
-### Critical Rendering Path
-1. **HTML** loads instantly (no external dependencies)
-2. **CSS** loads with single request (concatenated files)
-3. **JavaScript** loads progressively (core → modules)
-4. **Images** lazy load when needed
+### ❌ Kræver Opmærksomhed
+- **Dashboard**: Layout problemer og inkonsistens
+- **Subjects**: Manglende subject.html fil (404 fejl)
+- **Quiz**: Data formatting problemer (NaN værdier)
+- **Sprog**: Inkonsistent engelsk/dansk mix
+- **Responsive design**: Mobile layout problemer
 
-### Bundle Size
-- **HTML:** ~15KB (gzipped)
-- **CSS:** ~25KB (gzipped)  
-- **JavaScript:** ~30KB (gzipped)
-- **Total:** ~70KB initial load
+## 🎯 Prioriteret Roadmap
 
-### Loading Strategy
-```javascript
-// Critical resources (inline or preload)
-<style>/* Critical CSS */</style>
-<script>/* Core app logic */</script>
+### Phase 1: Kritiske Fixes (Uge 1-2)
+1. ✅ Fix 404 fejl (opret subject.html)
+2. ✅ Dashboard layout cleanup
+3. ✅ Data formatering (fjern NaN)
+4. ✅ Sprog standardisering
 
-// Non-critical resources (lazy load)
-<link rel="preload" href="styles/components.css" as="style">
-<script src="modules/flashcards/flashcards.js" defer></script>
-```
+### Phase 2: UI Konsistens (Uge 3-4)
+1. ✅ Navigation standardisering
+2. ✅ Responsive design fixes
+3. ✅ Component consistency
+
+### Phase 3: Polish (Uge 5-6)
+1. ✅ Dark mode completion
+2. ✅ Performance optimization
+3. ✅ Accessibility improvements
+
+## 📖 Key Documents
+
+- **[UI Analysis Report](docs/FINAL-UI-ASSESSMENT.md)** - Komprehensiv UI analyse
+- **[UI Inconsistency Report](docs/UI-INCONSISTENCY-REPORT.md)** - Detaljerede inkonsistenser
+- **[Archived Documents](docs/archived/)** - Historiske dokumenter
 
 ## 🧪 Testing Strategy
 
-### Manual Testing Checklist
-- [ ] **Cross-browser:** Chrome, Firefox, Safari, Edge
-- [ ] **Mobile devices:** iOS Safari, Android Chrome
-- [ ] **Offline functionality:** Disconnect internet, test features
-- [ ] **PWA installation:** Add to home screen works
-- [ ] **Performance:** Lighthouse score > 90
-- [ ] **Accessibility:** Screen reader compatible
+- **Visual Regression**: Automated screenshots til UI consistency
+- **Functional Testing**: Core user journeys og workflows
+- **Cross-Browser**: Chrome, Firefox, Safari, Mobile browsers
+- **Responsive**: Multiple viewport sizes og orientations
 
-### Automated Testing (Future)
-```bash
-# Potential additions
-npm install --save-dev cypress        # E2E testing
-npm install --save-dev lighthouse     # Performance testing
-npm install --save-dev axe-core       # Accessibility testing
-```
+## 🎨 Design System
 
-## 🔒 Security Considerations
+**Baseline**: Onboarding modulet demonstrerer excellent design:
+- Konsistent typography
+- God spacing og layout
+- Clear visual hierarchy
+- Responsive design
+- Professional appearance
 
-### Data Protection
-- **No server-side data** - All data stored locally
-- **XSS Prevention** - Input sanitization in utils.js
-- **CSP Headers** - Content Security Policy for production
-- **HTTPS Only** - Force secure connections in production
+**Goal**: Anvend samme design patterns på alle moduler.
 
-### Privacy
-- **No tracking** - No analytics or external scripts
-- **No data collection** - All learning data stays on device
-- **Export/Import** - Users own their data completely
+## 🤝 Bidrag
 
-## 🌍 Internationalization (Future)
-
-### Language Support Structure
-```javascript
-// i18n/da.json
-{
-    "navigation": {
-        "home": "Hjem",
-        "content": "Indhold", 
-        "flashcards": "Flashcards",
-        "quiz": "Quiz",
-        "dashboard": "Dashboard"
-    }
-}
-
-// i18n/en.json  
-{
-    "navigation": {
-        "home": "Home",
-        "content": "Content",
-        "flashcards": "Flashcards", 
-        "quiz": "Quiz",
-        "dashboard": "Dashboard"
-    }
-}
-```
-
-## 📊 Analytics & Monitoring (Privacy-First)
-
-### Client-Side Analytics Only
-```javascript
-// No external services - all analytics stored locally
-const analytics = {
-    trackEvent(event, data) {
-        const events = storage.get('analytics_events', []);
-        events.push({
-            event,
-            data,
-            timestamp: new Date().toISOString()
-        });
-        storage.set('analytics_events', events);
-    }
-};
-```
-
-## 🤝 Contributing
-
-### Development Setup
-1. **Fork** repository
-2. **Clone** locally: `git clone <your-fork>`
-3. **Create branch:** `git checkout -b feature/new-module`
-4. **Develop** using browser + text editor
-5. **Test** on multiple devices/browsers
-6. **Submit** pull request
-
-### Code Style
-- **HTML:** Semantic, accessible markup
-- **CSS:** BEM methodology, mobile-first
-- **JavaScript:** ES6+, functional style, comprehensive comments
-- **File naming:** kebab-case for files, camelCase for variables
-
-### Commit Messages
-```bash
-git commit -m "feat: add flashcard swipe gestures"
-git commit -m "fix: resolve localStorage quota exceeded error"  
-git commit -m "docs: update API documentation"
-git commit -m "style: improve mobile navigation UX"
-```
-
-## 📋 Roadmap
-
-### Phase 1: Foundation ✅ 
-- [x] Basic HTML structure
-- [x] Core CSS system  
-- [x] JavaScript utilities
-- [x] Navigation system
-- [x] Local storage setup
-
-### Phase 2: Core Modules 🚧
-- [ ] Content module (7 days learning material)
-- [ ] Flashcards system with spaced repetition
-- [ ] Quiz engine with feedback
-- [ ] Progress dashboard
-
-### Phase 3: Enhanced Features
-- [ ] PWA functionality (offline, install)
-- [ ] Advanced spaced repetition
-- [ ] Study streaks and gamification
-- [ ] Data export/import
-
-### Phase 4: Polish & Scale
-- [ ] Performance optimizations
-- [ ] Accessibility improvements  
-- [ ] Multi-language support
-- [ ] Advanced analytics
-
-## 🎓 Learning Outcomes
-
-Efter 7 dage med ExamKlar vil brugere kunne:
-
-1. **Forstå** grundlæggende protein purification principper
-2. **Identificere** forskellige rensningsmetoder og deres anvendelser
-3. **Analysere** protein rensningsresultater
-4. **Planlægge** en komplet protein purification strategi
-5. **Troubleshoote** almindelige problemer i processen
-6. **Optimere** rensningsprotokoller for specifik anvendelse
-7. **Kommunikere** tekniske resultater klart og præcist
+Før ændringer:
+1. Kør tests: `npm test`
+2. Check UI consistency med visual regression tests
+3. Test på mobile og desktop
+4. Følg eksisterende design patterns fra onboarding
 
 ## 📞 Support
 
-### Self-Service
-- **GitHub Issues:** Rapporter bugs eller feature requests
-- **Documentation:** Komplet i README.md og kode kommentarer
-- **Examples:** Live eksempler i hver modul
-
-### Community
-- **Discussions:** GitHub Discussions for spørgsmål
-- **Wiki:** Community-vedligeholdt tips og tricks
+For spørgsmål om projektstruktur eller UI inconsistencies, se dokumentationen i `docs/` mappen.
 
 ---
 
-**ExamKlar** - Fordi læring skal være enkelt, effektivt og engagerende! 🚀
-
-*Bygget med ❤️ og vanilla JavaScript*
-
-## 🎉 **FAKTISK PROJEKT STATUS EFTER GRUNDIG AUDIT**
-
-**OPDATERING:** Efter komplet gennemgang af alle 511 JS filer, 40 HTML filer og 17 CSS filer er den faktiske status:
-
-### ✅ **MASSIVE IMPLEMENTATION VERIFICERET:**
-- **🏗️ Flashcards Module:** 767 linjer JS - FULDT IMPLEMENTERET med spaced repetition, animations, og smart data management
-- **❓ Quiz System:** 870 linjer JS - FULDT IMPLEMENTERET med adaptive scoring, kategorier, statistics og user-generated content
-- **📊 Dashboard:** 456 linjer JS - FULDT IMPLEMENTERET med charts, progress tracking, achievements og analytics
-- **🤖 AI Assistant:** 480 linjer JS - FULDT IMPLEMENTERET med backup responses, multiple providers, privacy controls
-- **📚 Subject System:** 417 linjer JS - FULDT IMPLEMENTERET subject management med emojis, colors, analytics
-- **📖 Content Module:** Komplet reader system med progress tracking og user-generated content
-- **⚙️ Core Infrastructure:** 9 separate core moduler (utils, storage, PWA, accessibility, performance, data-bridge)
-
-### 🚀 **AVANCEREDE FEATURES:**
-- **PWA:** Service Worker med 384 linjer kode, offline caching, installable app
-- **DataBridge:** Central data koordination system på tværs af alle moduler  
-- **User-Generated Content:** Smart systemer til flashcards, quiz, content creation
-- **AI Integration:** Multiple providers, fallback responses, conversation history
-- **Cross-Browser:** Browser compatibility og mobile gestures
-- **Accessibility:** Screen reader support, keyboard navigation
-
-### 🔧 **TEKNISK ARKITEKTUR:**
-- **Total størrelse:** 43MB af fuldt implementeret kode
-- **Modulær design:** Hver feature kan fungere uafhængigt
-- **Zero dependencies:** Kun vanilla HTML/CSS/JS
-- **Test infrastructure:** package.json og playwright.config.js tilføjet
-
-### 🎯 **HVAD DER FAKTISK MANGLER:**
-1. ✅ **Package.json** - ALLEREDE TILFØJET for test infrastructure
-2. **Demo data seeding** - 1-2 timer for at tilføje sample content
-3. **Cross-browser testing** - 1 time for at verificere kompatibilitet  
-4. **Final polish** - Minor UI tweaks
-
-**🚀 REEL ESTIMAT TIL COMPLETION: 2-4 TIMER, IKKE 15-20!**
-
-**Dette er et MASSIVT, næsten færdigt projekt med professionel arkitektur! 🤯**
+*Sidste opdatering: Januar 2025*
+*UI Analysis: Komplet med 100+ visual regression tests*
