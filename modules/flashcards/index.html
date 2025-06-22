@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="da" class="smooth-scroll">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flashcards - ExamKlar</title>
+    <title>Intelligente Flashcards - ExamKlar ✨</title>
+    <link rel="stylesheet" href="../../styles/global.css">
+    <link rel="stylesheet" href="../../styles/components.css">
     <link rel="stylesheet" href="../../styles/premium.css">
     <link rel="stylesheet" href="flashcards.css">
 </head>
@@ -21,7 +23,7 @@
         <nav class="nav container" role="navigation" aria-label="Hovednavigation">
             <div class="nav-brand">
                 <div class="logo text-gradient glow">✨ ExamKlar</div>
-                <span class="badge-luxury" aria-label="Flashcards">Flashcards</span>
+                <span class="badge-luxury" aria-label="Intelligente Flashcards">Flashcards</span>
             </div>
             <div class="nav-actions">
                 <a href="../../index.html" class="btn-luxury-small" aria-label="Tilbage til forside">
@@ -32,23 +34,10 @@
                     <span class="icon">📊</span>
                     Dashboard
                 </a>
-                <a href="../quiz/index.html" class="btn-luxury-small">
-                    <span class="icon">🎯</span>
-                    Quiz
+                <a href="../subjects/index.html" class="btn-luxury-small">
+                    <span class="icon">📚</span>
+                    Emner
                 </a>
-            </div>
-        </nav>
-    </header>
-                </a>
-            </div>
-        </div>
-    </nav>
-                <a href="../../index.html" class="nav-link-luxury" aria-label="Tilbage til hovedside">
-                    <span class="icon icon-dashboard" aria-hidden="true"></span>
-                    Hjem
-                </a>
-                <h1 class="logo text-gradient">🗂️ Intelligente Flashcards</h1>
-                <span class="badge-luxury">AI-Powered</span>
             </div>
         </nav>
     </header>
@@ -56,23 +45,40 @@
     <main class="main" id="main-content">
         <div class="container container-responsive">
             <!-- Hero Section -->
-            <section class="hero-luxury" role="banner" aria-labelledby="flashcards-title">
-                <div class="container">
+            <section class="luxury-section" role="banner" aria-labelledby="flashcards-title">
+                <div class="luxury-card float">
                     <div class="hero-content">
-                        <h2 id="flashcards-title" class="hero-title-luxury">Mester Dit Læringsmateriale</h2>
-                        <p class="hero-subtitle-luxury">
-                            Skab adaptive flashcards med spaced repetition og AI-optimering for maksimal hukommelse og effektiv læring.
+                        <h1 id="flashcards-title" class="section-title text-gradient glow">
+                            🗂️ Intelligente Flashcards
+                        </h1>
+                        <p class="hero-subtitle">
+                            Mester dit læringsmateriale med adaptive flashcards, spaced repetition og AI-optimering for maksimal hukommelse og effektiv læring.
                         </p>
+                        
+                        <div class="feature-preview">
+                            <div class="preview-card luxury-card float">
+                                <span class="preview-icon">🧠</span>
+                                <span class="preview-text">Spaced Repetition</span>
+                            </div>
+                            <div class="preview-card luxury-card float" style="animation-delay: 0.2s;">
+                                <span class="preview-icon">⚡</span>
+                                <span class="preview-text">AI-Optimeret</span>
+                            </div>
+                            <div class="preview-card luxury-card float" style="animation-delay: 0.4s;">
+                                <span class="preview-icon">🎯</span>
+                                <span class="preview-text">Adaptiv Læring</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
 
             <!-- Premium Stats Overview -->
-            <section class="stats luxury-section" role="region" aria-labelledby="stats-title">
-                <div class="container">
-                    <h3 id="stats-title" class="section-title text-gradient">Flashcard Analytics</h3>
-                    <div class="stats-grid-luxury grid-responsive grid-3">
-                        <div class="luxury-card float">
+            <section class="luxury-section" role="region" aria-labelledby="stats-title">
+                <h2 id="stats-title" class="section-title text-gradient">📊 Flashcard Analytics</h2>
+                <div class="grid grid-responsive grid-4">
+                    <div class="luxury-card float">
+                        <div class="stat-content">
                             <div class="stat-icon" aria-hidden="true">
                                 <span class="icon icon-xl text-gradient">🗂️</span>
                             </div>
@@ -80,128 +86,278 @@
                             <span class="stat-label">Total Cards</span>
                             <div class="progress-luxury" data-progress="0" aria-label="Card completion progress"></div>
                         </div>
-            <div class="stat-card">
-                <div class="stat-number" id="dueCards">0</div>
-                <div class="stat-label">Due Today</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="masteredCards">0</div>
-                <div class="stat-label">Mastered</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="successRate">0%</div>
-                <div class="stat-label">Success Rate</div>
-            </div>
-        </div>
-
-        <div class="action-buttons">
-            <button onclick="showCreateCard()" class="btn-primary">
-                ➕ Create New Card
-            </button>
-            <button onclick="startReview()" class="btn-success" id="reviewBtn">
-                🎯 Start Review
-            </button>
-            <button onclick="showImportExport()" class="btn-secondary">
-                📤 Import/Export
-            </button>
-        </div>
-
-        <!-- Create Card Modal -->
-        <div id="createCardModal" class="modal" style="display: none;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>➕ Create New Flashcard</h2>
-                    <span class="close" onclick="hideCreateCard()">&times;</span>
+                    </div>
+                    
+                    <div class="luxury-card float" style="animation-delay: 0.1s;">
+                        <div class="stat-content">
+                            <div class="stat-icon" aria-hidden="true">
+                                <span class="icon icon-xl text-gradient">⏰</span>
+                            </div>
+                            <span class="stat-number text-gradient" id="dueCards">0</span>
+                            <span class="stat-label">Due Today</span>
+                            <div class="progress-luxury" data-progress="0" aria-label="Due cards progress"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="luxury-card float" style="animation-delay: 0.2s;">
+                        <div class="stat-content">
+                            <div class="stat-icon" aria-hidden="true">
+                                <span class="icon icon-xl text-gradient">🏆</span>
+                            </div>
+                            <span class="stat-number text-gradient" id="masteredCards">0</span>
+                            <span class="stat-label">Mastered</span>
+                            <div class="progress-luxury" data-progress="0" aria-label="Mastered cards progress"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="luxury-card float" style="animation-delay: 0.3s;">
+                        <div class="stat-content">
+                            <div class="stat-icon" aria-hidden="true">
+                                <span class="icon icon-xl text-gradient">📈</span>
+                            </div>
+                            <span class="stat-number text-gradient" id="successRate">0%</span>
+                            <span class="stat-label">Success Rate</span>
+                            <div class="progress-luxury" data-progress="0" aria-label="Success rate progress"></div>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="cardFront">📖 Front (Question/Term):</label>
-                        <textarea id="cardFront" rows="3" placeholder="Enter question or term...
-                        
+            </section>
+
+            <!-- Action Buttons -->
+            <section class="luxury-section">
+                <h2 class="section-title text-gradient">⚡ Quick Actions</h2>
+                <div class="grid grid-responsive grid-3">
+                    <button class="luxury-card card-hover float" onclick="showCreateCard()" aria-label="Create new flashcard">
+                        <div class="card-content">
+                            <span class="card-icon">➕</span>
+                            <h3 class="card-title">Create New Card</h3>
+                            <p class="card-description">Opret et nyt flashcard</p>
+                        </div>
+                    </button>
+                    
+                    <button class="luxury-card card-hover float" onclick="startReview()" id="reviewBtn" aria-label="Start review session" style="animation-delay: 0.1s;">
+                        <div class="card-content">
+                            <span class="card-icon">🎯</span>
+                            <h3 class="card-title">Start Review</h3>
+                            <p class="card-description">Gennemgå dine cards</p>
+                        </div>
+                    </button>
+                    
+                    <button class="luxury-card card-hover float" onclick="showImportExport()" aria-label="Import or export cards" style="animation-delay: 0.2s;">
+                        <div class="card-content">
+                            <span class="card-icon">📤</span>
+                            <h3 class="card-title">Import/Export</h3>
+                            <p class="card-description">Administrer dine cards</p>
+                        </div>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Cards List Section -->
+            <section class="luxury-section">
+                <div class="section-header">
+                    <h2 class="section-title text-gradient">📚 Your Flashcards</h2>
+                    
+                    <!-- Filter Controls -->
+                    <div class="luxury-card">
+                        <div class="filter-controls">
+                            <div class="grid grid-responsive grid-3">
+                                <div class="form-group">
+                                    <label for="categoryFilter" class="form-label">Kategori:</label>
+                                    <select id="categoryFilter" class="form-input" onchange="filterCards()">
+                                        <option value="">Alle kategorier</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="difficultyFilter" class="form-label">Sværhedsgrad:</label>
+                                    <select id="difficultyFilter" class="form-input" onchange="filterCards()">
+                                        <option value="">Alle sværhedsgrader</option>
+                                        <option value="1">⭐ Let</option>
+                                        <option value="2">⭐⭐ Mellem</option>
+                                        <option value="3">⭐⭐⭐ Svær</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="searchCards" class="form-label">Søg:</label>
+                                    <input type="text" id="searchCards" class="form-input" placeholder="🔍 Søg i cards..." onkeyup="filterCards()">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="cardsList" class="cards-grid">
+                    <div class="luxury-card empty-state">
+                        <div class="empty-content">
+                            <div class="empty-icon">🗂️</div>
+                            <h3>Ingen flashcards endnu</h3>
+                            <p>Opret dit første flashcard for at komme i gang!</p>
+                            <button class="btn-luxury" onclick="showCreateCard()">
+                                <span class="icon">➕</span>
+                                Opret Første Card
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Actions Footer -->
+            <section class="luxury-section">
+                <div class="luxury-card">
+                    <div class="quick-actions">
+                        <div class="grid grid-responsive grid-3">
+                            <button class="btn-luxury-outline" onclick="exportCards()">
+                                <span class="icon">📤</span>
+                                Export Cards
+                            </button>
+                            <button class="btn-luxury-outline" onclick="document.getElementById('importFile').click()">
+                                <span class="icon">📥</span>
+                                Import Cards
+                            </button>
+                            <button class="btn-luxury-outline btn-danger" onclick="clearAllCards()">
+                                <span class="icon">🗑️</span>
+                                Clear All
+                            </button>
+                        </div>
+                        <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importCards(this)">
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="../../index.html" class="nav-item">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">Hjem</span>
+        </a>
+        <a href="../subjects/index.html" class="nav-item">
+            <span class="nav-icon">📚</span>
+            <span class="nav-label">Emner</span>
+        </a>
+        <button class="nav-item active">
+            <span class="nav-icon">🗂️</span>
+            <span class="nav-label">Flashcards</span>
+        </button>
+        <a href="../dashboard/index.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">Dashboard</span>
+        </a>
+    </nav>
+
+    <!-- Create Card Modal -->
+    <div id="createCardModal" class="modal" style="display: none;">
+        <div class="modal-overlay" onclick="hideCreateCard()"></div>
+        <div class="modal-content luxury-card">
+            <div class="modal-header">
+                <h2 class="text-gradient">➕ Opret Nyt Flashcard</h2>
+                <button class="modal-close" onclick="hideCreateCard()" aria-label="Luk modal">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="cardFront" class="form-label">📖 Forside (Spørgsmål/Term):</label>
+                    <textarea id="cardFront" class="form-input" rows="3" placeholder="Indtast spørgsmål eller term...
+
 Tip: Du kan bruge Markdown:
-**Bold text**
-*Italic text*"></textarea>
+**Fed tekst**
+*Kursiv tekst*"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="cardBack" class="form-label">💡 Bagside (Svar/Definition):</label>
+                    <textarea id="cardBack" class="form-input" rows="4" placeholder="Indtast svar eller definition..."></textarea>
+                </div>
+
+                <div class="grid grid-2">
+                    <div class="form-group">
+                        <label for="cardCategory" class="form-label">🏷️ Kategori:</label>
+                        <select id="cardCategory" class="form-input">
+                            <option value="custom">Brugerdefinerede Cards</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="cardBack">💡 Back (Answer/Definition):</label>
-                        <textarea id="cardBack" rows="4" placeholder="Enter answer or definition..."></textarea>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="cardCategory">🏷️ Category:</label>
-                            <select id="cardCategory">
-                                <option value="custom">Custom Cards</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="cardDifficulty">🎯 Initial Difficulty:</label>
-                            <select id="cardDifficulty">
-                                <option value="1">⭐ Easy</option>
-                                <option value="2" selected>⭐⭐ Medium</option>
-                                <option value="3">⭐⭐⭐ Hard</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="cardHint">💭 Hint (Optional):</label>
-                        <input type="text" id="cardHint" placeholder="Enter a helpful hint...">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="cardTags">🏷️ Tags (comma-separated):</label>
-                        <input type="text" id="cardTags" placeholder="tag1, tag2, tag3">
+                        <label for="cardDifficulty" class="form-label">🎯 Indledende Sværhedsgrad:</label>
+                        <select id="cardDifficulty" class="form-input">
+                            <option value="1">⭐ Let</option>
+                            <option value="2" selected>⭐⭐ Mellem</option>
+                            <option value="3">⭐⭐⭐ Svær</option>
+                        </select>
                     </div>
                 </div>
 
-                <div class="modal-footer">
-                    <button onclick="hideCreateCard()" class="btn-secondary">Cancel</button>
-                    <button onclick="createCard()" class="btn-primary">Create Card</button>
+                <div class="form-group">
+                    <label for="cardHint" class="form-label">💭 Hint (Valgfrit):</label>
+                    <input type="text" id="cardHint" class="form-input" placeholder="Indtast et hjælpsomt hint...">
                 </div>
-            </div>
-        </div>
 
-        <!-- Cards List -->
-        <div class="cards-section">
-            <div class="section-header">
-                <h2>📚 Your Flashcards</h2>
-                <div class="filter-controls">
-                    <select id="categoryFilter" onchange="filterCards()">
-                        <option value="">All Categories</option>
-                    </select>
-                    <select id="difficultyFilter" onchange="filterCards()">
-                        <option value="">All Difficulties</option>
-                        <option value="1">⭐ Easy</option>
-                        <option value="2">⭐⭐ Medium</option>
-                        <option value="3">⭐⭐⭐ Hard</option>
-                    </select>
-                    <input type="text" id="searchCards" placeholder="🔍 Search cards..." onkeyup="filterCards()">
+                <div class="form-group">
+                    <label for="cardTags" class="form-label">🏷️ Tags (komma-separeret):</label>
+                    <input type="text" id="cardTags" class="form-input" placeholder="tag1, tag2, tag3">
                 </div>
             </div>
 
-            <div id="cardsList" class="cards-grid">
-                <div class="empty-state">
-                    <div class="empty-icon">🗂️</div>
-                    <h3>No flashcards yet</h3>
-                    <p>Create your first flashcard to get started!</p>
-                    <button onclick="showCreateCard()" class="btn-primary">Create First Card</button>
-                </div>
+            <div class="modal-footer">
+                <button class="btn-luxury-outline" onclick="hideCreateCard()">Annuller</button>
+                <button class="btn-luxury" onclick="createCard()">
+                    <span class="icon">➕</span>
+                    Opret Card
+                </button>
             </div>
-        </div>
-
-        <!-- Quick Actions -->
-        <div class="quick-actions">
-            <button onclick="exportCards()" class="btn-outline">📤 Export Cards</button>
-            <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importCards(this)">
-            <button onclick="document.getElementById('importFile').click()" class="btn-outline">📥 Import Cards</button>
-            <button onclick="clearAllCards()" class="btn-outline btn-danger">🗑️ Clear All</button>
         </div>
     </div>
 
+    <!-- Background Elements -->
+    <div class="background-elements">
+        <div class="floating-element" style="--delay: 0s; --duration: 20s;">🗂️</div>
+        <div class="floating-element" style="--delay: 5s; --duration: 25s;">🧠</div>
+        <div class="floating-element" style="--delay: 10s; --duration: 30s;">⚡</div>
+        <div class="floating-element" style="--delay: 15s; --duration: 22s;">🎯</div>
+    </div>
+
+    <script>
+        // Dark Mode Toggle System
+        function initializeDarkMode() {
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            
+            const savedTheme = localStorage.getItem('examklar-theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const currentTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+            
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            updateThemeIcon(currentTheme);
+            
+            themeToggle?.addEventListener('click', () => {
+                const current = document.documentElement.getAttribute('data-theme');
+                const newTheme = current === 'dark' ? 'light' : 'dark';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('examklar-theme', newTheme);
+                updateThemeIcon(newTheme);
+                
+                themeToggle.style.transform = 'scale(0.8)';
+                setTimeout(() => themeToggle.style.transform = 'scale(1)', 150);
+            });
+        }
+        
+        function updateThemeIcon(theme) {
+            const themeIcon = document.getElementById('themeIcon');
+            if (themeIcon) {
+                themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeDarkMode();
+        });
+    </script>
+
+    <script src="../../core/utils.js"></script>
     <script src="../../core/data-bridge.js"></script>
     <script src="flashcards.js"></script>
 </body>

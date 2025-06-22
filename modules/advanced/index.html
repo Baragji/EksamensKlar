@@ -1,559 +1,309 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="da" class="smooth-scroll">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Features - ExamKlar</title>
+    <title>Advanced Features - ExamKlar ✨</title>
+    <link rel="stylesheet" href="../../styles/global.css">
+    <link rel="stylesheet" href="../../styles/components.css">
     <link rel="stylesheet" href="../../styles/premium.css">
     <link rel="stylesheet" href="advanced.css">
 </head>
-<body>
-    <!-- Skip Link for Accessibility -->
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-
-    <!-- Luxury Navigation -->
-    <nav class="navbar" role="navigation" aria-label="Main navigation">
-        <div class="nav-container">
-            <a href="../../index.html" class="nav-brand" aria-label="ExamKlar home">
-                <span class="brand-text">ExamKlar</span>
-            </a>
-            
-            <div class="nav-links">
-                <a href="../dashboard/index.html" class="nav-link" aria-label="Dashboard">
-                    <i class="icon-dashboard" aria-hidden="true"></i>
-                    <span>Dashboard</span>
+<body class="gpu-accelerated">
+    <!-- Skip to Content Link -->
+    <a href="#main-content" class="skip-link">Spring til hovedindhold</a>
+    
+    <!-- Dark Mode Toggle -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Skift til mørk/lys tilstand" title="Skift tema">
+        <span id="themeIcon">🌙</span>
+    </button>
+    
+    <!-- Ultra-Premium Navigation -->
+    <header class="nav-luxury">
+        <nav class="nav container" role="navigation" aria-label="Hovednavigation">
+            <div class="nav-brand">
+                <div class="logo text-gradient glow">✨ ExamKlar</div>
+                <span class="badge-luxury" aria-label="Advanced Features">Advanced</span>
+            </div>
+            <div class="nav-actions">
+                <a href="../../index.html" class="btn-luxury-small" aria-label="Tilbage til forside">
+                    <span class="icon">🏠</span>
+                    Forside
                 </a>
-                <a href="../subjects/index.html" class="nav-link" aria-label="Subjects">
-                    <i class="icon-subjects" aria-hidden="true"></i>
-                    <span>Fag</span>
+                <a href="../dashboard/index.html" class="btn-luxury-small">
+                    <span class="icon">📊</span>
+                    Dashboard
                 </a>
-                <a href="../flashcards/index.html" class="nav-link" aria-label="Flashcards">
-                    <i class="icon-flashcards" aria-hidden="true"></i>
-                    <span>Flashcards</span>
-                </a>
-                <a href="../advanced/index.html" class="nav-link active" aria-label="Advanced Features" aria-current="page">
-                    <i class="icon-advanced" aria-hidden="true"></i>
-                    <span>Advanced</span>
-                </a>
-                <a href="../ai-assistant/index.html" class="nav-link" aria-label="AI Assistant">
-                    <i class="icon-ai" aria-hidden="true"></i>
-                    <span>AI Assistant</span>
+                <a href="../subjects/index.html" class="btn-luxury-small">
+                    <span class="icon">📚</span>
+                    Emner
                 </a>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </header>
 
-    <main id="main-content" class="main-content">
-        <!-- Hero Section -->
-        <section class="hero-section" role="banner">
-            <div class="hero-content">
-                <h1 class="hero-title">
-                    <i class="icon-advanced gradient-text" aria-hidden="true"></i>
-                    Advanced Features
-                </h1>
-                <p class="hero-subtitle">Avancerede værktøjer til eksamensforberedelse</p>
-            </div>
-        </section>
+    <main class="main" id="main-content">
+        <div class="container container-responsive">
+            <!-- Hero Section -->
+            <section class="luxury-section" role="banner" aria-labelledby="advanced-title">
+                <div class="luxury-card float">
+                    <div class="hero-content">
+                        <h1 id="advanced-title" class="section-title text-gradient glow">
+                            🌟 Advanced Features
+                        </h1>
+                        <p class="hero-subtitle">
+                            Kraftfulde værktøjer og tilpasningsmuligheder til avancerede brugere med professionelle funktioner.
+                        </p>
+                        
+                        <div class="feature-preview">
+                            <div class="preview-card luxury-card float">
+                                <span class="preview-icon">📤</span>
+                                <span class="preview-text">Export/Import</span>
+                            </div>
+                            <div class="preview-card luxury-card float" style="animation-delay: 0.2s;">
+                                <span class="preview-icon">🔍</span>
+                                <span class="preview-text">Global Search</span>
+                            </div>
+                            <div class="preview-card luxury-card float" style="animation-delay: 0.4s;">
+                                <span class="preview-icon">🎨</span>
+                                <span class="preview-text">Customization</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-        <!-- Advanced Features -->
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title">
-                    <i class="icon-star" aria-hidden="true"></i>
-                    Advanced Tools
-                </h2>
-                <div class="grid grid-3">
-                    <button class="glass-card card-hover" onclick="openExportModal()" aria-label="Export and backup">
+            <!-- Advanced Tools -->
+            <section class="luxury-section">
+                <h2 class="section-title text-gradient">⚡ Advanced Tools</h2>
+                <div class="grid grid-responsive grid-3">
+                    <button class="luxury-card card-hover float" onclick="openExportModal()" aria-label="Export and backup">
                         <div class="card-content">
-                            <i class="icon-export" aria-hidden="true"></i>
-                            <h3>Export & Backup</h3>
-                            <p>Eksporter al din data til backup eller deling</p>
+                            <span class="card-icon">📤</span>
+                            <h3 class="card-title">Export & Backup</h3>
+                            <p class="card-description">Eksporter al din data til backup eller deling</p>
                         </div>
                     </button>
 
-                    <button class="glass-card card-hover" onclick="openImportModal()" aria-label="Import and restore">
+                    <button class="luxury-card card-hover float" onclick="openImportModal()" aria-label="Import and restore" style="animation-delay: 0.1s;">
                         <div class="card-content">
-                            <i class="icon-import" aria-hidden="true"></i>
-                            <h3>Import & Restore</h3>
-                            <p>Importer data fra backup filer eller andre kilder</p>
+                            <span class="card-icon">📥</span>
+                            <h3 class="card-title">Import & Restore</h3>
+                            <p class="card-description">Importer data fra backup filer eller andre kilder</p>
                         </div>
                     </button>
 
-                    <button class="glass-card card-hover" onclick="openSearchModal()" aria-label="Global search">
+                    <button class="luxury-card card-hover float" onclick="openSearchModal()" aria-label="Global search" style="animation-delay: 0.2s;">
                         <div class="card-content">
-                            <i class="icon-search" aria-hidden="true"></i>
-                            <h3>Global Search</h3>
-                            <p>Søg på tværs af alt dit indhold og flashcards</p>
+                            <span class="card-icon">🔍</span>
+                            <h3 class="card-title">Global Search</h3>
+                            <p class="card-description">Søg på tværs af alt dit indhold og flashcards</p>
                         </div>
                     </button>
 
-                    <button class="glass-card card-hover" onclick="openAnalyticsModal()" aria-label="Learning analytics">
+                    <button class="luxury-card card-hover float" onclick="openAnalyticsModal()" aria-label="Learning analytics" style="animation-delay: 0.3s;">
                         <div class="card-content">
-                            <i class="icon-analytics" aria-hidden="true"></i>
-                            <h3>Learning Analytics</h3>
-                            <p>Dybdegående analyser af din læringsfremgang</p>
+                            <span class="card-icon">📈</span>
+                            <h3 class="card-title">Learning Analytics</h3>
+                            <p class="card-description">Dybdegående analyser af din læringsfremgang</p>
                         </div>
                     </button>
 
-                    <button class="glass-card card-hover" onclick="openCustomizationModal()" aria-label="Customization">
+                    <button class="luxury-card card-hover float" onclick="openCustomizationModal()" aria-label="Customization" style="animation-delay: 0.4s;">
                         <div class="card-content">
-                            <i class="icon-customize" aria-hidden="true"></i>
-                            <h3>Customization</h3>
-                            <p>Tilpas interfacet efter dine præferencer</p>
+                            <span class="card-icon">🎨</span>
+                            <h3 class="card-title">Customization</h3>
+                            <p class="card-description">Tilpas interfacet efter dine præferencer</p>
                         </div>
                     </button>
 
-                    <button class="glass-card card-hover" onclick="openIntegrationsModal()" aria-label="Integrations">
+                    <button class="luxury-card card-hover float" onclick="openIntegrationsModal()" aria-label="Integrations" style="animation-delay: 0.5s;">
                         <div class="card-content">
-                            <i class="icon-integrations" aria-hidden="true"></i>
-                            <h3>Integrations</h3>
-                            <p>Forbind med eksterne værktøjer og tjenester</p>
+                            <span class="card-icon">🔗</span>
+                            <h3 class="card-title">Integrations</h3>
+                            <p class="card-description">Forbind med eksterne værktøjer og tjenester</p>
                         </div>
                     </button>
                 </div>
-            </div>
-        </section>
+            </section>
+
+            <!-- Theme & Appearance -->
+            <section class="luxury-section">
+                <h2 class="section-title text-gradient">🎨 Theme & Appearance</h2>
+                <div class="grid grid-responsive grid-2">
+                    <div class="luxury-card float">
+                        <div class="card-content">
+                            <div class="setting-header">
+                                <span class="setting-icon">🌙</span>
+                                <h3 class="card-title">Dark Mode</h3>
+                            </div>
+                            <p class="card-description">Skift mellem lys og mørk tilstand</p>
+                            <div class="button-group">
+                                <button class="btn-luxury-outline" onclick="setTheme('light')">☀️ Light</button>
+                                <button class="btn-luxury-outline" onclick="setTheme('dark')">🌙 Dark</button>
+                                <button class="btn-luxury-outline" onclick="setTheme('auto')">🔄 Auto</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="luxury-card float" style="animation-delay: 0.1s;">
+                        <div class="card-content">
+                            <div class="setting-header">
+                                <span class="setting-icon">🌍</span>
+                                <h3 class="card-title">Language Settings</h3>
+                            </div>
+                            <p class="card-description">Vælg dit foretrukne sprog</p>
+                            <div class="button-group">
+                                <button class="btn-luxury-outline" onclick="setLanguage('da')">🇩🇰 Dansk</button>
+                                <button class="btn-luxury-outline" onclick="setLanguage('en')">🇺🇸 English</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Test Features -->
+            <section class="luxury-section">
+                <h2 class="section-title text-gradient">🧪 Test Advanced Features</h2>
+                <div class="luxury-card">
+                    <div class="card-content">
+                        <p class="card-description">Brug linkene nedenfor til at teste alle avancerede funktioner:</p>
+                        <div class="grid grid-responsive grid-3">
+                            <a href="tests/export-test.html" class="btn-luxury">
+                                <span class="icon">📤</span>
+                                Export/Import Tests
+                            </a>
+                            <a href="tests/darkmode-test.html" class="btn-luxury">
+                                <span class="icon">🌙</span>
+                                Dark Mode Tests
+                            </a>
+                            <a href="tests/search-test.html" class="btn-luxury">
+                                <span class="icon">🔍</span>
+                                Search Tests
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
     </main>
-            margin-bottom: 10px;
-            color: var(--text-primary);
-        }
 
-        .feature-description {
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-
-        .feature-button {
-            background: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            width: 100%;
-        }
-
-        .feature-button:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
-
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: var(--accent-color);
-            color: white;
-            border: none;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.5rem;
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-
-        .theme-toggle:hover {
-            transform: scale(1.1);
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .modal-content {
-            background: var(--bg-primary);
-            border-radius: 12px;
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 30px;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .modal-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--text-secondary);
-            padding: 5px;
-        }
-
-        .close-btn:hover {
-            color: var(--text-primary);
-        }
-
-        .search-section {
-            margin: 30px 0;
-            padding: 20px;
-            background: var(--bg-secondary);
-            border-radius: 8px;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            font-size: 16px;
-            margin-bottom: 15px;
-        }
-
-        .search-filters {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 15px;
-        }
-
-        .filter-chip {
-            background: var(--accent-color);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 15px;
-            font-size: 14px;
-            cursor: pointer;
-            border: none;
-            transition: all 0.3s ease;
-        }
-
-        .filter-chip:hover {
-            opacity: 0.8;
-        }
-
-        .filter-chip.inactive {
-            background: var(--text-secondary);
-        }
-
-        .search-results {
-            max-height: 300px;
-            overflow-y: auto;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            background: var(--bg-primary);
-        }
-
-        .search-result-item {
-            padding: 15px;
-            border-bottom: 1px solid var(--border-color);
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .search-result-item:hover {
-            background: var(--bg-secondary);
-        }
-
-        .search-result-item:last-child {
-            border-bottom: none;
-        }
-
-        .result-title {
-            font-weight: 600;
-            color: var(--accent-color);
-            margin-bottom: 5px;
-        }
-
-        .result-snippet {
-            color: var(--text-secondary);
-            font-size: 14px;
-            line-height: 1.4;
-        }
-
-        .export-section, .import-section {
-            margin: 20px 0;
-            padding: 20px;
-            background: var(--bg-secondary);
-            border-radius: 8px;
-        }
-
-        textarea {
-            width: 100%;
-            min-height: 150px;
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            font-family: 'Monaco', 'Menlo', monospace;
-            font-size: 12px;
-            resize: vertical;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary {
-            background: var(--accent-color);
-            color: white;
-        }
-
-        .btn-success {
-            background: var(--success-color);
-            color: white;
-        }
-
-        .btn-warning {
-            background: var(--warning-color);
-            color: #212529;
-        }
-
-        .btn-danger {
-            background: var(--danger-color);
-            color: white;
-        }
-
-        .btn:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
-
-        .status-message {
-            padding: 12px 16px;
-            border-radius: 6px;
-            margin: 15px 0;
-            font-weight: 500;
-        }
-
-        .status-success {
-            background: rgba(40, 167, 69, 0.1);
-            border: 1px solid var(--success-color);
-            color: var(--success-color);
-        }
-
-        .status-error {
-            background: rgba(220, 53, 69, 0.1);
-            border: 1px solid var(--danger-color);
-            color: var(--danger-color);
-        }
-
-        .status-warning {
-            background: rgba(255, 193, 7, 0.1);
-            border: 1px solid var(--warning-color);
-            color: #856404;
-        }
-
-        @media (max-width: 768px) {
-            .feature-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .modal-content {
-                margin: 20px auto;
-                padding: 20px;
-            }
-            
-            .button-group {
-                flex-direction: column;
-            }
-            
-            .btn {
-                width: 100%;
-            }
-        }
-    </style>
-</head>
-<body>
-    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
-        🌙
-    </button>
-
-    <div class="container">
-        <header class="page-header">
-            <h1>🌟 Advanced Features</h1>
-            <p>Powerful tools and customization options for ExamKlar</p>
-            <a href="../../index.html" class="back-btn">← Back to Home</a>
-        </header>
-
-        <div class="feature-grid">
-            <div class="feature-card" onclick="openExportModal()">
-                <span class="feature-icon">📤</span>
-                <h3 class="feature-title">Export & Backup</h3>
-                <p class="feature-description">
-                    Export all your data for backup or sharing with others
-                </p>
-                <button class="feature-button">Export Data</button>
-            </div>
-
-            <div class="feature-card" onclick="openImportModal()">
-                <span class="feature-icon">📥</span>
-                <h3 class="feature-title">Import & Restore</h3>
-                <p class="feature-description">
-                    Import data from backup files or other sources
-                </p>
-                <button class="feature-button">Import Data</button>
-            </div>
-
-            <div class="feature-card" onclick="openSearchModal()">
-                <span class="feature-icon">🔍</span>
-                <h3 class="feature-title">Global Search</h3>
-                <p class="feature-description">
-                    Search across all your content, flashcards, and quizzes
-                </p>
-                <button class="feature-button">Open Search</button>
-            </div>
-
-            <div class="feature-card" onclick="openThemeModal()">
-                <span class="feature-icon">🎨</span>
-                <h3 class="feature-title">Theme & Appearance</h3>
-                <p class="feature-description">
-                    Customize colors, themes, and visual preferences
-                </p>
-                <button class="feature-button">Customize</button>
-            </div>
-
-            <div class="feature-card" onclick="openLanguageModal()">
-                <span class="feature-icon">🌍</span>
-                <h3 class="feature-title">Language Settings</h3>
-                <p class="feature-description">
-                    Switch between Danish and English interface
-                </p>
-                <button class="feature-button">Change Language</button>
-            </div>
-
-            <div class="feature-card" onclick="openAdvancedSettings()">
-                <span class="feature-icon">⚙️</span>
-                <h3 class="feature-title">Advanced Settings</h3>
-                <p class="feature-description">
-                    Configure advanced options and preferences
-                </p>
-                <button class="feature-button">Settings</button>
-            </div>
-        </div>
-
-        <div class="feature-section">
-            <h2>🧪 Test Advanced Features</h2>
-            <p>Use the links below to test all advanced functionality:</p>
-            <div class="test-links">
-                <a href="tests/export-test.html" class="test-link">📤 Export/Import Tests</a>
-                <a href="tests/darkmode-test.html" class="test-link">🌙 Dark Mode Tests</a>
-                <a href="tests/search-test.html" class="test-link">🔍 Search Tests</a>
-            </div>
-        </div>
-    </div>
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="../../index.html" class="nav-item">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">Hjem</span>
+        </a>
+        <a href="../subjects/index.html" class="nav-item">
+            <span class="nav-icon">📚</span>
+            <span class="nav-label">Emner</span>
+        </a>
+        <a href="../ai-assistant/index.html" class="nav-item">
+            <span class="nav-icon">🤖</span>
+            <span class="nav-label">AI Assistant</span>
+        </a>
+        <button class="nav-item active">
+            <span class="nav-icon">🌟</span>
+            <span class="nav-label">Advanced</span>
+        </button>
+    </nav>
 
     <!-- Export Modal -->
-    <div id="exportModal" class="modal">
-        <div class="modal-content">
+    <div id="exportModal" class="modal" style="display: none;">
+        <div class="modal-overlay" onclick="closeModal('exportModal')"></div>
+        <div class="modal-content luxury-card">
             <div class="modal-header">
-                <h2 class="modal-title">📤 Export Data</h2>
-                <button class="close-btn" onclick="closeModal('exportModal')">&times;</button>
+                <h2 class="text-gradient">📤 Export Data</h2>
+                <button class="modal-close" onclick="closeModal('exportModal')" aria-label="Luk modal">&times;</button>
             </div>
             
-            <div class="export-section">
-                <h3>Select Data to Export</h3>
+            <div class="modal-body">
+                <h3>Vælg Data til Export</h3>
                 <div class="button-group">
-                    <button class="btn btn-primary" onclick="exportAllData()">Export All Data</button>
-                    <button class="btn btn-primary" onclick="exportContent()">Content Only</button>
-                    <button class="btn btn-primary" onclick="exportFlashcards()">Flashcards Only</button>
-                    <button class="btn btn-primary" onclick="exportQuizzes()">Quizzes Only</button>
+                    <button class="btn-luxury" onclick="exportAllData()">Export All Data</button>
+                    <button class="btn-luxury-outline" onclick="exportContent()">Content Only</button>
+                    <button class="btn-luxury-outline" onclick="exportFlashcards()">Flashcards Only</button>
+                    <button class="btn-luxury-outline" onclick="exportQuizzes()">Quizzes Only</button>
                 </div>
                 
                 <div id="exportStatus"></div>
                 
                 <h3>Export Preview</h3>
-                <textarea id="exportData" readonly placeholder="Export data will appear here..."></textarea>
+                <textarea id="exportData" class="form-input" readonly placeholder="Export data will appear here..." rows="8"></textarea>
                 
                 <div class="button-group">
-                    <button class="btn btn-success" onclick="downloadExport()">Download as File</button>
-                    <button class="btn btn-primary" onclick="copyToClipboard('exportData')">Copy to Clipboard</button>
+                    <button class="btn-luxury" onclick="downloadExport()">
+                        <span class="icon">💾</span>
+                        Download as File
+                    </button>
+                    <button class="btn-luxury-outline" onclick="copyToClipboard('exportData')">
+                        <span class="icon">📋</span>
+                        Copy to Clipboard
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Import Modal -->
-    <div id="importModal" class="modal">
-        <div class="modal-content">
+    <div id="importModal" class="modal" style="display: none;">
+        <div class="modal-overlay" onclick="closeModal('importModal')"></div>
+        <div class="modal-content luxury-card">
             <div class="modal-header">
-                <h2 class="modal-title">📥 Import Data</h2>
-                <button class="close-btn" onclick="closeModal('importModal')">&times;</button>
+                <h2 class="text-gradient">📥 Import Data</h2>
+                <button class="modal-close" onclick="closeModal('importModal')" aria-label="Luk modal">&times;</button>
             </div>
             
-            <div class="import-section">
+            <div class="modal-body">
                 <h3>Import from File</h3>
-                <input type="file" id="importFile" accept=".json" onchange="handleFileImport(event)">
+                <input type="file" id="importFile" class="form-input" accept=".json" onchange="handleFileImport(event)">
                 
                 <h3>Or Paste Data</h3>
-                <textarea id="importData" placeholder="Paste your export data here..."></textarea>
+                <textarea id="importData" class="form-input" placeholder="Paste your export data here..." rows="8"></textarea>
                 
                 <div id="importStatus"></div>
                 
                 <div class="button-group">
-                    <button class="btn btn-success" onclick="importData()">Import Data</button>
-                    <button class="btn btn-warning" onclick="validateImportData()">Validate Data</button>
-                    <button class="btn btn-danger" onclick="clearImportData()">Clear</button>
+                    <button class="btn-luxury" onclick="importData()">
+                        <span class="icon">📥</span>
+                        Import Data
+                    </button>
+                    <button class="btn-luxury-outline" onclick="validateImportData()">
+                        <span class="icon">✅</span>
+                        Validate Data
+                    </button>
+                    <button class="btn-luxury-outline btn-danger" onclick="clearImportData()">
+                        <span class="icon">🗑️</span>
+                        Clear
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Search Modal -->
-    <div id="searchModal" class="modal">
-        <div class="modal-content">
+    <div id="searchModal" class="modal" style="display: none;">
+        <div class="modal-overlay" onclick="closeModal('searchModal')"></div>
+        <div class="modal-content luxury-card">
             <div class="modal-header">
-                <h2 class="modal-title">🔍 Global Search</h2>
-                <button class="close-btn" onclick="closeModal('searchModal')">&times;</button>
+                <h2 class="text-gradient">🔍 Global Search</h2>
+                <button class="modal-close" onclick="closeModal('searchModal')" aria-label="Luk modal">&times;</button>
             </div>
             
-            <div class="search-section">
-                <input type="text" class="search-input" id="globalSearchInput" 
+            <div class="modal-body">
+                <input type="text" class="form-input" id="globalSearchInput" 
                        placeholder="Search across all content..." 
                        oninput="performGlobalSearch(this.value)">
                 
                 <div class="search-filters">
-                    <button class="filter-chip" id="filter-all" onclick="toggleFilter('all')">All</button>
+                    <button class="filter-chip active" id="filter-all" onclick="toggleFilter('all')">All</button>
                     <button class="filter-chip" id="filter-content" onclick="toggleFilter('content')">Content</button>
                     <button class="filter-chip" id="filter-flashcards" onclick="toggleFilter('flashcards')">Flashcards</button>
                     <button class="filter-chip" id="filter-quiz" onclick="toggleFilter('quiz')">Quizzes</button>
                     <button class="filter-chip" id="filter-notes" onclick="toggleFilter('notes')">Notes</button>
                 </div>
                 
-                <div class="search-results" id="globalSearchResults">
+                <div class="search-results luxury-card" id="globalSearchResults">
                     <div class="search-result-item">
                         <div class="result-title">Start typing to search...</div>
                         <div class="result-snippet">Search across all your ExamKlar content</div>
@@ -563,59 +313,54 @@
         </div>
     </div>
 
-    <!-- Theme Modal -->
-    <div id="themeModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">🎨 Theme & Appearance</h2>
-                <button class="close-btn" onclick="closeModal('themeModal')">&times;</button>
-            </div>
-            
-            <div class="theme-section">
-                <h3>Theme Selection</h3>
-                <div class="button-group">
-                    <button class="btn btn-primary" onclick="setTheme('light')">☀️ Light Theme</button>
-                    <button class="btn btn-primary" onclick="setTheme('dark')">🌙 Dark Theme</button>
-                    <button class="btn btn-primary" onclick="setTheme('auto')">🔄 Auto (System)</button>
-                </div>
-                
-                <h3>Custom Colors</h3>
-                <div class="color-customization">
-                    <label>Accent Color:</label>
-                    <input type="color" id="accentColor" value="#007bff" onchange="setCustomAccentColor(this.value)">
-                    
-                    <button class="btn btn-warning" onclick="resetThemeSettings()">Reset to Default</button>
-                </div>
-                
-                <div id="themeStatus"></div>
-            </div>
-        </div>
+    <!-- Background Elements -->
+    <div class="background-elements">
+        <div class="floating-element" style="--delay: 0s; --duration: 20s;">🌟</div>
+        <div class="floating-element" style="--delay: 5s; --duration: 25s;">🔍</div>
+        <div class="floating-element" style="--delay: 10s; --duration: 30s;">📤</div>
+        <div class="floating-element" style="--delay: 15s; --duration: 22s;">🎨</div>
     </div>
 
-    <!-- Language Modal -->
-    <div id="languageModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">🌍 Language Settings</h2>
-                <button class="close-btn" onclick="closeModal('languageModal')">&times;</button>
-            </div>
+    <script>
+        // Dark Mode Toggle System
+        function initializeDarkMode() {
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
             
-            <div class="language-section">
-                <h3>Select Language</h3>
-                <div class="button-group">
-                    <button class="btn btn-primary" onclick="setLanguage('da')">🇩🇰 Dansk</button>
-                    <button class="btn btn-primary" onclick="setLanguage('en')">🇺🇸 English</button>
-                </div>
+            const savedTheme = localStorage.getItem('examklar-theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const currentTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+            
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            updateThemeIcon(currentTheme);
+            
+            themeToggle?.addEventListener('click', () => {
+                const current = document.documentElement.getAttribute('data-theme');
+                const newTheme = current === 'dark' ? 'light' : 'dark';
                 
-                <div id="languageStatus"></div>
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('examklar-theme', newTheme);
+                updateThemeIcon(newTheme);
                 
-                <p><strong>Note:</strong> Language changes will take effect after page reload.</p>
-            </div>
-        </div>
-    </div>
+                themeToggle.style.transform = 'scale(0.8)';
+                setTimeout(() => themeToggle.style.transform = 'scale(1)', 150);
+            });
+        }
+        
+        function updateThemeIcon(theme) {
+            const themeIcon = document.getElementById('themeIcon');
+            if (themeIcon) {
+                themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeDarkMode();
+        });
+    </script>
 
     <script src="../../core/utils.js"></script>
-    <script src="../../core/storage.js"></script>
+    <script src="../../core/data-bridge.js"></script>
     <script src="advanced.js"></script>
 </body>
 </html>
