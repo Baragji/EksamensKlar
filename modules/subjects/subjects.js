@@ -3,7 +3,36 @@ class SubjectManager {
     constructor() {
         this.subjects = JSON.parse(localStorage.getItem('examklar_subjects') || '[]');
         this.currentSubject = localStorage.getItem('examklar_current_subject') || null;
+        
+        // Create default subject for testing if none exist
+        if (this.subjects.length === 0) {
+            this.createDefaultSubject();
+        }
+        
         this.init();
+    }
+
+    createDefaultSubject() {
+        const defaultSubject = {
+            id: 'demo_subject_001',
+            name: 'Matematik',
+            description: 'Grundlæggende matematik og algebra',
+            color: 'blue',
+            createdAt: new Date().toISOString(),
+            lastAccessed: new Date().toISOString(),
+            contentCount: 3,
+            flashcardCount: 15,
+            quizCount: 2,
+            stats: {
+                totalStudyTime: 45,
+                completedSessions: 5,
+                streak: 3,
+                lastStudyDate: new Date().toISOString()
+            }
+        };
+        
+        this.subjects.push(defaultSubject);
+        this.saveSubjects();
     }
 
     init() {

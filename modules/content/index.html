@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Content Manager - ExamKlar</title>
+    <title>Indhold Manager - ExamKlar</title>
     <link rel="stylesheet" href="../../styles/premium.css">
     <link rel="stylesheet" href="content.css">
 </head>
@@ -49,7 +49,7 @@
             <div class="hero-content">
                 <h1 class="hero-title">
                     <i class="icon-content gradient-text" aria-hidden="true"></i>
-                    Content Manager
+                    Indhold Manager
                 </h1>
                 <p class="hero-subtitle">Upload og organiser dit læringsindhold</p>
             </div>
@@ -68,7 +68,7 @@
                         <div class="form-group">
                             <label for="dayTitle" class="form-label">
                                 <i class="icon-book" aria-hidden="true"></i>
-                                Lesson Title:
+                                Lektion Titel:
                             </label>
                             <input type="text" id="dayTitle" class="input-field" placeholder="f.eks. Protein Basics" aria-describedby="title-help">
                             <p id="title-help" class="text-secondary">Giv din lektion en beskrivende titel</p>
@@ -146,5 +146,24 @@ Du kan bruge Markdown:
 
     <script src="../../core/data-bridge.js"></script>
     <script src="content.js"></script>
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="../../index.html" class="nav-item">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">Hjem</span>
+        </a>
+        <a href="../subjects/index.html" class="nav-item">
+            <span class="nav-icon">📚</span>
+            <span class="nav-label">Emner</span>
+        </a>
+        <button class="nav-item active">
+            <span class="nav-icon">📄</span>
+            <span class="nav-label">Indhold</span>
+        </button>
+        <a href="../dashboard/index.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">Dashboard</span>
+        </a>
+    </nav>
 </body>
 </html>
