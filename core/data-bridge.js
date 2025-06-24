@@ -684,6 +684,96 @@ const DataBridge = {
     },
 
     /**
+     * Initialize Real-time features
+     */
+    initRealtime(eventBus) {
+        if (typeof DataBridgeRealtime !== 'undefined') {
+            this.realtime = new DataBridgeRealtime(this, eventBus);
+            console.log('🔄 DataBridge Real-time: Initialized');
+            return this.realtime;
+        } else {
+            console.warn('⚠️ DataBridge Real-time: Not available (script not loaded)');
+            return null;
+        }
+    },
+
+    /**
+     * Get real-time sync status
+     */
+    getSyncStatus() {
+        return this.realtime ? this.realtime.getSyncStatus() : {
+            isOnline: navigator.onLine,
+            lastSync: null,
+            pendingChanges: 0,
+            conflicts: []
+        };
+    },
+
+    /**
+     * Export data with real-time features
+     */
+    async exportData(options = {}) {
+        if (this.realtime) {
+            return await this.realtime.exportData(options);
+        } else {
+            // Fallback export without real-time features
+            const exportData = {
+                metadata: {
+                    exportedAt: new Date().toISOString(),
+                    version: '1.0.0',
+                    format: 'json',
+                    source: 'ExamKlar DataBridge'
+                },
+                onboarding: this.getOnboardingData(),
+                training: this.getTrainingData()
+            };
+            
+            return JSON.stringify(exportData, null, 2);
+        }
+    },
+
+    /**
+     * Import data with real-time features
+     */
+    async importData(importData, options = {}) {
+        if (this.realtime) {
+            return await this.realtime.importData(importData, options);
+        } else {
+            // Fallback import without real-time features
+            try {
+                const parsedData = JSON.parse(importData);
+                
+                if (parsedData.onboarding) {
+                    localStorage.setItem(this.KEYS.ONBOARDING_DATA, JSON.stringify(parsedData.onboarding));
+                }
+                
+                if (parsedData.training) {
+                    this.saveTrainingData(parsedData.training);
+                }
+                
+                return { success: true, message: 'Data imported successfully' };
+            } catch (error) {
+                throw new Error(`Import failed: ${error.message}`);
+            }
+        }
+    },
+
+    /**
+     * Validate data
+     */
+    validateData(type, data) {
+        if (this.realtime && this.realtime.validator) {
+            return this.realtime.validator.validate(type, data);
+        } else {
+            // Basic validation fallback
+            if (!data) {
+                return { isValid: false, errors: ['Data is required'], warnings: [] };
+            }
+            return { isValid: true, errors: [], warnings: [] };
+        }
+    },
+
+    /**
      * Reset all training data (for testing)
      */
     resetTrainingData() {
@@ -694,6 +784,13 @@ const DataBridge = {
         // Also remove legacy keys
         const keysToRemove = ['examklar-content', 'examklar-flashcards', 'examklar-quiz'];
         keysToRemove.forEach(key => localStorage.removeItem(key));
+        
+        // Clear real-time data if available
+        if (this.realtime) {
+            this.realtime.syncQueue = [];
+            this.realtime.syncStatus.pendingChanges = 0;
+            this.realtime.syncStatus.conflicts = [];
+        }
         
         console.log('🗑️ All training data reset');
     }

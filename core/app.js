@@ -109,6 +109,12 @@ const app = {
             // Initialize DataBridge with EventBus
             if (window.DataBridge) {
                 window.DataBridge.initEventBus(this.eventBus);
+                
+                // Initialize Real-time features if available
+                this.dataBridgeRealtime = window.DataBridge.initRealtime(this.eventBus);
+                if (this.dataBridgeRealtime) {
+                    console.log('🔄 DataBridge Real-time features enabled');
+                }
             }
             
             // Setup core event listeners
