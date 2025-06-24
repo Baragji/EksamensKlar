@@ -15,12 +15,21 @@ class PerformanceOptimizer {
         this.init();
     }
 
+    /**
+     * Initialize performance optimization
+     */
     init() {
         this.measurePageLoad();
         this.setupLazyLoading();
         this.optimizeCSS();
         this.preloadCriticalResources();
         this.setupPerformanceMonitoring();
+        this.optimizeForSlowDevice();
+        this.optimizeMemory();
+        this.adaptToConnection();
+        this.setupAdvancedOptimizations();
+        this.initializeModuleLoader();
+        this.setupIntelligentPrefetching();
     }
 
     measurePageLoad() {
@@ -277,6 +286,398 @@ class PerformanceOptimizer {
         console.log(`⏱️ ${name}: ${measure.duration.toFixed(2)}ms`);
         
         return result;
+    }
+
+    /**
+     * Setup advanced performance optimizations
+     */
+    setupAdvancedOptimizations() {
+        this.setupResourceHints();
+        this.setupCriticalResourcePrioritization();
+        this.setupAdaptiveLoading();
+        this.setupPerformanceBudgets();
+    }
+
+    /**
+     * Initialize module loader integration
+     */
+    initializeModuleLoader() {
+        if (window.moduleLoader) {
+            // Configure module loader with performance settings
+            window.moduleLoader.setPerformanceConfig({
+                maxConcurrentLoads: this.getOptimalConcurrency(),
+                preloadThreshold: this.getPreloadThreshold(),
+                networkAware: true
+            });
+        }
+    }
+
+    /**
+     * Setup intelligent prefetching
+     */
+    setupIntelligentPrefetching() {
+        // Track user navigation patterns
+        this.navigationPatterns = new Map();
+        this.setupNavigationTracking();
+        this.setupPredictivePrefetching();
+    }
+
+    /**
+     * Setup resource hints for better loading
+     */
+    setupResourceHints() {
+        const head = document.head;
+        
+        // DNS prefetch for external resources
+        const dnsPrefetch = [
+            '//fonts.googleapis.com',
+            '//cdn.jsdelivr.net'
+        ];
+        
+        dnsPrefetch.forEach(domain => {
+            const link = document.createElement('link');
+            link.rel = 'dns-prefetch';
+            link.href = domain;
+            head.appendChild(link);
+        });
+
+        // Preconnect to critical origins
+        const preconnect = [
+            'https://fonts.googleapis.com'
+        ];
+        
+        preconnect.forEach(origin => {
+            const link = document.createElement('link');
+            link.rel = 'preconnect';
+            link.href = origin;
+            link.crossOrigin = 'anonymous';
+            head.appendChild(link);
+        });
+    }
+
+    /**
+     * Setup critical resource prioritization
+     */
+    setupCriticalResourcePrioritization() {
+        // Use Intersection Observer to prioritize visible content
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        this.prioritizeVisibleContent(entry.target);
+                    }
+                });
+            }, {
+                rootMargin: '50px'
+            });
+
+            // Observe all modules
+            document.querySelectorAll('[data-module]').forEach(module => {
+                observer.observe(module);
+            });
+        }
+    }
+
+    /**
+     * Prioritize content that becomes visible
+     */
+    prioritizeVisibleContent(element) {
+        const moduleName = element.dataset.module;
+        if (moduleName && window.moduleLoader) {
+            window.moduleLoader.prioritizeModule(moduleName);
+        }
+
+        // Preload related resources
+        const relatedResources = element.querySelectorAll('[data-preload]');
+        relatedResources.forEach(resource => {
+            this.preloadResource(resource.dataset.preload);
+        });
+    }
+
+    /**
+     * Setup adaptive loading based on device capabilities
+     */
+    setupAdaptiveLoading() {
+        const deviceCapabilities = this.assessDeviceCapabilities();
+        
+        // Adjust loading strategy based on device
+        if (deviceCapabilities.isLowEnd) {
+            this.enableLowEndOptimizations();
+        } else if (deviceCapabilities.isHighEnd) {
+            this.enableHighEndOptimizations();
+        }
+    }
+
+    /**
+     * Assess device capabilities
+     */
+    assessDeviceCapabilities() {
+        const capabilities = {
+            memory: navigator.deviceMemory || 4,
+            cores: navigator.hardwareConcurrency || 4,
+            connection: this.getConnectionInfo(),
+            isLowEnd: false,
+            isHighEnd: false
+        };
+
+        // Classify device
+        capabilities.isLowEnd = capabilities.memory <= 2 || capabilities.cores <= 2;
+        capabilities.isHighEnd = capabilities.memory >= 8 && capabilities.cores >= 8;
+
+        return capabilities;
+    }
+
+    /**
+     * Enable optimizations for low-end devices
+     */
+    enableLowEndOptimizations() {
+        // Reduce concurrent requests
+        this.maxConcurrentRequests = 2;
+        
+        // Disable non-essential features
+        this.disableAnimations();
+        this.reduceImageQuality();
+        this.enableAggressiveCaching();
+        
+        console.log('🔧 Low-end device optimizations enabled');
+    }
+
+    /**
+     * Enable optimizations for high-end devices
+     */
+    enableHighEndOptimizations() {
+        // Increase concurrent requests
+        this.maxConcurrentRequests = 8;
+        
+        // Enable advanced features
+        this.enablePredictiveLoading();
+        this.enableAdvancedCaching();
+        
+        console.log('🚀 High-end device optimizations enabled');
+    }
+
+    /**
+     * Setup performance budgets
+     */
+    setupPerformanceBudgets() {
+        this.budgets = {
+            totalSize: 2 * 1024 * 1024, // 2MB
+            loadTime: 3000, // 3 seconds
+            renderTime: 1000, // 1 second
+            interactionTime: 100 // 100ms
+        };
+
+        this.monitorBudgets();
+    }
+
+    /**
+     * Monitor performance budgets
+     */
+    monitorBudgets() {
+        // Monitor total page size
+        if (window.bundleAnalyzer) {
+            window.bundleAnalyzer.analyzeStaticAssets().then(analysis => {
+                if (analysis.totalSize > this.budgets.totalSize) {
+                    console.warn(`⚠️ Size budget exceeded: ${this.formatSize(analysis.totalSize)} > ${this.formatSize(this.budgets.totalSize)}`);
+                    this.triggerSizeOptimization();
+                }
+            });
+        }
+
+        // Monitor load time
+        if (this.metrics.loadTime > this.budgets.loadTime) {
+            console.warn(`⚠️ Load time budget exceeded: ${this.metrics.loadTime}ms > ${this.budgets.loadTime}ms`);
+            this.triggerLoadOptimization();
+        }
+    }
+
+    /**
+     * Setup navigation tracking for predictive loading
+     */
+    setupNavigationTracking() {
+        // Track clicks on navigation elements
+        document.addEventListener('click', (event) => {
+            const link = event.target.closest('a[href]');
+            if (link) {
+                this.trackNavigation(window.location.pathname, link.getAttribute('href'));
+            }
+        });
+
+        // Track module loads
+        if (window.moduleLoader) {
+            window.moduleLoader.onModuleLoad = (moduleName) => {
+                this.trackModuleUsage(moduleName);
+            };
+        }
+    }
+
+    /**
+     * Track navigation patterns
+     */
+    trackNavigation(from, to) {
+        const pattern = `${from} -> ${to}`;
+        const count = this.navigationPatterns.get(pattern) || 0;
+        this.navigationPatterns.set(pattern, count + 1);
+
+        // Store in localStorage for persistence
+        const patterns = JSON.parse(localStorage.getItem('examklar-nav-patterns') || '{}');
+        patterns[pattern] = (patterns[pattern] || 0) + 1;
+        localStorage.setItem('examklar-nav-patterns', JSON.stringify(patterns));
+    }
+
+    /**
+     * Setup predictive prefetching
+     */
+    setupPredictivePrefetching() {
+        // Load stored navigation patterns
+        const storedPatterns = JSON.parse(localStorage.getItem('examklar-nav-patterns') || '{}');
+        Object.entries(storedPatterns).forEach(([pattern, count]) => {
+            this.navigationPatterns.set(pattern, count);
+        });
+
+        // Predict and prefetch likely next pages
+        this.predictAndPrefetch();
+    }
+
+    /**
+     * Predict and prefetch likely next resources
+     */
+    predictAndPrefetch() {
+        const currentPath = window.location.pathname;
+        const predictions = [];
+
+        // Find patterns starting from current path
+        this.navigationPatterns.forEach((count, pattern) => {
+            const [from, to] = pattern.split(' -> ');
+            if (from === currentPath && count > 2) { // Only if visited more than twice
+                predictions.push({ to, probability: count });
+            }
+        });
+
+        // Sort by probability and prefetch top predictions
+        predictions
+            .sort((a, b) => b.probability - a.probability)
+            .slice(0, 3) // Top 3 predictions
+            .forEach(prediction => {
+                this.prefetchPage(prediction.to);
+            });
+    }
+
+    /**
+     * Prefetch a page
+     */
+    prefetchPage(url) {
+        // Only prefetch if on fast connection
+        const connection = this.getConnectionInfo();
+        if (connection.effectiveType === '4g' || connection.effectiveType === '3g') {
+            const link = document.createElement('link');
+            link.rel = 'prefetch';
+            link.href = url;
+            document.head.appendChild(link);
+            
+            console.log(`🔮 Prefetching predicted page: ${url}`);
+        }
+    }
+
+    /**
+     * Get optimal concurrency based on device and network
+     */
+    getOptimalConcurrency() {
+        const connection = this.getConnectionInfo();
+        const deviceCapabilities = this.assessDeviceCapabilities();
+        
+        if (deviceCapabilities.isLowEnd || connection.effectiveType === 'slow-2g') {
+            return 2;
+        } else if (connection.effectiveType === '4g' && deviceCapabilities.isHighEnd) {
+            return 8;
+        }
+        
+        return 4; // Default
+    }
+
+    /**
+     * Get preload threshold based on connection
+     */
+    getPreloadThreshold() {
+        const connection = this.getConnectionInfo();
+        
+        switch (connection.effectiveType) {
+            case 'slow-2g': return 0; // No preloading
+            case '2g': return 1;
+            case '3g': return 3;
+            case '4g': return 5;
+            default: return 3;
+        }
+    }
+
+    /**
+     * Trigger size optimization when budget exceeded
+     */
+    triggerSizeOptimization() {
+        // Enable aggressive compression
+        if (window.cacheStrategy) {
+            window.cacheStrategy.cacheConfig.compressionThreshold = 512; // Lower threshold
+        }
+
+        // Lazy load non-critical modules
+        this.lazyLoadNonCriticalModules();
+    }
+
+    /**
+     * Trigger load optimization when budget exceeded
+     */
+    triggerLoadOptimization() {
+        // Reduce image quality
+        this.reduceImageQuality();
+        
+        // Defer non-critical scripts
+        this.deferNonCriticalScripts();
+        
+        // Enable service worker caching
+        this.enableServiceWorkerCaching();
+    }
+
+    /**
+     * Format file size for display
+     */
+    formatSize(bytes) {
+        const units = ['B', 'KB', 'MB', 'GB'];
+        let size = bytes;
+        let unitIndex = 0;
+        
+        while (size >= 1024 && unitIndex < units.length - 1) {
+            size /= 1024;
+            unitIndex++;
+        }
+        
+        return `${size.toFixed(1)}${units[unitIndex]}`;
+    }
+
+    /**
+     * Get memory usage information
+     */
+    getMemoryUsage() {
+        if ('memory' in performance) {
+            return {
+                used: Math.round(performance.memory.usedJSHeapSize / 1048576),
+                total: Math.round(performance.memory.totalJSHeapSize / 1048576),
+                limit: Math.round(performance.memory.jsHeapSizeLimit / 1048576)
+            };
+        }
+        return null;
+    }
+
+    /**
+     * Get connection information
+     */
+    getConnectionInfo() {
+        if ('connection' in navigator) {
+            return {
+                effectiveType: navigator.connection.effectiveType,
+                downlink: navigator.connection.downlink
+            };
+        }
+        return { effectiveType: 'unknown', downlink: 0 };
     }
 
     getPerformanceReport() {
