@@ -9,8 +9,9 @@ class SecurityManager {
         this.sessionTimeout = 30 * 60 * 1000; // 30 minutter
         this.maxLoginAttempts = 5;
         this.loginAttempts = new Map();
+        this.nonce = this.generateNonce();
         this.securityHeaders = {
-            'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:;",
+            'Content-Security-Policy': `default-src 'self'; script-src 'self' 'nonce-${this.nonce}'; style-src 'self' 'nonce-${this.nonce}' 'unsafe-hashes'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests;`,
             'X-Frame-Options': 'DENY',
             'X-Content-Type-Options': 'nosniff',
             'Referrer-Policy': 'strict-origin-when-cross-origin',
@@ -23,11 +24,77 @@ class SecurityManager {
     async init() {
         await this.generateEncryptionKey();
         this.setupCSP();
+        this.injectNonceToScripts();
         this.setupSessionManagement();
         this.setupInputSanitization();
         this.monitorSecurityEvents();
         
         console.log('🔒 Security Manager initialized with enterprise-level protection');
+    }
+
+    generateNonce() {
+        const array = new Uint8Array(16);
+        window.crypto.getRandomValues(array);
+        return btoa(String.fromCharCode(...array)).replace(/[+/=]/g, '');
+    }
+
+    injectNonceToScripts() {
+        // Replace nonce placeholders in HTML
+        this.replaceNoncePlaceholders();
+        
+        // Add nonce to all inline scripts
+        const scripts = document.querySelectorAll('script:not([src])');
+        scripts.forEach(script => {
+            if (!script.getAttribute('nonce')) {
+                script.setAttribute('nonce', this.nonce);
+            }
+        });
+
+        // Add nonce to all inline styles
+        const styles = document.querySelectorAll('style');
+        styles.forEach(style => {
+            if (!style.getAttribute('nonce')) {
+                style.setAttribute('nonce', this.nonce);
+            }
+        });
+
+        // Make nonce available globally for dynamic script creation
+        window.CSP_NONCE = this.nonce;
+    }
+
+    replaceNoncePlaceholders() {
+        // Replace {{CSP_NONCE}} placeholders in script and style tags
+        const elementsWithPlaceholder = document.querySelectorAll('[nonce*="{{CSP_NONCE}}"]');
+        elementsWithPlaceholder.forEach(element => {
+            const currentNonce = element.getAttribute('nonce');
+            if (currentNonce && currentNonce.includes('{{CSP_NONCE}}')) {
+                element.setAttribute('nonce', currentNonce.replace('{{CSP_NONCE}}', this.nonce));
+            }
+        });
+    }
+
+    getNonce() {
+        return this.nonce;
+    }
+
+    // CSP Violation Reporting
+    setupCSPReporting() {
+        document.addEventListener('securitypolicyviolation', (e) => {
+            console.warn('CSP Violation:', {
+                blockedURI: e.blockedURI,
+                violatedDirective: e.violatedDirective,
+                originalPolicy: e.originalPolicy,
+                sourceFile: e.sourceFile,
+                lineNumber: e.lineNumber
+            });
+            
+            // Log to audit system
+            this.logSecurityEvent('csp_violation', {
+                type: e.violatedDirective,
+                blocked: e.blockedURI,
+                source: e.sourceFile
+            });
+        });
     }
 
     // Encryption & Decryption
@@ -160,6 +227,9 @@ class SecurityManager {
         meta.httpEquiv = 'Content-Security-Policy';
         meta.content = this.securityHeaders['Content-Security-Policy'];
         document.head.appendChild(meta);
+        
+        // Setup CSP violation reporting
+        this.setupCSPReporting();
     }
 
     // Session Management
