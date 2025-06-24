@@ -42,19 +42,10 @@ const STATIC_CACHE_FILES = [
     './modules/advanced/index.html',
     './modules/advanced/advanced.js',
     './modules/advanced/advanced.css',
-    './modules/advanced/tests/export-test.html',
-    './modules/advanced/tests/darkmode-test.html',
-    './modules/advanced/tests/search-test.html',
     // AI Assistant module
     './modules/ai-assistant/index.html',
     './modules/ai-assistant/ai-assistant.js',
-    './modules/ai-assistant/ai-assistant.css',
-    './modules/ai-assistant/tests/chat-test.html',
-    './modules/ai-assistant/tests/ai-test.html',
-    './modules/ai-assistant/tests/feedback-test.html',
-    './modules/ai-assistant/tests/fallback-test.html',
-    // Test pages
-    './comprehensive-test.html'
+    './modules/ai-assistant/ai-assistant.css'
 ];
 
 // Dynamic cache patterns
