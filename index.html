@@ -21,6 +21,8 @@
     <link rel="stylesheet" href="styles/interactive-components.css">
     
     <!-- Resource Preloading -->
+    <link rel="preload" href="config/app-config.js" as="script">
+    <link rel="preload" href="shared/index.js" as="script">
     <link rel="preload" href="core/browser-compatibility.js" as="script">
     <link rel="preload" href="core/resource-error-handler.js" as="script">
     <link rel="preload" href="core/preload-config.js" as="script">
@@ -28,7 +30,6 @@
     <link rel="preload" href="core/preload-monitor.js" as="script">
     <link rel="preload" href="core/lazy-config.js" as="script">
     <link rel="preload" href="core/lazy-loader.js" as="script">
-    <link rel="preload" href="core/utils.js" as="script">
     <link rel="preload" href="core/app.js" as="script">
     <link rel="modulepreload" href="core/module-loader.js">
     
@@ -552,6 +553,13 @@
         }
     </script>
 
+    <!-- Configuration and Shared Modules -->
+    <script src="config/app-config.js" nonce="{{CSP_NONCE}}"></script>
+    <script type="module" src="shared/index.js" nonce="{{CSP_NONCE}}"></script>
+    
+    <!-- Monitoring Integration -->
+    <script src="core/monitoring-integration.js" nonce="{{CSP_NONCE}}"></script>
+    
     <!-- Accessibility Manager -->
     <script src="core/accessibility-manager.js" nonce="{{CSP_NONCE}}"></script>
     

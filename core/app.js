@@ -17,10 +17,14 @@ const app = {
     async init() {
         if (this.isInitialized) return;
         
+        this.initStartTime = Date.now();
         console.log('🚀 Initializing ExamKlar...');
         
         // Initialize Enterprise Security & Scalability first
         await this.initializeEnterpriseSecurity();
+        
+        // Initialize Monitoring & Analytics
+        await this.initializeMonitoring();
         
         // Initialize EventBus system
         await this.initializeEventBus();
@@ -56,6 +60,15 @@ const app = {
         this.isInitialized = true;
         console.log('✅ ExamKlar initialized successfully');
         this.eventBus.emit('app', 'initialized', { timestamp: Date.now(), modules: Object.keys(this.modules) });
+        
+        // Track successful initialization
+        if (typeof trackAppEvent !== 'undefined') {
+            trackAppEvent('app_initialization_completed', {
+                timestamp: Date.now(),
+                modules_loaded: Object.keys(this.modules),
+                initialization_time: Date.now() - (this.initStartTime || Date.now())
+            });
+        }
         
         // Show welcome message for new users
         this.checkFirstVisit();
@@ -111,6 +124,44 @@ const app = {
             if (window.AuditLogger) {
                 window.AuditLogger.logError(error, {
                     context: 'enterprise_initialization',
+                    timestamp: Date.now()
+                });
+            }
+        }
+    },
+
+    /**
+     * Initialize Monitoring & Analytics
+     */
+    async initializeMonitoring() {
+        try {
+            console.log('📊 Initializing monitoring and analytics...');
+            
+            // Import monitoring integration
+            if (typeof initAppMonitoring !== 'undefined') {
+                await initAppMonitoring();
+                console.log('✅ Monitoring integration initialized');
+                
+                // Track application initialization
+                if (typeof trackAppEvent !== 'undefined') {
+                    trackAppEvent('app_initialization_started', {
+                        timestamp: Date.now(),
+                        user_agent: navigator.userAgent,
+                        url: window.location.href,
+                        screen_resolution: `${screen.width}x${screen.height}`,
+                        viewport_size: `${window.innerWidth}x${window.innerHeight}`
+                    });
+                }
+            } else {
+                console.warn('⚠️ Monitoring integration not available');
+            }
+            
+        } catch (error) {
+            console.error('❌ Failed to initialize monitoring:', error);
+            
+            // Report the error if error reporting is available
+            if (typeof reportAppError !== 'undefined') {
+                reportAppError(error, 'monitoring_initialization', {
                     timestamp: Date.now()
                 });
             }
@@ -335,7 +386,27 @@ const app = {
         if (!this.modules[module]) {
             console.warn(`Module '${module}' not found`);
             this.eventBus.emit('app', 'navigation.error', { module, error: 'Module not found' });
+            
+            // Track navigation error
+            if (typeof trackAppEvent !== 'undefined') {
+                trackAppEvent('navigation_error', {
+                    target_module: module,
+                    current_module: this.currentModule,
+                    error: 'Module not found',
+                    timestamp: Date.now()
+                });
+            }
             return;
+        }
+
+        // Track navigation start
+        if (typeof trackAppEvent !== 'undefined') {
+            trackAppEvent('navigation_started', {
+                from_module: this.currentModule,
+                to_module: module,
+                push_state: pushState,
+                timestamp: Date.now()
+            });
         }
 
         this.eventBus.emit('app', 'navigation.start', { from: this.currentModule, to: module });
@@ -369,6 +440,14 @@ const app = {
 
         this.currentModule = module;
         this.eventBus.emit('app', 'navigation.complete', { module, timestamp: Date.now() });
+        
+        // Track navigation completion
+        if (typeof trackAppEvent !== 'undefined') {
+            trackAppEvent('navigation_completed', {
+                module: module,
+                timestamp: Date.now()
+            });
+        }
     },
 
     /**
@@ -794,6 +873,16 @@ const app = {
             setTimeout(() => {
                 utils.showToast('Velkommen til ExamKlar! 👋 Start din læringsrejse nu', 'success', 5000);
             }, 1000);
+            
+            // Track first visit
+            if (typeof trackAppEvent !== 'undefined') {
+                trackAppEvent('first_visit', {
+                    timestamp: Date.now(),
+                    user_agent: navigator.userAgent,
+                    referrer: document.referrer,
+                    language: navigator.language
+                });
+            }
             
             // Update progress to mark first visit
             storage.updateUserProgress({
