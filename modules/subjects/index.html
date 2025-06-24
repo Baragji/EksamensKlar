@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subjects - ExamKlar</title>
-    <link rel="stylesheet" href="../../styles/premium.css">
+    <link rel="stylesheet" href="../../styles/design-system/components/index.css">
     <link rel="stylesheet" href="subjects.css">
 </head>
 <body class="gpu-accelerated">
@@ -16,24 +16,24 @@
         <span id="themeIcon">🌙</span>
     </button>
     
-    <!-- Ultra-Premium Navigation -->
-    <header class="nav-luxury">
-        <nav class="nav container" role="navigation" aria-label="Hovednavigation">
-            <div class="nav-brand">
-                <div class="logo text-gradient glow">✨ ExamKlar</div>
-                <span class="badge-luxury" aria-label="Emnestyring">Emnestyring</span>
+    <!-- Navigation using Design System -->
+    <header class="navbar">
+        <nav class="navbar__container" role="navigation" aria-label="Hovednavigation">
+            <div class="navbar__brand">
+                <div class="navbar__logo text--gradient">✨ ExamKlar</div>
+                <span class="badge badge--primary" aria-label="Emnestyring">Emnestyring</span>
             </div>
-            <div class="nav-actions">
-                <a href="../../index.html" class="btn-luxury-small" aria-label="Tilbage til forside">
-                    <span class="icon">🏠</span>
+            <div class="navbar__nav">
+                <a href="../../index.html" class="btn btn--ghost btn--sm" aria-label="Tilbage til forside">
+                    <span class="btn__icon">🏠</span>
                     Forside
                 </a>
-                <a href="../dashboard/index.html" class="btn-luxury-small">
-                    <span class="icon">📊</span>
+                <a href="../dashboard/index.html" class="btn btn--ghost btn--sm">
+                    <span class="btn__icon">📊</span>
                     Dashboard
                 </a>
-                <a href="../quiz/index.html" class="btn-luxury-small">
-                    <span class="icon">🎯</span>
+                <a href="../quiz/index.html" class="btn btn--ghost btn--sm">
+                    <span class="btn__icon">🎯</span>
                     Quiz
                 </a>
             </div>
@@ -42,113 +42,138 @@
 
     <!-- Main Content -->
     <main class="main" id="main-content">
-        <!-- Create New Subject Section -->
-        <section class="create-subject luxury-section" role="region" aria-labelledby="create-title">
-            <div class="container container-responsive">
-                <h2 id="create-title" class="section-title text-gradient">Opret Nyt Emne</h2>
-                <div class="luxury-card">
-                    <form id="createSubjectForm" class="subject-form" role="form" aria-labelledby="create-title">
-                        <div class="form-group">
-                            <label for="subjectName" class="form-label">Emne Navn:</label>
-                            <input type="text" id="subjectName" class="input-luxury" 
-                                   placeholder="f.eks. Matematik, Kemiteknik, Historie..." 
-                                   required aria-describedby="name-help">
-                            <small id="name-help" class="form-help">Vælg et beskrivende navn for dit læringsemne</small>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="subjectDescription" class="form-label">Beskrivelse:</label>
-                            <textarea id="subjectDescription" class="input-luxury" 
-                                      placeholder="Kort beskrivelse af hvad du vil lære..."></textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="subjectColor" class="form-label">Farve:</label>
-                            <select id="subjectColor" class="input-luxury">
-                                <option value="blue">🔵 Blå</option>
-                                <option value="green">🟢 Grøn</option>
-                                <option value="red">🔴 Rød</option>
-                                <option value="purple">🟣 Lilla</option>
-                                <option value="orange">🟠 Orange</option>
-                                <option value="yellow">🟡 Gul</option>
-                            </select>
-                        </div>
-                        
-                        <button type="submit" class="btn-luxury">
-                            <span class="icon">➕</span>
-                            Opret Emne
-                        </button>
-                    </form>
+        <!-- Create New Subject Section using Design System -->
+        <section class="create-subject" role="region" aria-labelledby="create-title">
+            <div class="container">
+                <h2 id="create-title" class="heading heading--h2 heading--gradient">Opret Nyt Emne</h2>
+                <div class="card card--elevated">
+                    <div class="card__body">
+                        <form id="createSubjectForm" class="subject-form" role="form" aria-labelledby="create-title">
+                            <div class="form-group">
+                                <label for="subjectName" class="form-label">Emne Navn:</label>
+                                <input type="text" id="subjectName" class="input input--md" 
+                                       placeholder="f.eks. Matematik, Kemiteknik, Historie..." 
+                                       required aria-describedby="name-help">
+                                <small id="name-help" class="form-help text text--sm text--secondary">Vælg et beskrivende navn for dit læringsemne</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="subjectDescription" class="form-label">Beskrivelse:</label>
+                                <textarea id="subjectDescription" class="textarea textarea--md" 
+                                          placeholder="Kort beskrivelse af hvad du vil lære..."></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="subjectColor" class="form-label">Farve:</label>
+                                <select id="subjectColor" class="select select--md">
+                                    <option value="blue">🔵 Blå</option>
+                                    <option value="green">🟢 Grøn</option>
+                                    <option value="red">🔴 Rød</option>
+                                    <option value="purple">🟣 Lilla</option>
+                                    <option value="orange">🟠 Orange</option>
+                                    <option value="yellow">🟡 Gul</option>
+                                </select>
+                            </div>
+                            
+                            <button type="submit" class="btn btn--primary btn--md">
+                                <span class="btn__icon">➕</span>
+                                Opret Emne
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Subjects List -->
-        <section class="subjects-list luxury-section" role="region" aria-labelledby="subjects-title">
-            <div class="container container-responsive">
-                <h2 id="subjects-title" class="section-title text-gradient">Dine Emner</h2>
+        <!-- Subjects List using Design System -->
+        <section class="subjects-list" role="region" aria-labelledby="subjects-title">
+            <div class="container">
+                <h2 id="subjects-title" class="heading heading--h2 heading--gradient">Dine Emner</h2>
                 <div id="subjectsList" class="subjects-grid">
                     <!-- Subjects will be loaded here -->
                 </div>
             </div>
         </section>
 
-        <!-- Template for subject card -->
+        <!-- Template for subject card using Design System -->
         <template id="subjectCardTemplate">
-            <div class="subject-card" data-subject-id="">
-                <div class="subject-header">
-                    <div class="subject-icon"></div>
-                    <div class="subject-info">
-                        <h3 class="subject-name"></h3>
-                        <p class="subject-description"></p>
+            <div class="card card--subject card--interactive" data-subject-id="">
+                <div class="card__header">
+                    <div class="card__icon subject-icon"></div>
+                    <div class="card__content">
+                        <h3 class="heading heading--h3 subject-name"></h3>
+                        <p class="text text--secondary subject-description"></p>
                     </div>
-                    <button class="subject-menu" onclick="toggleSubjectMenu(this)">⋮</button>
+                    <button class="btn btn--ghost btn--sm subject-menu" onclick="toggleSubjectMenu(this)">⋮</button>
                 </div>
                 
-                <div class="subject-stats">
-                    <div class="stat">
-                        <span class="stat-number content-count">0</span>
-                        <span class="stat-label">Indhold</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number flashcard-count">0</span>
-                        <span class="stat-label">Cards</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number quiz-count">0</span>
-                        <span class="stat-label">Quiz</span>
+                <div class="card__body">
+                    <div class="stats-grid">
+                        <div class="stat">
+                            <span class="stat-number content-count">0</span>
+                            <span class="stat-label text text--sm text--secondary">Indhold</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number flashcard-count">0</span>
+                            <span class="stat-label text text--sm text--secondary">Cards</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number quiz-count">0</span>
+                            <span class="stat-label text text--sm text--secondary">Quiz</span>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="subject-actions">
-                    <a href="#" class="btn btn-sm btn-primary enter-subject">📖 Åbn Emne</a>
-                    <button class="btn btn-sm btn-secondary edit-subject">✏️ Rediger</button>
-                    <button class="btn btn-sm btn-danger delete-subject">🗑️ Slet</button>
+                <div class="card__footer">
+                    <a href="#" class="btn btn--primary btn--sm enter-subject">
+                        <span class="btn__icon">📖</span>
+                        Åbn Emne
+                    </a>
+                    <button class="btn btn--secondary btn--sm edit-subject">
+                        <span class="btn__icon">✏️</span>
+                        Rediger
+                    </button>
+                    <button class="btn btn--danger btn--sm delete-subject">
+                        <span class="btn__icon">🗑️</span>
+                        Slet
+                    </button>
                 </div>
                 
-                <div class="subject-menu-dropdown" style="display: none;">
-                    <button onclick="editSubject(this)">✏️ Rediger</button>
-                    <button onclick="duplicateSubject(this)">📋 Kopier</button>
-                    <button onclick="exportSubject(this)">📤 Eksporter</button>
-                    <button onclick="deleteSubject(this)">🗑️ Slet</button>
+                <div class="dropdown subject-menu-dropdown" style="display: none;">
+                    <button class="dropdown__item" onclick="editSubject(this)">
+                        <span class="dropdown__icon">✏️</span>
+                        Rediger
+                    </button>
+                    <button class="dropdown__item" onclick="duplicateSubject(this)">
+                        <span class="dropdown__icon">📋</span>
+                        Kopier
+                    </button>
+                    <button class="dropdown__item" onclick="exportSubject(this)">
+                        <span class="dropdown__icon">📤</span>
+                        Eksporter
+                    </button>
+                    <button class="dropdown__item dropdown__item--danger" onclick="deleteSubject(this)">
+                        <span class="dropdown__icon">🗑️</span>
+                        Slet
+                    </button>
                 </div>
             </div>
         </template>
     </main>
 
-    <!-- Bottom Navigation -->
+    <!-- Bottom Navigation using Design System -->
     <nav class="bottom-nav">
-        <a href="../../index.html" class="nav-item">
-            <span class="nav-icon">🏠</span>
-            <span class="nav-label">Hjem</span>
+        <a href="../../index.html" class="btn btn--ghost btn--sm">
+            <span class="btn__icon">🏠</span>
+            <span class="btn__text">Hjem</span>
         </a>
-        <button class="nav-item active">
-            <span class="nav-icon">📚</span>
-            <span class="nav-label">Emner</span>
+        <button class="btn btn--primary btn--sm">
+            <span class="btn__icon">📚</span>
+            <span class="btn__text">Emner</span>
         </button>
-        <a href="../dashboard/index.html" class="nav-item">
-            <span class="nav-icon">📊</span>
-            <span class="nav-label">Dashboard</span>
+        <a href="../dashboard/index.html" class="btn btn--ghost btn--sm">
+            <span class="btn__icon">📊</span>
+            <span class="btn__text">Dashboard</span>
         </a>
     </nav>
 

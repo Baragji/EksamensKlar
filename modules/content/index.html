@@ -4,39 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Indhold Manager - ExamKlar</title>
-    <link rel="stylesheet" href="../../styles/premium.css">
+    <link rel="stylesheet" href="../../design-system/components/index.css">
     <link rel="stylesheet" href="content.css">
 </head>
 <body>
     <!-- Skip Link for Accessibility -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <!-- Luxury Navigation -->
+    <!-- Navigation using Design System -->
     <nav class="navbar" role="navigation" aria-label="Main navigation">
-        <div class="nav-container">
-            <a href="../../index.html" class="nav-brand" aria-label="ExamKlar home">
-                <span class="brand-text">ExamKlar</span>
+        <div class="navbar__container">
+            <a href="../../index.html" class="navbar__brand" aria-label="ExamKlar home">
+                <span class="navbar__logo text--gradient">ExamKlar</span>
+                <span class="badge badge--primary">Pro</span>
             </a>
             
-            <div class="nav-links">
-                <a href="../dashboard/index.html" class="nav-link" aria-label="Dashboard">
-                    <i class="icon-dashboard" aria-hidden="true"></i>
+            <div class="navbar__nav">
+                <a href="../dashboard/index.html" class="btn btn--ghost btn--sm" aria-label="Dashboard">
+                    <span class="btn__icon">📊</span>
                     <span>Dashboard</span>
                 </a>
-                <a href="../subjects/index.html" class="nav-link" aria-label="Subjects">
-                    <i class="icon-subjects" aria-hidden="true"></i>
+                <a href="../subjects/index.html" class="btn btn--ghost btn--sm" aria-label="Subjects">
+                    <span class="btn__icon">📚</span>
                     <span>Fag</span>
                 </a>
-                <a href="../flashcards/index.html" class="nav-link" aria-label="Flashcards">
-                    <i class="icon-flashcards" aria-hidden="true"></i>
+                <a href="../flashcards/index.html" class="btn btn--ghost btn--sm" aria-label="Flashcards">
+                    <span class="btn__icon">🃏</span>
                     <span>Flashcards</span>
                 </a>
-                <a href="../content/index.html" class="nav-link active" aria-label="Content Manager" aria-current="page">
-                    <i class="icon-content" aria-hidden="true"></i>
+                <a href="../content/index.html" class="btn btn--primary btn--sm" aria-label="Content Manager" aria-current="page">
+                    <span class="btn__icon">📝</span>
                     <span>Content</span>
                 </a>
-                <a href="../ai-assistant/index.html" class="nav-link" aria-label="AI Assistant">
-                    <i class="icon-ai" aria-hidden="true"></i>
+                <a href="../ai-assistant/index.html" class="btn btn--ghost btn--sm" aria-label="AI Assistant">
+                    <span class="btn__icon">🤖</span>
                     <span>AI Assistant</span>
                 </a>
             </div>
@@ -44,42 +45,42 @@
     </nav>
 
     <main id="main-content" class="main-content">
-        <!-- Hero Section -->
-        <section class="hero-section" role="banner">
-            <div class="hero-content">
-                <h1 class="hero-title">
-                    <i class="icon-content gradient-text" aria-hidden="true"></i>
+        <!-- Hero Section using Design System -->
+        <section class="hero" role="banner">
+            <div class="hero__content">
+                <h1 class="heading heading--h1 heading--gradient">
+                    <span class="heading__icon">📝</span>
                     Indhold Manager
                 </h1>
-                <p class="hero-subtitle">Upload og organiser dit læringsindhold</p>
+                <p class="text text--lg text--secondary">Upload og organiser dit læringsindhold</p>
             </div>
         </section>
 
-        <!-- Upload Section -->
-        <section class="section">
+        <!-- Upload Section using Design System -->
+        <section class="upload-section">
             <div class="container">
-                <h2 class="section-title">
-                    <i class="icon-upload" aria-hidden="true"></i>
+                <h2 class="heading heading--h2 heading--gradient">
+                    <span class="heading__icon">📤</span>
                     Upload Nyt Indhold
                 </h2>
                 
-                <div class="glass-card">
-                    <div class="card-content">
+                <div class="card card--elevated">
+                    <div class="card__body">
                         <div class="form-group">
                             <label for="dayTitle" class="form-label">
-                                <i class="icon-book" aria-hidden="true"></i>
+                                <span class="form-label__icon">📖</span>
                                 Lektion Titel:
                             </label>
-                            <input type="text" id="dayTitle" class="input-field" placeholder="f.eks. Protein Basics" aria-describedby="title-help">
-                            <p id="title-help" class="text-secondary">Giv din lektion en beskrivende titel</p>
+                            <input type="text" id="dayTitle" class="input input--md" placeholder="f.eks. Protein Basics" aria-describedby="title-help">
+                            <p id="title-help" class="text text--sm text--secondary">Giv din lektion en beskrivende titel</p>
                         </div>
 
                         <div class="form-group">
                             <label for="dayContent" class="form-label">
-                                <i class="icon-edit" aria-hidden="true"></i>
+                                <span class="form-label__icon">✏️</span>
                                 Indhold (Markdown supported):
                             </label>
-                            <textarea id="dayContent" class="textarea-field" rows="10" placeholder="Skriv dit læringsindhold her...
+                            <textarea id="dayContent" class="textarea textarea--lg" rows="10" placeholder="Skriv dit læringsindhold her...
 
 Du kan bruge Markdown:
 # Overskrift
@@ -90,33 +91,33 @@ Du kan bruge Markdown:
 1. Nummereret liste
 
 [Link](http://example.com)" aria-describedby="content-help"></textarea>
-                            <p id="content-help" class="text-secondary">Brug Markdown til formatering af dit indhold</p>
+                            <p id="content-help" class="text text--sm text--secondary">Brug Markdown til formatering af dit indhold</p>
                         </div>
 
                         <div class="form-group">
                             <label for="estimatedTime" class="form-label">
-                                <i class="icon-clock" aria-hidden="true"></i>
+                                <span class="form-label__icon">⏱️</span>
                                 Estimeret læsetid (minutter):
                             </label>
-                            <input type="number" id="estimatedTime" class="input-field" min="1" max="180" value="15" aria-describedby="time-help">
-                            <p id="time-help" class="text-secondary">Hvor lang tid tager det at læse dette indhold?</p>
+                            <input type="number" id="estimatedTime" class="input input--md" min="1" max="180" value="15" aria-describedby="time-help">
+                            <p id="time-help" class="text text--sm text--secondary">Hvor lang tid tager det at læse dette indhold?</p>
                         </div>
 
                         <div class="form-group">
                             <label for="difficulty" class="form-label">
-                                <i class="icon-target" aria-hidden="true"></i>
+                                <span class="form-label__icon">🎯</span>
                                 Sværhedsgrad:
                             </label>
-                            <select id="difficulty" class="select-field" aria-describedby="difficulty-help">
+                            <select id="difficulty" class="select select--md" aria-describedby="difficulty-help">
                                 <option value="1">Begynder</option>
                                 <option value="2">Mellem</option>
                                 <option value="3">Avanceret</option>
                             </select>
-                            <p id="difficulty-help" class="text-secondary">Vælg passende sværhedsgrad for indholdet</p>
+                            <p id="difficulty-help" class="text text--sm text--secondary">Vælg passende sværhedsgrad for indholdet</p>
                         </div>
 
-                        <button onclick="addContent()" class="btn btn-primary">
-                            <i class="icon-plus" aria-hidden="true"></i>
+                        <button onclick="addContent()" class="btn btn--primary btn--md">
+                            <span class="btn__icon">➕</span>
                             Tilføj Indhold
                         </button>
                     </div>
@@ -125,18 +126,18 @@ Du kan bruge Markdown:
         </section>
 
         <!-- Content List -->
-        <section class="section">
+        <section class="content-list">
             <div class="container">
-                <h2 class="section-title">
-                    <i class="icon-list" aria-hidden="true"></i>
+                <h2 class="heading heading--h2 heading--gradient">
+                    <span class="heading__icon">📋</span>
                     Eksisterende Indhold
                 </h2>
                 <div id="contentList">
-                    <div class="glass-card empty-state">
-                        <div class="card-content text-center">
-                            <i class="icon-empty" aria-hidden="true"></i>
-                            <h3>Intet indhold endnu</h3>
-                            <p>Upload dit første læringsindhold for at komme i gang</p>
+                    <div class="card card--elevated empty-state">
+                        <div class="card__body text-center">
+                            <span class="empty-state__icon">📄</span>
+                            <h3 class="heading heading--h3">Intet indhold endnu</h3>
+                            <p class="text text--secondary">Upload dit første læringsindhold for at komme i gang</p>
                         </div>
                     </div>
                 </div>
@@ -148,40 +149,21 @@ Du kan bruge Markdown:
     <script src="content.js"></script>
     <!-- Bottom Navigation -->
     <nav class="bottom-nav">
-        <a href="../../index.html" class="nav-item">
-            <span class="nav-icon">🏠</span>
-            <span class="nav-label">Hjem</span>
+        <a href="../../index.html" class="btn btn--ghost btn--sm">
+            <span class="btn__icon">🏠</span>
+            <span class="btn__text">Hjem</span>
         </a>
-        <a href="../subjects/index.html" class="nav-item">
-            <span class="nav-icon">📚</span>
-            <span class="nav-label">Emner</span>
+        <a href="../subjects/index.html" class="btn btn--ghost btn--sm">
+            <span class="btn__icon">📚</span>
+            <span class="btn__text">Emner</span>
         </a>
-        <button class="nav-item active">
-python3 -m http.server 8080            <span class="nav-icon">📄</span>
-            <span class="nav-label">Indhold</span>
+        <button class="btn btn--primary btn--sm">
+            <span class="btn__icon">📄</span>
+            <span class="btn__text">Indhold</span>
         </button>
-        <a href="../dashboard/index.html" class="nav-item">
-            <span class="nav-icon">📊</span>
-            <span class="nav-label">Dashboard</span>
-        </a>
-    </nav>
-    <!-- Bottom Navigation -->
-    <nav class="bottom-nav">
-        <a href="../../index.html" class="nav-item">
-            <span class="nav-icon">🏠</span>
-            <span class="nav-label">Hjem</span>
-        </a>
-        <a href="../subjects/index.html" class="nav-item">
-            <span class="nav-icon">📚</span>
-            <span class="nav-label">Emner</span>
-        </a>
-        <button class="nav-item active">
-            <span class="nav-icon">📄</span>
-            <span class="nav-label">Indhold</span>
-        </button>
-        <a href="../dashboard/index.html" class="nav-item">
-            <span class="nav-icon">📊</span>
-            <span class="nav-label">Dashboard</span>
+        <a href="../dashboard/index.html" class="btn btn--ghost btn--sm">
+            <span class="btn__icon">📊</span>
+            <span class="btn__text">Dashboard</span>
         </a>
     </nav>
 

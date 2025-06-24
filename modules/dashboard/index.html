@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - ExamKlar</title>
-    <link rel="stylesheet" href="../../styles/premium.css">
+    <link rel="stylesheet" href="../../styles/design-system/components/index.css">
     <link rel="stylesheet" href="dashboard.css">
 </head>
 <body class="gpu-accelerated">
@@ -16,24 +16,24 @@
         <span id="themeIcon">🌙</span>
     </button>
     
-    <!-- Ultra-Premium Navigation -->
-    <header class="nav-luxury">
-        <nav class="nav container" role="navigation" aria-label="Hovednavigation">
-            <div class="nav-brand">
-                <div class="logo text-gradient glow">✨ ExamKlar</div>
-                <span class="badge-luxury" aria-label="Dashboard">Dashboard</span>
+    <!-- Navigation using Design System -->
+    <header class="navbar navbar--fixed">
+        <nav class="navbar__container" role="navigation" aria-label="Hovednavigation">
+            <div class="navbar__brand">
+                <div class="navbar__logo">✨ ExamKlar</div>
+                <span class="badge badge--primary" aria-label="Dashboard">Dashboard</span>
             </div>
-            <div class="nav-actions">
-                <a href="../../index.html" class="btn-luxury-small" aria-label="Tilbage til forside">
-                    <span class="icon">🏠</span>
+            <div class="navbar__nav">
+                <a href="../../index.html" class="btn btn--ghost btn--sm" aria-label="Tilbage til forside">
+                    <span class="btn__icon">🏠</span>
                     Forside
                 </a>
-                <a href="../subjects/index.html" class="btn-luxury-small">
-                    <span class="icon">📚</span>
+                <a href="../subjects/index.html" class="btn btn--ghost btn--sm">
+                    <span class="btn__icon">📚</span>
                     Fag
                 </a>
-                <a href="../quiz/index.html" class="btn-luxury-small">
-                    <span class="icon">🎯</span>
+                <a href="../quiz/index.html" class="btn btn--ghost btn--sm">
+                    <span class="btn__icon">🎯</span>
                     Quiz
                 </a>
             </div>
@@ -42,107 +42,137 @@
 
     <!-- Main Content -->
     <main class="main" id="main-content">
-        <!-- Premium Performance Dashboard -->
-        <section class="stats luxury-section" role="region" aria-labelledby="stats-title">
-            <div class="container container-responsive">
-                <h2 id="stats-title" class="section-title text-gradient">Performance Analytics</h2>
+        <!-- Performance Dashboard using Design System -->
+        <section class="stats-section" role="region" aria-labelledby="stats-title">
+            <div class="container">
+                <h2 id="stats-title" class="heading heading--h2 heading--gradient">Performance Analytics</h2>
                 <div class="stats-grid">
-                    <div class="luxury-card float">
-                        <div class="stat-icon" aria-hidden="true">
-                            <span class="icon icon-xl text-gradient">🔥</span>
+                    <div class="card card--stats card--interactive">
+                        <div class="card__icon">
+                            <span class="icon icon--xl">🔥</span>
                         </div>
-                        <span class="stat-number text-gradient" id="currentStreak">0</span>
-                        <span class="stat-label">Dages Streak</span>
-                        <div class="progress-luxury" data-progress="75" aria-label="75% streak target"></div>
+                        <div class="card__body">
+                            <span class="stat-number text--gradient" id="currentStreak">0</span>
+                            <span class="stat-label text--secondary">Dages Streak</span>
+                            <div class="progress progress--sm" data-progress="75" aria-label="75% streak target">
+                                <div class="progress__bar" style="width: 75%"></div>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div class="luxury-card float">
-                        <div class="stat-icon" aria-hidden="true">
-                            <span class="icon icon-xl text-gradient">📚</span>
+                    <div class="card card--stats card--interactive">
+                        <div class="card__icon">
+                            <span class="icon icon--xl">📚</span>
                         </div>
-                        <span class="stat-number text-gradient" id="totalContent">0</span>
-                        <span class="stat-label">Indhold læst</span>
-                        <div class="progress-luxury" data-progress="60" aria-label="60% content target"></div>
+                        <div class="card__body">
+                            <span class="stat-number text--gradient" id="totalContent">0</span>
+                            <span class="stat-label text--secondary">Indhold læst</span>
+                            <div class="progress progress--sm" data-progress="60" aria-label="60% content target">
+                                <div class="progress__bar" style="width: 60%"></div>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div class="luxury-card float">
-                        <div class="stat-icon" aria-hidden="true">
-                            <span class="icon icon-xl text-gradient">🎯</span>
+                    <div class="card card--stats card--interactive">
+                        <div class="card__icon">
+                            <span class="icon icon--xl">🎯</span>
                         </div>
-                        <span class="stat-number text-gradient" id="totalFlashcards">0</span>
-                        <span class="stat-label">Flashcards øvet</span>
-                        <div class="progress-luxury" data-progress="80" aria-label="80% flashcard target"></div>
+                        <div class="card__body">
+                            <span class="stat-number text--gradient" id="totalFlashcards">0</span>
+                            <span class="stat-label text--secondary">Flashcards øvet</span>
+                            <div class="progress progress--sm" data-progress="80" aria-label="80% flashcard target">
+                                <div class="progress__bar" style="width: 80%"></div>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div class="luxury-card float">
-                        <div class="stat-icon" aria-hidden="true">
-                            <span class="icon icon-xl text-gradient">🧠</span>
+                    <div class="card card--stats card--interactive">
+                        <div class="card__icon">
+                            <span class="icon icon--xl">🧠</span>
                         </div>
-                        <span class="stat-number text-gradient" id="totalQuizzes">0</span>
-                        <span class="stat-label">Quizzer taget</span>
-                        <div class="progress-luxury" data-progress="45" aria-label="45% quiz target"></div>
+                        <div class="card__body">
+                            <span class="stat-number text--gradient" id="totalQuizzes">0</span>
+                            <span class="stat-label text--secondary">Quizzer taget</span>
+                            <div class="progress progress--sm" data-progress="45" aria-label="45% quiz target">
+                                <div class="progress__bar" style="width: 45%"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Progress Charts -->
-        <section class="charts-section luxury-section" role="region" aria-labelledby="charts-title">
-            <div class="container container-responsive">
-                <h2 id="charts-title" class="section-title text-gradient">Fremskridt Analyse</h2>
+        <!-- Progress Charts using Design System -->
+        <section class="charts-section" role="region" aria-labelledby="charts-title">
+            <div class="container">
+                <h2 id="charts-title" class="heading heading--h2 heading--gradient">Fremskridt Analyse</h2>
                 <div class="charts-grid">
-                    <div class="luxury-card">
-                        <h3 class="chart-title">📈 Ugentlig Fremskridt</h3>
-                        <div id="weeklyChart" class="chart"></div>
+                    <div class="card card--elevated">
+                        <div class="card__header">
+                            <h3 class="heading heading--h3">📈 Ugentlig Fremskridt</h3>
+                        </div>
+                        <div class="card__body">
+                            <div id="weeklyChart" class="chart"></div>
+                        </div>
                     </div>
-                    <div class="luxury-card">
-                        <h3 class="chart-title">🎯 Modul Fordeling</h3>
-                        <div id="moduleChart" class="chart"></div>
+                    <div class="card card--elevated">
+                        <div class="card__header">
+                            <h3 class="heading heading--h3">🎯 Modul Fordeling</h3>
+                        </div>
+                        <div class="card__body">
+                            <div id="moduleChart" class="chart"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Goals Section -->
-        <section class="goals-section luxury-section" role="region" aria-labelledby="goals-title">
-            <div class="container container-responsive">
-                <h2 id="goals-title" class="section-title text-gradient">Daglige Mål</h2>
+        <!-- Goals Section using Design System -->
+        <section class="goals-section" role="region" aria-labelledby="goals-title">
+            <div class="container">
+                <h2 id="goals-title" class="heading heading--h2 heading--gradient">Daglige Mål</h2>
                 <div class="goals-grid">
-                    <div class="luxury-card">
-                        <div class="goal-item">
-                            <label for="contentGoal" class="goal-label">📚 Indhold (sider/dag):</label>
-                            <input type="number" id="contentGoal" class="input-luxury" min="1" max="20" value="3">
-                            <div class="goal-progress">
-                                <div class="progress-bar">
-                                    <div id="contentProgress" class="progress-fill"></div>
+                    <div class="card card--elevated">
+                        <div class="card__body">
+                            <div class="form-group">
+                                <label for="contentGoal" class="form-label">📚 Indhold (sider/dag):</label>
+                                <input type="number" id="contentGoal" class="input input--md" min="1" max="20" value="3">
+                                <div class="goal-progress">
+                                    <div class="progress progress--md">
+                                        <div id="contentProgress" class="progress__bar"></div>
+                                    </div>
+                                    <span id="contentProgressText" class="text text--sm text--secondary">0/3</span>
                                 </div>
-                                <span id="contentProgressText" class="progress-text">0/3</span>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="luxury-card">
-                        <div class="goal-item">
-                            <label for="flashcardGoal" class="goal-label">🎯 Flashcards (kort/dag):</label>
-                            <input type="number" id="flashcardGoal" class="input-luxury" min="5" max="100" value="20">
-                            <div class="goal-progress">
-                                <div class="progress-bar">
-                                    <div id="flashcardProgress" class="progress-fill"></div>
+                    <div class="card card--elevated">
+                        <div class="card__body">
+                            <div class="form-group">
+                                <label for="flashcardGoal" class="form-label">🎯 Flashcards (kort/dag):</label>
+                                <input type="number" id="flashcardGoal" class="input input--md" min="5" max="100" value="20">
+                                <div class="goal-progress">
+                                    <div class="progress progress--md">
+                                        <div id="flashcardProgress" class="progress__bar"></div>
+                                    </div>
+                                    <span id="flashcardProgressText" class="text text--sm text--secondary">0/20</span>
                                 </div>
-                                <span id="flashcardProgressText" class="progress-text">0/20</span>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="luxury-card">
-                        <div class="goal-item">
-                            <label for="quizGoal" class="goal-label">🧠 Quizzer (quiz/dag):</label>
-                            <input type="number" id="quizGoal" class="input-luxury" min="1" max="10" value="2">
-                            <div class="goal-progress">
-                                <div class="progress-bar">
-                                    <div id="quizProgress" class="progress-fill"></div>
+                    <div class="card card--elevated">
+                        <div class="card__body">
+                            <div class="form-group">
+                                <label for="quizGoal" class="form-label">🧠 Quizzer (quiz/dag):</label>
+                                <input type="number" id="quizGoal" class="input input--md" min="1" max="10" value="2">
+                                <div class="goal-progress">
+                                    <div class="progress progress--md">
+                                        <div id="quizProgress" class="progress__bar"></div>
+                                    </div>
+                                    <span id="quizProgressText" class="text text--sm text--secondary">0/2</span>
                                 </div>
-                                <span id="quizProgressText" class="progress-text">0/2</span>
                             </div>
                         </div>
                     </div>
@@ -150,47 +180,55 @@
             </div>
         </section>
 
-        <!-- Achievements Section -->
-        <section class="achievements-section luxury-section" role="region" aria-labelledby="achievements-title">
-            <div class="container container-responsive">
-                <h2 id="achievements-title" class="section-title text-gradient">Achievements</h2>
+        <!-- Achievements Section using Design System -->
+        <section class="achievements-section" role="region" aria-labelledby="achievements-title">
+            <div class="container">
+                <h2 id="achievements-title" class="heading heading--h2 heading--gradient">Achievements</h2>
                 <div id="achievementsGrid" class="achievements-grid">
                     <!-- Achievements will be dynamically loaded -->
-                    <div class="luxury-card achievement-placeholder">
-                        <div class="achievement-icon">🏆</div>
-                        <h3>Første Skridt</h3>
-                        <p>Opret dit første emne</p>
-                        <div class="achievement-progress">0/1</div>
+                    <div class="card card--achievement card--interactive">
+                        <div class="card__body">
+                            <div class="card__icon">🏆</div>
+                            <h3 class="heading heading--h3">Første Skridt</h3>
+                            <p class="text text--secondary">Opret dit første emne</p>
+                            <div class="badge badge--secondary">0/1</div>
+                        </div>
                     </div>
-                    <div class="luxury-card achievement-placeholder">
-                        <div class="achievement-icon">🔥</div>
-                        <h3>Streak Master</h3>
-                        <p>7 dages streak</p>
-                        <div class="achievement-progress">0/7</div>
+                    <div class="card card--achievement card--interactive">
+                        <div class="card__body">
+                            <div class="card__icon">🔥</div>
+                            <h3 class="heading heading--h3">Streak Master</h3>
+                            <p class="text text--secondary">7 dages streak</p>
+                            <div class="badge badge--secondary">0/7</div>
+                        </div>
                     </div>
-                    <div class="luxury-card achievement-placeholder">
-                        <div class="achievement-icon">📚</div>
-                        <h3>Læse Mester</h3>
-                        <p>Læs 50 sider indhold</p>
-                        <div class="achievement-progress">0/50</div>
+                    <div class="card card--achievement card--interactive">
+                        <div class="card__body">
+                            <div class="card__icon">📚</div>
+                            <h3 class="heading heading--h3">Læse Mester</h3>
+                            <p class="text text--secondary">Læs 50 sider indhold</p>
+                            <div class="badge badge--secondary">0/50</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Activity Timeline -->
-        <section class="timeline-section luxury-section" role="region" aria-labelledby="timeline-title">
-            <div class="container container-responsive">
-                <h2 id="timeline-title" class="section-title text-gradient">Seneste Aktivitet</h2>
-                <div class="luxury-card">
-                    <div id="activityTimeline" class="timeline">
-                        <!-- Recent activities will be shown here -->
-                        <div class="timeline-item">
-                            <div class="timeline-icon">📚</div>
-                            <div class="timeline-content">
-                                <h4>Velkommen til ExamKlar!</h4>
-                                <p>Start med at oprette dit første emne</p>
-                                <span class="timeline-time">Nu</span>
+        <!-- Activity Timeline using Design System -->
+        <section class="timeline-section" role="region" aria-labelledby="timeline-title">
+            <div class="container">
+                <h2 id="timeline-title" class="heading heading--h2 heading--gradient">Seneste Aktivitet</h2>
+                <div class="card card--elevated">
+                    <div class="card__body">
+                        <div id="activityTimeline" class="timeline">
+                            <!-- Recent activities will be shown here -->
+                            <div class="timeline-item">
+                                <div class="timeline-icon">📚</div>
+                                <div class="timeline-content">
+                                    <h4 class="heading heading--h4">Velkommen til ExamKlar!</h4>
+                                    <p class="text text--secondary">Start med at oprette dit første emne</p>
+                                    <span class="text text--sm text--muted">Nu</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -198,48 +236,56 @@
             </div>
         </section>
 
-        <!-- Data Management -->
-        <section class="data-section luxury-section" role="region" aria-labelledby="data-title">
-            <div class="container container-responsive">
-                <h2 id="data-title" class="section-title text-gradient">Data Management</h2>
+        <!-- Data Management using Design System -->
+        <section class="data-section" role="region" aria-labelledby="data-title">
+            <div class="container">
+                <h2 id="data-title" class="heading heading--h2 heading--gradient">Data Management</h2>
                 <div class="data-grid">
-                    <div class="luxury-card">
-                        <h3>Handlinger</h3>
-                        <div class="data-actions">
-                            <button id="exportBtn" class="btn-luxury" style="background: var(--gradient-success);">
-                                <span class="icon">📤</span>
-                                Eksporter Data
-                            </button>
-                            <button id="importBtn" class="btn-luxury" style="background: var(--gradient-info);">
-                                <span class="icon">📥</span>
-                                Importer Data
-                            </button>
-                            <button id="backupBtn" class="btn-luxury" style="background: var(--gradient-warning);">
-                                <span class="icon">💾</span>
-                                Backup Data
-                            </button>
-                            <button id="resetBtn" class="btn-luxury" style="background: var(--gradient-danger);">
-                                <span class="icon">🗑️</span>
-                                Reset Alle Data
-                            </button>
-                            <input type="file" id="importFile" accept=".json" style="display: none;">
+                    <div class="card card--elevated">
+                        <div class="card__header">
+                            <h3 class="heading heading--h3">Handlinger</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="data-actions">
+                                <button id="exportBtn" class="btn btn--success btn--md">
+                                    <span class="btn__icon">📤</span>
+                                    Eksporter Data
+                                </button>
+                                <button id="importBtn" class="btn btn--info btn--md">
+                                    <span class="btn__icon">📥</span>
+                                    Importer Data
+                                </button>
+                                <button id="backupBtn" class="btn btn--warning btn--md">
+                                    <span class="btn__icon">💾</span>
+                                    Backup Data
+                                </button>
+                                <button id="resetBtn" class="btn btn--danger btn--md">
+                                    <span class="btn__icon">🗑️</span>
+                                    Reset Alle Data
+                                </button>
+                                <input type="file" id="importFile" accept=".json" style="display: none;">
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="luxury-card">
-                        <h3>Statistikker</h3>
-                        <div class="data-stats">
-                            <div class="stat-item">
-                                <span class="stat-label">Sidste backup:</span>
-                                <span id="lastBackup" class="stat-value">Aldrig</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-label">Data størrelse:</span>
-                                <span id="dataSize" class="stat-value">0 KB</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-label">Emner:</span>
-                                <span id="subjectCount" class="stat-value">0</span>
+                    <div class="card card--elevated">
+                        <div class="card__header">
+                            <h3 class="heading heading--h3">Statistikker</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="data-stats">
+                                <div class="stat-item">
+                                    <span class="text text--secondary">Sidste backup:</span>
+                                    <span id="lastBackup" class="text text--bold">Aldrig</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="text text--secondary">Data størrelse:</span>
+                                    <span id="dataSize" class="text text--bold">0 KB</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="text text--secondary">Emner:</span>
+                                    <span id="subjectCount" class="text text--bold">0</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -248,19 +294,19 @@
         </section>
     </main>
 
-    <!-- Bottom Navigation -->
+    <!-- Bottom Navigation using Design System -->
     <nav class="bottom-nav">
-        <a href="../../index.html" class="nav-item">
-            <span class="nav-icon">🏠</span>
-            <span class="nav-label">Hjem</span>
+        <a href="../../index.html" class="btn btn--ghost btn--sm">
+            <span class="btn__icon">🏠</span>
+            <span class="btn__text">Hjem</span>
         </a>
-        <a href="../subjects/index.html" class="nav-item">
-            <span class="nav-icon">📚</span>
-            <span class="nav-label">Emner</span>
+        <a href="../subjects/index.html" class="btn btn--ghost btn--sm">
+            <span class="btn__icon">📚</span>
+            <span class="btn__text">Emner</span>
         </a>
-        <button class="nav-item active">
-            <span class="nav-icon">📊</span>
-            <span class="nav-label">Dashboard</span>
+        <button class="btn btn--primary btn--sm">
+            <span class="btn__icon">📊</span>
+            <span class="btn__text">Dashboard</span>
         </button>
     </nav>
 

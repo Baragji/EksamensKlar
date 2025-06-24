@@ -6,7 +6,7 @@
     <title>Intelligente Flashcards - ExamKlar ✨</title>
     <link rel="stylesheet" href="../../styles/global.css">
     <link rel="stylesheet" href="../../styles/components.css">
-    <link rel="stylesheet" href="../../styles/premium.css">
+    <link rel="stylesheet" href="../../design-system/components/index.css">
     <link rel="stylesheet" href="flashcards.css">
 </head>
 <body class="gpu-accelerated">
@@ -18,24 +18,24 @@
         <span id="themeIcon">🌙</span>
     </button>
     
-    <!-- Ultra-Premium Navigation -->
-    <header class="nav-luxury">
-        <nav class="nav container" role="navigation" aria-label="Hovednavigation">
-            <div class="nav-brand">
-                <div class="logo text-gradient glow">✨ ExamKlar</div>
-                <span class="badge-luxury" aria-label="Intelligente Flashcards">Flashcards</span>
+    <!-- Navigation -->
+    <header class="navbar">
+        <nav class="navbar__container" role="navigation" aria-label="Hovednavigation">
+            <div class="navbar__brand">
+                <div class="navbar__logo text--gradient">✨ ExamKlar</div>
+                <span class="badge badge--primary" aria-label="Intelligente Flashcards">Flashcards</span>
             </div>
-            <div class="nav-actions">
-                <a href="../../index.html" class="btn-luxury-small" aria-label="Tilbage til forside">
-                    <span class="icon">🏠</span>
+            <div class="navbar__nav">
+                <a href="../../index.html" class="btn btn--ghost btn--sm" aria-label="Tilbage til forside">
+                    <span class="btn__icon">🏠</span>
                     Forside
                 </a>
-                <a href="../dashboard/index.html" class="btn-luxury-small">
-                    <span class="icon">📊</span>
+                <a href="../dashboard/index.html" class="btn btn--ghost btn--sm">
+                    <span class="btn__icon">📊</span>
                     Dashboard
                 </a>
-                <a href="../subjects/index.html" class="btn-luxury-small">
-                    <span class="icon">📚</span>
+                <a href="../subjects/index.html" class="btn btn--ghost btn--sm">
+                    <span class="btn__icon">📚</span>
                     Emner
                 </a>
             </div>
@@ -45,133 +45,143 @@
     <main class="main" id="main-content">
         <div class="container container-responsive">
             <!-- Hero Section -->
-            <section class="luxury-section" role="banner" aria-labelledby="flashcards-title">
-                <div class="luxury-card float">
-                    <div class="hero-content">
-                        <h1 id="flashcards-title" class="section-title text-gradient glow">
-                            🗂️ Intelligente Flashcards
+            <section class="hero" role="banner" aria-labelledby="flashcards-title">
+                <div class="card card--elevated">
+                    <div class="hero__content">
+                        <h1 id="flashcards-title" class="heading heading--h1 heading--gradient">
+                            <span class="heading__icon">🗂️</span>
+                            Intelligente Flashcards
                         </h1>
-                        <p class="hero-subtitle">
+                        <p class="text text--lg text--secondary">
                             Mester dit læringsmateriale med adaptive flashcards, spaced repetition og AI-optimering for maksimal hukommelse og effektiv læring.
                         </p>
                         
                         <div class="feature-preview">
-                            <div class="preview-card luxury-card float">
-                                <span class="preview-icon">🧠</span>
-                                <span class="preview-text">Spaced Repetition</span>
+                            <div class="card card--feature">
+                                <span class="card__icon">🧠</span>
+                                <span class="text text--sm">Spaced Repetition</span>
                             </div>
-                            <div class="preview-card luxury-card float" style="animation-delay: 0.2s;">
-                                <span class="preview-icon">⚡</span>
-                                <span class="preview-text">AI-Optimeret</span>
+                            <div class="card card--feature" style="animation-delay: 0.2s;">
+                                <span class="card__icon">⚡</span>
+                                <span class="text text--sm">AI-Optimeret</span>
                             </div>
-                            <div class="preview-card luxury-card float" style="animation-delay: 0.4s;">
-                                <span class="preview-icon">🎯</span>
-                                <span class="preview-text">Adaptiv Læring</span>
+                            <div class="card card--feature" style="animation-delay: 0.4s;">
+                                <span class="card__icon">🎯</span>
+                                <span class="text text--sm">Adaptiv Læring</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Premium Stats Overview -->
-            <section class="luxury-section" role="region" aria-labelledby="stats-title">
-                <h2 id="stats-title" class="section-title text-gradient">📊 Flashcard Analytics</h2>
-                <div class="grid grid-responsive grid-4">
-                    <div class="luxury-card float">
-                        <div class="stat-content">
-                            <div class="stat-icon" aria-hidden="true">
-                                <span class="icon icon-xl text-gradient">🗂️</span>
+            <!-- Stats Overview -->
+            <section class="stats-section" role="region" aria-labelledby="stats-title">
+                <h2 id="stats-title" class="heading heading--h2 heading--gradient">
+                    <span class="heading__icon">📊</span>
+                    Flashcard Analytics
+                </h2>
+                <div class="stats-grid">
+                    <div class="card card--stat">
+                        <div class="card__body">
+                            <div class="stat__icon" aria-hidden="true">
+                                <span class="text text--gradient">🗂️</span>
                             </div>
-                            <span class="stat-number text-gradient" id="totalCards">0</span>
-                            <span class="stat-label">Total Cards</span>
-                            <div class="progress-luxury" data-progress="0" aria-label="Card completion progress"></div>
+                            <span class="stat__number text--gradient" id="totalCards">0</span>
+                            <span class="stat__label text text--secondary">Total Cards</span>
+                            <div class="progress" data-progress="0" aria-label="Card completion progress"></div>
                         </div>
                     </div>
                     
-                    <div class="luxury-card float" style="animation-delay: 0.1s;">
-                        <div class="stat-content">
-                            <div class="stat-icon" aria-hidden="true">
-                                <span class="icon icon-xl text-gradient">⏰</span>
+                    <div class="card card--stat" style="animation-delay: 0.1s;">
+                        <div class="card__body">
+                            <div class="stat__icon" aria-hidden="true">
+                                <span class="text text--gradient">⏰</span>
                             </div>
-                            <span class="stat-number text-gradient" id="dueCards">0</span>
-                            <span class="stat-label">Due Today</span>
-                            <div class="progress-luxury" data-progress="0" aria-label="Due cards progress"></div>
+                            <span class="stat__number text--gradient" id="dueCards">0</span>
+                            <span class="stat__label text text--secondary">Due Today</span>
+                            <div class="progress" data-progress="0" aria-label="Due cards progress"></div>
                         </div>
                     </div>
                     
-                    <div class="luxury-card float" style="animation-delay: 0.2s;">
-                        <div class="stat-content">
-                            <div class="stat-icon" aria-hidden="true">
-                                <span class="icon icon-xl text-gradient">🏆</span>
+                    <div class="card card--stat" style="animation-delay: 0.2s;">
+                        <div class="card__body">
+                            <div class="stat__icon" aria-hidden="true">
+                                <span class="text text--gradient">🏆</span>
                             </div>
-                            <span class="stat-number text-gradient" id="masteredCards">0</span>
-                            <span class="stat-label">Mastered</span>
-                            <div class="progress-luxury" data-progress="0" aria-label="Mastered cards progress"></div>
+                            <span class="stat__number text--gradient" id="masteredCards">0</span>
+                            <span class="stat__label text text--secondary">Mastered</span>
+                            <div class="progress" data-progress="0" aria-label="Mastered cards progress"></div>
                         </div>
                     </div>
                     
-                    <div class="luxury-card float" style="animation-delay: 0.3s;">
-                        <div class="stat-content">
-                            <div class="stat-icon" aria-hidden="true">
-                                <span class="icon icon-xl text-gradient">📈</span>
+                    <div class="card card--stat" style="animation-delay: 0.3s;">
+                        <div class="card__body">
+                            <div class="stat__icon" aria-hidden="true">
+                                <span class="text text--gradient">📈</span>
                             </div>
-                            <span class="stat-number text-gradient" id="successRate">0%</span>
-                            <span class="stat-label">Success Rate</span>
-                            <div class="progress-luxury" data-progress="0" aria-label="Success rate progress"></div>
+                            <span class="stat__number text--gradient" id="successRate">0%</span>
+                            <span class="stat__label text text--secondary">Success Rate</span>
+                            <div class="progress" data-progress="0" aria-label="Success rate progress"></div>
                         </div>
                     </div>
                 </div>
             </section>
 
             <!-- Action Buttons -->
-            <section class="luxury-section">
-                <h2 class="section-title text-gradient">⚡ Quick Actions</h2>
-                <div class="grid grid-responsive grid-3">
-                    <button class="luxury-card card-hover float" onclick="showCreateCard()" aria-label="Create new flashcard">
-                        <div class="card-content">
-                            <span class="card-icon">➕</span>
-                            <h3 class="card-title">Create New Card</h3>
-                            <p class="card-description">Opret et nyt flashcard</p>
+            <section class="actions-section">
+                <h2 class="heading heading--h2 heading--gradient">
+                    <span class="heading__icon">⚡</span>
+                    Quick Actions
+                </h2>
+                <div class="actions-grid">
+                    <button class="card card--interactive card--action" onclick="showCreateCard()" aria-label="Create new flashcard">
+                        <div class="card__body">
+                            <span class="card__icon">➕</span>
+                            <h3 class="heading heading--h3">Create New Card</h3>
+                            <p class="text text--secondary">Opret et nyt flashcard</p>
                         </div>
                     </button>
                     
-                    <button class="luxury-card card-hover float" onclick="startReview()" id="reviewBtn" aria-label="Start review session" style="animation-delay: 0.1s;">
-                        <div class="card-content">
-                            <span class="card-icon">🎯</span>
-                            <h3 class="card-title">Start Review</h3>
-                            <p class="card-description">Gennemgå dine cards</p>
+                    <button class="card card--interactive card--action" onclick="startReview()" id="reviewBtn" aria-label="Start review session" style="animation-delay: 0.1s;">
+                        <div class="card__body">
+                            <span class="card__icon">🎯</span>
+                            <h3 class="heading heading--h3">Start Review</h3>
+                            <p class="text text--secondary">Gennemgå dine cards</p>
                         </div>
                     </button>
                     
-                    <button class="luxury-card card-hover float" onclick="showImportExport()" aria-label="Import or export cards" style="animation-delay: 0.2s;">
-                        <div class="card-content">
-                            <span class="card-icon">📤</span>
-                            <h3 class="card-title">Import/Export</h3>
-                            <p class="card-description">Administrer dine cards</p>
+                    <button class="card card--interactive card--action" onclick="showImportExport()" aria-label="Import or export cards" style="animation-delay: 0.2s;">
+                        <div class="card__body">
+                            <span class="card__icon">📤</span>
+                            <h3 class="heading heading--h3">Import/Export</h3>
+                            <p class="text text--secondary">Administrer dine cards</p>
                         </div>
                     </button>
                 </div>
             </section>
 
             <!-- Cards List Section -->
-            <section class="luxury-section">
+            <section class="cards-section">
                 <div class="section-header">
-                    <h2 class="section-title text-gradient">📚 Your Flashcards</h2>
+                    <h2 class="heading heading--h2 heading--gradient">
+                        <span class="heading__icon">📚</span>
+                        Your Flashcards
+                    </h2>
                     
                     <!-- Filter Controls -->
-                    <div class="luxury-card">
-                        <div class="filter-controls">
-                            <div class="grid grid-responsive grid-3">
+                    <div class="card card--elevated">
+                        <div class="card__body">
+                            <div class="filter-controls">
                                 <div class="form-group">
                                     <label for="categoryFilter" class="form-label">Kategori:</label>
-                                    <select id="categoryFilter" class="form-input" onchange="filterCards()">
+                                    <select id="categoryFilter" class="select select--md" onchange="filterCards()">
                                         <option value="">Alle kategorier</option>
                                     </select>
                                 </div>
                                 
                                 <div class="form-group">
                                     <label for="difficultyFilter" class="form-label">Sværhedsgrad:</label>
-                                    <select id="difficultyFilter" class="form-input" onchange="filterCards()">
+                                    <select id="difficultyFilter" class="select select--md" onchange="filterCards()">
                                         <option value="">Alle sværhedsgrader</option>
                                         <option value="1">⭐ Let</option>
                                         <option value="2">⭐⭐ Mellem</option>
@@ -181,7 +191,7 @@
                                 
                                 <div class="form-group">
                                     <label for="searchCards" class="form-label">Søg:</label>
-                                    <input type="text" id="searchCards" class="form-input" placeholder="🔍 Søg i cards..." onkeyup="filterCards()">
+                                    <input type="text" id="searchCards" class="input input--md" placeholder="🔍 Søg i cards..." onkeyup="filterCards()">
                                 </div>
                             </div>
                         </div>
@@ -189,13 +199,13 @@
                 </div>
 
                 <div id="cardsList" class="cards-grid">
-                    <div class="luxury-card empty-state">
-                        <div class="empty-content">
-                            <div class="empty-icon">🗂️</div>
-                            <h3>Ingen flashcards endnu</h3>
-                            <p>Opret dit første flashcard for at komme i gang!</p>
-                            <button class="btn-luxury" onclick="showCreateCard()">
-                                <span class="icon">➕</span>
+                    <div class="card card--elevated empty-state">
+                        <div class="card__body">
+                            <div class="empty-state__icon">🗂️</div>
+                            <h3 class="heading heading--h3">Ingen flashcards endnu</h3>
+                            <p class="text text--secondary">Opret dit første flashcard for at komme i gang!</p>
+                            <button class="btn btn--primary btn--md" onclick="showCreateCard()">
+                                <span class="btn__icon">➕</span>
                                 Opret Første Card
                             </button>
                         </div>
@@ -204,20 +214,20 @@
             </section>
 
             <!-- Quick Actions Footer -->
-            <section class="luxury-section">
-                <div class="luxury-card">
-                    <div class="quick-actions">
-                        <div class="grid grid-responsive grid-3">
-                            <button class="btn-luxury-outline" onclick="exportCards()">
-                                <span class="icon">📤</span>
+            <section class="quick-actions-section">
+                <div class="card card--elevated">
+                    <div class="card__body">
+                        <div class="quick-actions">
+                            <button class="btn btn--outline btn--md" onclick="exportCards()">
+                                <span class="btn__icon">📤</span>
                                 Export Cards
                             </button>
-                            <button class="btn-luxury-outline" onclick="document.getElementById('importFile').click()">
-                                <span class="icon">📥</span>
+                            <button class="btn btn--outline btn--md" onclick="document.getElementById('importFile').click()">
+                                <span class="btn__icon">📥</span>
                                 Import Cards
                             </button>
-                            <button class="btn-luxury-outline btn-danger" onclick="clearAllCards()">
-                                <span class="icon">🗑️</span>
+                            <button class="btn btn--outline btn--md btn--danger" onclick="clearAllCards()">
+                                <span class="btn__icon">🗑️</span>
                                 Clear All
                             </button>
                         </div>
@@ -230,21 +240,21 @@
 
     <!-- Bottom Navigation -->
     <nav class="bottom-nav">
-        <a href="../../index.html" class="nav-item">
-            <span class="nav-icon">🏠</span>
-            <span class="nav-label">Hjem</span>
+        <a href="../../index.html" class="btn btn--ghost btn--sm">
+            <span class="btn__icon">🏠</span>
+            <span class="btn__text">Hjem</span>
         </a>
-        <a href="../subjects/index.html" class="nav-item">
-            <span class="nav-icon">📚</span>
-            <span class="nav-label">Emner</span>
+        <a href="../subjects/index.html" class="btn btn--ghost btn--sm">
+            <span class="btn__icon">📚</span>
+            <span class="btn__text">Emner</span>
         </a>
-        <button class="nav-item active">
-            <span class="nav-icon">🗂️</span>
-            <span class="nav-label">Flashcards</span>
+        <button class="btn btn--primary btn--sm">
+            <span class="btn__icon">🗂️</span>
+            <span class="btn__text">Flashcards</span>
         </button>
-        <a href="../dashboard/index.html" class="nav-item">
-            <span class="nav-icon">📊</span>
-            <span class="nav-label">Dashboard</span>
+        <a href="../dashboard/index.html" class="btn btn--ghost btn--sm">
+            <span class="btn__icon">📊</span>
+            <span class="btn__text">Dashboard</span>
         </a>
     </nav>
 
