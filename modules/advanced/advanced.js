@@ -822,6 +822,119 @@ function openSearchResult(type, id) {
     window.open(url, '_blank');
 }
 
+// Modal Functions
+function openAnalyticsModal() {
+    // Create and show analytics modal
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+        <div class="modal-content luxury-card">
+            <div class="modal-header">
+                <h2>📊 Learning Analytics</h2>
+                <button class="modal-close" onclick="closeModal(this)">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Advanced learning analytics and insights will be available here.</p>
+                <div class="analytics-placeholder">
+                    <div class="stat-card">
+                        <h3>Study Time</h3>
+                        <p>Coming soon...</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Progress Tracking</h3>
+                        <p>Coming soon...</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Performance Metrics</h3>
+                        <p>Coming soon...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal(modal.querySelector('.modal-close'));
+    });
+}
+
+function openCustomizationModal() {
+    // Create and show customization modal
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+        <div class="modal-content luxury-card">
+            <div class="modal-header">
+                <h2>🎨 Customization</h2>
+                <button class="modal-close" onclick="closeModal(this)">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Customize your ExamKlar experience with advanced settings.</p>
+                <div class="customization-options">
+                    <div class="option-group">
+                        <h3>Theme Settings</h3>
+                        <p>Advanced theme customization options coming soon...</p>
+                    </div>
+                    <div class="option-group">
+                        <h3>Layout Preferences</h3>
+                        <p>Personalize your dashboard layout...</p>
+                    </div>
+                    <div class="option-group">
+                        <h3>Notification Settings</h3>
+                        <p>Configure your learning reminders...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal(modal.querySelector('.modal-close'));
+    });
+}
+
+function openIntegrationsModal() {
+    // Create and show integrations modal
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+        <div class="modal-content luxury-card">
+            <div class="modal-header">
+                <h2>🔗 Integrations</h2>
+                <button class="modal-close" onclick="closeModal(this)">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Connect ExamKlar with your favorite learning tools and platforms.</p>
+                <div class="integrations-list">
+                    <div class="integration-item">
+                        <h3>📚 Study Platforms</h3>
+                        <p>Connect with popular study platforms...</p>
+                    </div>
+                    <div class="integration-item">
+                        <h3>📅 Calendar Apps</h3>
+                        <p>Sync your study schedule...</p>
+                    </div>
+                    <div class="integration-item">
+                        <h3>📊 Analytics Tools</h3>
+                        <p>Export data to external analytics...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal(modal.querySelector('.modal-close'));
+    });
+}
+
+function closeModal(closeButton) {
+    const modal = closeButton.closest('.modal-overlay');
+    if (modal) {
+        modal.remove();
+    }
+}
+
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.advancedFeatures = new AdvancedFeatures();
