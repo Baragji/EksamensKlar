@@ -63,13 +63,13 @@ const app = {
      */
     async initializeEventBus() {
         try {
-            // Initialize EventBus with enterprise configuration
-            this.eventBus = new EventBus({
-                debug: true,
-                maxHistory: 500,
-                enablePerformanceTracking: true,
-                defaultNamespace: 'app'
-            });
+            // Use the global EventBus instance
+            this.eventBus = window.EventBus;
+            
+            // Initialize the EventBus if not already done
+            if (!this.eventBus.isInitialized) {
+                this.eventBus.init();
+            }
             
             // Initialize integration helper
             this.integration = new EventBusIntegration(this.eventBus);

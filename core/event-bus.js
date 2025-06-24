@@ -310,7 +310,8 @@ class EventBus {
                     success: false 
                 });
                 
-                this.log(`❌ Listener error: ${error.message}`);
+                // Handle error and add to metrics
+                this.handleError(error, event);
             }
         }
         
