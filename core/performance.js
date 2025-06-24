@@ -102,7 +102,13 @@ class PerformanceOptimizer {
     }
 
     preloadCriticalResources() {
-        // Preload critical fonts and resources
+        // Check if ResourcePreloader is available and use it
+        if (window.ResourcePreloader) {
+            console.log('🔄 Using ResourcePreloader for critical resources');
+            return; // ResourcePreloader handles this more intelligently
+        }
+        
+        // Fallback to basic preloading if ResourcePreloader is not available
         const criticalResources = [
             { href: 'styles/global.css', as: 'style' },
             { href: 'styles/components.css', as: 'style' }
@@ -115,6 +121,8 @@ class PerformanceOptimizer {
             link.as = resource.as;
             document.head.appendChild(link);
         });
+
+        console.log('🚀 Critical resources preloaded (fallback)');
     }
 
     setupPerformanceMonitoring() {
@@ -313,13 +321,20 @@ class PerformanceOptimizer {
     }
 
     /**
-     * Setup intelligent prefetching
+     * Setup intelligent prefetching (integrated with ResourcePreloader)
      */
     setupIntelligentPrefetching() {
-        // Track user navigation patterns
+        // Check if ResourcePreloader is available and use it
+        if (window.ResourcePreloader) {
+            console.log('🔄 Using ResourcePreloader for intelligent prefetching');
+            return; // ResourcePreloader handles this more intelligently
+        }
+        
+        // Fallback to basic prefetching if ResourcePreloader is not available
         this.navigationPatterns = new Map();
         this.setupNavigationTracking();
         this.setupPredictivePrefetching();
+        console.log('🚀 Intelligent prefetching setup (fallback)');
     }
 
     /**

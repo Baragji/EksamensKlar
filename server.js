@@ -10,8 +10,29 @@ const PORT = 3333;
 app.use(cors());
 app.use(express.json());
 
+// Set Content Security Policy headers
+app.use((req, res, next) => {
+  res.setHeader('Content-Security-Policy', 
+    "default-src 'self'; " +
+    "script-src 'self' 'unsafe-inline'; " +
+    "style-src 'self' 'unsafe-inline'; " +
+    "img-src 'self' data: blob:; " +
+    "font-src 'self'; " +
+    "connect-src 'self';"
+  );
+  next();
+});
+
+// Serve static files from the root directory
+app.use(express.static('.'));
+
 // Serve static files from playwright-report directory
 app.use('/playwright-report', express.static('playwright-report'));
+
+// Root route - serve index.html
+app.get('/', (req, res) => {
+  res.sendFile(join(process.cwd(), 'index.html'));
+});
 
 // API endpoint to get test results and diffs
 app.get('/diffs', (req, res) => {

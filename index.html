@@ -20,6 +20,22 @@
     <link rel="stylesheet" href="styles/responsive.css">
     <link rel="stylesheet" href="styles/interactive-components.css">
     
+    <!-- Resource Preloading -->
+    <link rel="preload" href="core/browser-compatibility.js" as="script">
+    <link rel="preload" href="core/resource-error-handler.js" as="script">
+    <link rel="preload" href="core/preload-config.js" as="script">
+    <link rel="preload" href="core/resource-preloader.js" as="script">
+    <link rel="preload" href="core/preload-monitor.js" as="script">
+    <link rel="preload" href="core/lazy-config.js" as="script">
+    <link rel="preload" href="core/lazy-loader.js" as="script">
+    <link rel="preload" href="core/utils.js" as="script">
+    <link rel="preload" href="core/app.js" as="script">
+    <link rel="modulepreload" href="core/module-loader.js">
+    
+    <!-- DNS Prefetch for External Resources -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
     
@@ -285,9 +301,15 @@
         </a>
     </nav>
 
-    <!-- Scripts -->
+    <!-- Core Scripts -->
     <script src="core/browser-compatibility.js"></script>
-    <script src="core/utils.js"></script>
+    <script src="core/resource-error-handler.js"></script>
+    <script src="core/preload-config.js"></script>
+    <script src="core/resource-preloader.js"></script>
+    <script src="core/preload-monitor.js"></script>
+<script src="core/lazy-config.js"></script>
+<script src="core/lazy-loader.js"></script>
+<script src="core/utils.js"></script>
     <script src="core/storage.js"></script>
     <script src="core/performance.js"></script>
     <script src="core/accessibility.js"></script>
@@ -306,6 +328,74 @@
     <script src="core/scalability-manager.js"></script>
     
     <script src="core/app.js"></script>
+    
+    <!-- Initialize Resource Preloader -->
+    <script>
+        // Initialize intelligent resource preloading
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.ResourcePreloader && window.PreloadConfig && window.PreloadMonitor) {
+                const monitor = new PreloadMonitor();
+                const preloader = new ResourcePreloader(window.PreloadConfig, monitor);
+                
+                // Start intelligent preloading with configuration
+                preloader.startIntelligentPreloading();
+                
+                // Setup feature-based preloading
+                if (window.PreloadConfig.features.enableHoverPrefetch) {
+                    preloader.setupHoverPrefetch();
+                }
+                
+                if (window.PreloadConfig.features.enableViewportPrefetch) {
+                    preloader.setupViewportPreloading();
+                }
+                
+                // Determine current page context and preload accordingly
+                const currentPath = window.location.pathname;
+                const isHomepage = currentPath === '/' || currentPath.includes('index.html');
+                const isFirstVisit = !localStorage.getItem('examklar_onboarding_completed');
+                
+                if (isHomepage) {
+                    if (isFirstVisit) {
+                        // First-time visitor - preload onboarding
+                        preloader.preloadModulesByStrategy('onboarding', 'first-visit');
+                    } else {
+                        // Returning user - preload dashboard
+                        preloader.preloadModulesByStrategy('dashboard', 'homepage');
+                    }
+                }
+                
+                // Setup predictive preloading based on user behavior
+                if (window.PreloadConfig.features.enablePredictivePrefetch) {
+                    preloader.setupPredictivePreloading();
+                }
+                
+                // Generate performance report after 30 seconds
+                setTimeout(() => {
+                    const report = monitor.generateReport();
+                    console.log('Preload Performance Report:', report);
+                }, 30000);
+                
+                console.log('✅ Intelligent resource preloader initialized with configuration');
+            } else {
+                console.warn('⚠️ ResourcePreloader or PreloadConfig not available');
+            }
+            
+            // Initialize Lazy Loader
+            if (window.LazyLoader && window.LazyConfig) {
+                const lazyLoader = new window.LazyLoader(window.LazyConfig);
+                
+                // Start lazy loading system
+                lazyLoader.init();
+                
+                // Make lazy loader globally available
+                window.lazyLoader = lazyLoader;
+                
+                console.log('✅ Intelligent lazy loader initialized');
+            } else {
+                console.warn('⚠️ LazyLoader or LazyConfig not available');
+            }
+        });
+    </script>
     
     <!-- Initialize App -->
     <script>
