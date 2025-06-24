@@ -572,4 +572,5 @@ if (typeof window !== 'undefined') {
     window.AuditLogger = new AuditLogger();
 }
 
-export default AuditLogger;
+// Export removed to fix syntax error - AuditLogger is available globally
+// export default AuditLogger;

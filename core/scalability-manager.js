@@ -1033,4 +1033,5 @@ if (typeof window !== 'undefined') {
     window.ScalabilityManager = new ScalabilityManager();
 }
 
-export default ScalabilityManager;
+// Export removed to fix syntax error - ScalabilityManager is available globally
+// export default ScalabilityManager;

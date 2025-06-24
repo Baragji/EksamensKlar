@@ -584,4 +584,5 @@ if (typeof window !== 'undefined') {
     console.log('[ResourcePreloader] Initialized successfully');
 }
 
-export default ResourcePreloader;
+// Export removed to fix syntax error - ResourcePreloader is available globally
+// export default ResourcePreloader;

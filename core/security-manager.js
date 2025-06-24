@@ -11,7 +11,7 @@ class SecurityManager {
         this.loginAttempts = new Map();
         this.nonce = this.generateNonce();
         this.securityHeaders = {
-            'Content-Security-Policy': `default-src 'self'; script-src 'self' 'nonce-${this.nonce}'; style-src 'self' 'nonce-${this.nonce}' 'unsafe-hashes'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests;`,
+            'Content-Security-Policy': `default-src 'self'; script-src 'self' 'nonce-${this.nonce}'; style-src 'self' 'nonce-${this.nonce}' 'unsafe-hashes' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests;`,
             'X-Frame-Options': 'DENY',
             'X-Content-Type-Options': 'nosniff',
             'Referrer-Policy': 'strict-origin-when-cross-origin',
@@ -572,4 +572,5 @@ if (typeof window !== 'undefined') {
     window.SecurityManager = new SecurityManager();
 }
 
-export default SecurityManager;
+// Export removed to fix syntax error - SecurityManager is available globally
+// export default SecurityManager;

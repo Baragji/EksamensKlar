@@ -119,7 +119,11 @@ class EventBus {
         }
         
         // Get or create event listeners for namespace
-        const namespaceListeners = this.listeners.get(namespace);
+        let namespaceListeners = this.listeners.get(namespace);
+        if (!namespaceListeners) {
+            this.registerNamespace(namespace);
+            namespaceListeners = this.listeners.get(namespace);
+        }
         if (!namespaceListeners.has(eventType)) {
             namespaceListeners.set(eventType, []);
         }
