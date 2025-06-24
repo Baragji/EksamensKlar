@@ -475,7 +475,14 @@
 
         // Initialize app when DOM is ready
         document.addEventListener('DOMContentLoaded', () => {
-            // Initialize dark mode first
+            // Initialize browser compatibility first
+            if (typeof BrowserCompatibility !== 'undefined') {
+                const browserCompat = new BrowserCompatibility();
+                browserCompat.init();
+                window.browserCompatibility = browserCompat;
+            }
+            
+            // Initialize dark mode
             initializeDarkMode();
             
             // Check if onboarding is completed
@@ -486,8 +493,15 @@
                 return;
             }
             
-            app.init();
-            initializeDarkMode();
+            // Initialize app with fallback support
+            if (typeof app !== 'undefined' && app.init) {
+                app.init();
+            } else if (typeof window.AppFallback !== 'undefined') {
+                console.warn('⚠️ Hovedapp ikke tilgængelig, bruger fallback');
+                window.AppFallback.init();
+            } else {
+                console.error('❌ Hverken hovedapp eller fallback er tilgængelig');
+            }
             
             // Initialize UI interactions
             if (typeof UIInteractionsManager !== 'undefined') {
@@ -556,6 +570,15 @@
     <!-- Configuration and Shared Modules -->
     <script src="config/app-config.js" nonce="{{CSP_NONCE}}"></script>
     <script type="module" src="shared/index.js" nonce="{{CSP_NONCE}}"></script>
+    
+    <!-- Core Application Files -->
+    <script src="core/browser-compatibility.js" nonce="{{CSP_NONCE}}"></script>
+    <script src="core/resource-error-handler.js" nonce="{{CSP_NONCE}}"></script>
+    <script src="core/event-bus.js" nonce="{{CSP_NONCE}}"></script>
+    <script src="core/module-loader.js" nonce="{{CSP_NONCE}}"></script>
+    <script src="core/module-loader-fallback.js" nonce="{{CSP_NONCE}}"></script>
+    <script src="core/app-fallback.js" nonce="{{CSP_NONCE}}"></script>
+    <script src="core/app.js" nonce="{{CSP_NONCE}}"></script>
     
     <!-- Monitoring Integration -->
     <script src="core/monitoring-integration.js" nonce="{{CSP_NONCE}}"></script>
