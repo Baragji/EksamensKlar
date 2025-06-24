@@ -223,10 +223,14 @@ class SecurityManager {
 
     // Content Security Policy
     setupCSP() {
-        const meta = document.createElement('meta');
-        meta.httpEquiv = 'Content-Security-Policy';
-        meta.content = this.securityHeaders['Content-Security-Policy'];
-        document.head.appendChild(meta);
+        // CSP should be delivered via HTTP headers, not meta tags
+        // Meta tag CSP causes warnings for frame-ancestors directive
+        // Commenting out to prevent browser warnings
+        
+        // const meta = document.createElement('meta');
+        // meta.httpEquiv = 'Content-Security-Policy';
+        // meta.content = this.securityHeaders['Content-Security-Policy'];
+        // document.head.appendChild(meta);
         
         // Setup CSP violation reporting
         this.setupCSPReporting();

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExamKlar - Ryd Cache</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .description {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2196F3;
+        }
+        .warning {
+            background: #fff3e0;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ff9800;
+        }
+        .button {
+            background: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin: 10px 0;
+            transition: background 0.3s;
+        }
+        .button:hover {
+            background: #45a049;
+        }
+        .button.danger {
+            background: #f44336;
+        }
+        .button.danger:hover {
+            background: #da190b;
+        }
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+        }
+        .hidden {
+            display: none;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            text-align: center;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧹 ExamKlar Cache Rydning</h1>
+        
+        <div class="description">
+            <h3>Hvad gør dette?</h3>
+            <p>Dette værktøj rydder alle typer cache der kan forårsage problemer med ExamKlar appen:</p>
+            <ul>
+                <li><strong>Service Worker Cache</strong> - Offline filer og PWA cache</li>
+                <li><strong>Browser Storage</strong> - localStorage og sessionStorage</li>
+                <li><strong>Module Cache</strong> - JavaScript module cache</li>
+                <li><strong>IndexedDB</strong> - Database cache</li>
+            </ul>
+        </div>
+        
+        <div class="warning">
+            <h3>⚠️ Vigtigt</h3>
+            <p>Efter cache rydning skal du <strong>genindlæse siden</strong> for at appen virker korrekt igen.</p>
+        </div>
+        
+        <button class="button" onclick="clearCache()">🧹 Ryd Al Cache</button>
+        <button class="button" onclick="clearAndReload()">🔄 Ryd Cache og Genindlæs</button>
+        <button class="button danger" onclick="hardReset()">💥 Hard Reset (Ryd Alt + Genstart)</button>
+        
+        <div id="status" class="hidden"></div>
+        <div id="log" class="log hidden"></div>
+        
+        <div style="margin-top: 30px; text-align: center;">
+            <a href="./index.html" style="color: #2196F3; text-decoration: none;">← Tilbage til ExamKlar</a>
+        </div>
+    </div>
+
+    <script src="./clear-cache.js"></script>
+    <script>
+        const statusDiv = document.getElementById('status');
+        const logDiv = document.getElementById('log');
+        
+        // Override console.log to show in UI
+        const originalLog = console.log;
+        const originalError = console.error;
+        
+        function addToLog(message, type = 'log') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logMessage = `[${timestamp}] ${message}\n`;
+            logDiv.textContent += logMessage;
+            logDiv.classList.remove('hidden');
+            logDiv.scrollTop = logDiv.scrollHeight;
+            
+            // Also log to browser console
+            if (type === 'error') {
+                originalError(message);
+            } else {
+                originalLog(message);
+            }
+        }
+        
+        console.log = (message) => addToLog(message, 'log');
+        console.error = (message) => addToLog(message, 'error');
+        
+        function showStatus(message, type = 'success') {
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+            statusDiv.classList.remove('hidden');
+        }
+        
+        async function clearCache() {
+            try {
+                showStatus('Rydder cache...', 'success');
+                logDiv.textContent = '';
+                logDiv.classList.remove('hidden');
+                
+                await clearAllCache();
+                showStatus('✅ Cache ryddet! Genindlæs siden for at fortsætte.', 'success');
+            } catch (error) {
+                showStatus('❌ Fejl ved cache rydning: ' + error.message, 'error');
+                console.error('Cache clearing error:', error);
+            }
+        }
+        
+        async function clearAndReload() {
+            try {
+                showStatus('Rydder cache og genindlæser...', 'success');
+                await clearAllCache();
+                
+                setTimeout(() => {
+                    window.location.href = './index.html';
+                }, 2000);
+            } catch (error) {
+                showStatus('❌ Fejl: ' + error.message, 'error');
+            }
+        }
+        
+        async function hardReset() {
+            if (!confirm('Er du sikker? Dette vil rydde ALT og genindlæse siden.')) {
+                return;
+            }
+            
+            try {
+                showStatus('Udfører hard reset...', 'success');
+                
+                // Clear everything possible
+                await clearAllCache();
+                
+                // Also clear any remaining browser data
+                if ('storage' in navigator && 'estimate' in navigator.storage) {
+                    try {
+                        // Clear persistent storage if possible
+                        if ('persist' in navigator.storage) {
+                            await navigator.storage.persist();
+                        }
+                    } catch (e) {
+                        console.log('Could not clear persistent storage:', e.message);
+                    }
+                }
+                
+                showStatus('✅ Hard reset fuldført! Genindlæser om 3 sekunder...', 'success');
+                
+                setTimeout(() => {
+                    window.location.href = './index.html?nocache=' + Date.now();
+                }, 3000);
+            } catch (error) {
+                showStatus('❌ Fejl ved hard reset: ' + error.message, 'error');
+            }
+        }
+        
+        // Auto-clear if URL parameter is present
+        if (window.location.search.includes('auto-clear')) {
+            clearAndReload();
+        }
+    </script>
+</body>
+</html>

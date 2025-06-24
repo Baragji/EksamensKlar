@@ -6,22 +6,55 @@
     <title>ExamKlar - Eksklusiv AI-Drevet Eksamenplatform</title>
     <meta name="description" content="Ultra-moderne AI-baseret eksamenplatform hvor du skaber personlige læringsplaner for ethvert emne med premium mikrolearning">
     
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
+    
+    <!-- Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src 'self' fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; media-src 'self'; frame-src 'none'; base-uri 'self'; form-action 'self';">
+    
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#6366f1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="ExamKlar">
     
-    <!-- Styles -->
-    <link rel="stylesheet" href="styles/global.css">
-    <link rel="stylesheet" href="styles/components.css">
-    <link rel="stylesheet" href="styles/premium.css">
-    <link rel="stylesheet" href="styles/animations.css">
-    <link rel="stylesheet" href="styles/responsive.css">
-    <link rel="stylesheet" href="styles/interactive-components.css">
+    <!-- Critical CSS - Inline for performance -->
+    <style>
+        /* Critical above-the-fold styles */
+        body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f0f23;color:#fff}
+        .hero-luxury{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%)}
+        .hero-title{font-size:clamp(2rem,8vw,6rem);font-weight:900;text-align:center;margin:0}
+        .text-gradient{background:linear-gradient(45deg,#667eea,#764ba2,#f093fb);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    </style>
     
-    <!-- Resource Preloading -->
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="styles/global.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="preload" href="config/app-config.js" as="script">
+    <link rel="preload" href="core/app.js" as="script">
+    
+    <!-- Non-critical CSS - Load asynchronously -->
+    <link rel="preload" href="styles/components.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="styles/premium.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="styles/animations.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="styles/responsive.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="styles/interactive-components.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- Fallback for browsers without JS -->
+    <noscript>
+        <link rel="stylesheet" href="styles/global.css">
+        <link rel="stylesheet" href="styles/components.css">
+        <link rel="stylesheet" href="styles/premium.css">
+        <link rel="stylesheet" href="styles/animations.css">
+        <link rel="stylesheet" href="styles/responsive.css">
+        <link rel="stylesheet" href="styles/interactive-components.css">
+    </noscript>
+    
+    <!-- Resource Preloading - Prioritized -->
+    <link rel="modulepreload" href="core/module-loader.js">
     <link rel="preload" href="shared/index.js" as="script">
     <link rel="preload" href="core/browser-compatibility.js" as="script">
     <link rel="preload" href="core/resource-error-handler.js" as="script">
@@ -30,8 +63,6 @@
     <link rel="preload" href="core/preload-monitor.js" as="script">
     <link rel="preload" href="core/lazy-config.js" as="script">
     <link rel="preload" href="core/lazy-loader.js" as="script">
-    <link rel="preload" href="core/app.js" as="script">
-    <link rel="modulepreload" href="core/module-loader.js">
     
     <!-- DNS Prefetch for External Resources -->
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
@@ -391,7 +422,7 @@
     <script src="core/app.js"></script>
     
     <!-- Initialize Resource Preloader -->
-    <script nonce="{{CSP_NONCE}}">
+    <script>
         // Initialize intelligent resource preloading
         document.addEventListener('DOMContentLoaded', () => {
             if (window.ResourcePreloader && window.PreloadConfig && window.PreloadMonitor) {
@@ -459,7 +490,7 @@
     </script>
     
     <!-- Initialize App -->
-    <script nonce="{{CSP_NONCE}}">
+    <script>
         // Register Service Worker for PWA functionality
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -568,33 +599,33 @@
     </script>
 
     <!-- Configuration and Shared Modules -->
-    <script src="config/app-config.js" nonce="{{CSP_NONCE}}"></script>
-    <script type="module" src="shared/index.js" nonce="{{CSP_NONCE}}"></script>
+    <script src="config/app-config.js"></script>
+    <script type="module" src="shared/index.js"></script>
     
     <!-- Core Application Files -->
-    <script src="core/browser-compatibility.js" nonce="{{CSP_NONCE}}"></script>
-    <script src="core/resource-error-handler.js" nonce="{{CSP_NONCE}}"></script>
-    <script src="core/event-bus.js" nonce="{{CSP_NONCE}}"></script>
-    <script src="core/module-loader.js" nonce="{{CSP_NONCE}}"></script>
-    <script src="core/module-loader-fallback.js" nonce="{{CSP_NONCE}}"></script>
-    <script src="core/app-fallback.js" nonce="{{CSP_NONCE}}"></script>
-    <script src="core/app.js" nonce="{{CSP_NONCE}}"></script>
+    <script src="core/browser-compatibility.js"></script>
+    <script src="core/resource-error-handler.js"></script>
+    <script src="core/event-bus.js"></script>
+    <script src="core/module-loader.js"></script>
+    <script src="core/module-loader-fallback.js"></script>
+    <script src="core/app-fallback.js"></script>
+    <script src="core/app.js"></script>
     
     <!-- Monitoring Integration -->
-    <script src="core/monitoring-integration.js" nonce="{{CSP_NONCE}}"></script>
+    <script src="core/monitoring-integration.js"></script>
     
     <!-- Accessibility Manager -->
-    <script src="core/accessibility-manager.js" nonce="{{CSP_NONCE}}"></script>
+    <script src="core/accessibility-manager.js"></script>
     
     <!-- Test Suite Scripts -->
-    <script src="tests/test-runner.js" nonce="{{CSP_NONCE}}"></script>
-    <script src="tests/resource-tests.js" nonce="{{CSP_NONCE}}"></script>
-    <script src="tests/module-tests.js" nonce="{{CSP_NONCE}}"></script>
-    <script src="tests/performance-tests.js" nonce="{{CSP_NONCE}}"></script>
-    <script src="tests/test-suite.js" nonce="{{CSP_NONCE}}"></script>
+    <script src="tests/test-runner.js"></script>
+    <script src="tests/resource-tests.js"></script>
+    <script src="tests/module-tests.js"></script>
+    <script src="tests/performance-tests.js"></script>
+    <script src="tests/test-suite.js"></script>
     
     <!-- Initialize Accessibility Manager -->
-    <script nonce="{{CSP_NONCE}}">
+    <script>
         // Initialize accessibility manager when DOM is ready
         document.addEventListener('DOMContentLoaded', () => {
             if (typeof AccessibilityManager !== 'undefined') {

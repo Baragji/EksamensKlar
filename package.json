@@ -2,10 +2,14 @@
   "name": "examklar-platform",
   "version": "0.5.0",
   "description": "Personlig eksamen app med flashcards, quiz og AI assistance",
-  "main": "index.html",
+  "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "python -m http.server 3333",
+    "start": "node server.js",
+    "dev": "NODE_ENV=development node server.js",
+    "prod": "NODE_ENV=production node server.js",
+    "build": "npm run clean && npm run optimize",
+    "optimize": "echo 'Build optimization placeholder - implement CSS/JS minification'",
     "test": "playwright test",
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",
@@ -14,7 +18,14 @@
     "test:crawl-baseline": "playwright test tests/ui-crawl.spec.ts --update-snapshots",
     "install-playwright": "npx playwright install",
     "serve-diffs": "node server.js",
-    "ui-diff-server": "node server.js"
+    "ui-diff-server": "node server.js",
+    "clean": "./clean-build.sh",
+    "clean:cache": "open clear-cache.html",
+    "clean:all": "./clean-build.sh && open clear-cache.html",
+    "reset": "./clean-build.sh && npm start",
+    "security-audit": "npm audit --audit-level moderate",
+    "lint": "echo 'Linting placeholder - implement ESLint'",
+    "format": "echo 'Formatting placeholder - implement Prettier'"
   },
   "keywords": [
     "education",
@@ -25,10 +36,14 @@
   ],
   "author": "ExamKlar Team",
   "license": "MIT",
-  "devDependencies": {
-    "@playwright/test": "^1.40.0",
+  "dependencies": {
     "express": "^4.18.2",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "express-rate-limit": "^7.1.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0"
   },
   "engines": {
     "node": ">=16.0.0"

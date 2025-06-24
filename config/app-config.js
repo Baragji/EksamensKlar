@@ -3,28 +3,53 @@
  * Central configuration file for the entire application
  */
 
+// Environment detection
+const getEnvironment = () => {
+    const hostname = window.location.hostname;
+    const protocol = window.location.protocol;
+    
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname.includes('192.168')) {
+        return 'development';
+    } else if (hostname.includes('staging') || hostname.includes('test')) {
+        return 'staging';
+    } else if (protocol === 'https:' && !hostname.includes('localhost')) {
+        return 'production';
+    }
+    return 'development';
+};
+
+const currentEnv = getEnvironment();
+
 const AppConfig = {
     // Application metadata
     app: {
         name: 'ExamKlar',
-        version: '2.0.0',
+        version: '0.5.0', // Match package.json version
         description: 'Advanced exam preparation platform',
         author: 'ExamKlar Team',
-        homepage: 'https://examklar.dk'
+        homepage: currentEnv === 'production' ? 'https://examklar.dk' : window.location.origin
     },
 
     // Environment settings
     environment: {
-        isDevelopment: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1',
-        isProduction: window.location.protocol === 'https:' && !window.location.hostname.includes('localhost'),
-        debugMode: localStorage.getItem('examklar_debug') === 'true'
+        current: currentEnv,
+        isDevelopment: currentEnv === 'development',
+        isStaging: currentEnv === 'staging',
+        isProduction: currentEnv === 'production',
+        debugMode: currentEnv !== 'production' && localStorage.getItem('examklar_debug') !== 'false'
     },
 
-    // API configuration
+    // API configuration - environment-based
     api: {
-        baseUrl: window.location.origin,
-        timeout: 30000,
-        retryAttempts: 3,
+        baseUrl: (() => {
+            switch(currentEnv) {
+                case 'production': return 'https://api.examklar.dk';
+                case 'staging': return 'https://staging-api.examklar.dk';
+                default: return window.location.origin;
+            }
+        })(),
+        timeout: currentEnv === 'production' ? 30000 : 10000,
+        retryAttempts: currentEnv === 'production' ? 3 : 1,
         retryDelay: 1000
     },
 
@@ -46,13 +71,24 @@ const AppConfig = {
         enableServiceWorker: true
     },
 
-    // Security settings
+    // Security settings - environment-based
     security: {
         enableCSP: true,
         enableEncryption: true,
-        sessionTimeout: 30 * 60 * 1000, // 30 minutes
-        maxLoginAttempts: 5,
-        lockoutDuration: 15 * 60 * 1000 // 15 minutes
+        sessionTimeout: currentEnv === 'production' ? 30 * 60 * 1000 : 60 * 60 * 1000, // 30 min prod, 60 min dev
+        maxLoginAttempts: currentEnv === 'production' ? 5 : 10,
+        lockoutDuration: currentEnv === 'production' ? 15 * 60 * 1000 : 5 * 60 * 1000, // 15 min prod, 5 min dev
+        enableRateLimiting: true,
+        rateLimitRequests: currentEnv === 'production' ? 100 : 1000, // per minute
+        enableInputValidation: true,
+        sanitizeInputs: true,
+        allowedOrigins: (() => {
+            switch(currentEnv) {
+                case 'production': return ['https://examklar.dk', 'https://www.examklar.dk'];
+                case 'staging': return ['https://staging.examklar.dk'];
+                default: return ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:8080'];
+            }
+        })()
     },
 
     // UI/UX settings
@@ -184,12 +220,65 @@ const AppConfig = {
     }
 };
 
+// Configuration validation
+const validateConfig = (config) => {
+    const errors = [];
+    
+    // Validate required fields
+    if (!config.app?.name) errors.push('App name is required');
+    if (!config.app?.version) errors.push('App version is required');
+    
+    // Validate API configuration
+    if (!config.api?.baseUrl) errors.push('API base URL is required');
+    if (config.api?.timeout < 1000) errors.push('API timeout must be at least 1000ms');
+    
+    // Validate security settings
+    if (config.security?.sessionTimeout < 60000) errors.push('Session timeout must be at least 1 minute');
+    if (config.security?.maxLoginAttempts < 1) errors.push('Max login attempts must be at least 1');
+    
+    // Validate storage settings
+    if (config.storage?.maxSize < 1024) errors.push('Storage max size must be at least 1KB');
+    
+    if (errors.length > 0) {
+        console.error('Configuration validation errors:', errors);
+        if (currentEnv === 'production') {
+            throw new Error('Invalid configuration detected');
+        }
+    }
+    
+    return errors.length === 0;
+};
+
+// Validate configuration
+validateConfig(AppConfig);
+
 // Freeze configuration to prevent accidental modifications
 Object.freeze(AppConfig);
 
+// Add configuration getter with validation
+const getConfig = (path) => {
+    if (!path) return AppConfig;
+    
+    const keys = path.split('.');
+    let value = AppConfig;
+    
+    for (const key of keys) {
+        if (value && typeof value === 'object' && key in value) {
+            value = value[key];
+        } else {
+            console.warn(`Configuration path '${path}' not found`);
+            return undefined;
+        }
+    }
+    
+    return value;
+};
+
 // Export for use in other modules
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = AppConfig;
+    module.exports = { AppConfig, getConfig, validateConfig };
 } else if (typeof window !== 'undefined') {
     window.AppConfig = AppConfig;
+    window.getConfig = getConfig;
+    window.validateConfig = validateConfig;
 }

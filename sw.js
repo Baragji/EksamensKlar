@@ -7,6 +7,17 @@ const CACHE_NAME = 'examklar-v1.3.0';
 const CACHE_STATIC_NAME = 'examklar-static-v1.3.0';
 const CACHE_DYNAMIC_NAME = 'examklar-dynamic-v1.3.0';
 
+// Security and performance constants
+const MAX_CACHE_SIZE = 50 * 1024 * 1024; // 50MB max cache size
+const MAX_CACHE_ENTRIES = 100; // Max number of dynamic cache entries
+const CACHE_EXPIRY_TIME = 7 * 24 * 60 * 60 * 1000; // 7 days
+const ALLOWED_ORIGINS = [self.location.origin];
+const SECURITY_HEADERS = {
+    'X-Content-Type-Options': 'nosniff',
+    'X-Frame-Options': 'DENY',
+    'X-XSS-Protection': '1; mode=block'
+};
+
 // Files to cache for offline functionality
 const STATIC_CACHE_FILES = [
     './',
@@ -116,8 +127,16 @@ self.addEventListener('fetch', (event) => {
         return;
     }
     
-    // Skip external requests
-    if (!url.origin.includes(self.location.origin)) {
+    // Security: Only allow requests from allowed origins
+    if (!ALLOWED_ORIGINS.includes(url.origin)) {
+        console.warn('[SW] Blocked request from unauthorized origin:', url.origin);
+        return;
+    }
+    
+    // Security: Block potentially dangerous file types
+    const dangerousExtensions = ['.exe', '.bat', '.cmd', '.scr', '.vbs', '.js.map'];
+    if (dangerousExtensions.some(ext => url.pathname.toLowerCase().endsWith(ext))) {
+        console.warn('[SW] Blocked request for dangerous file type:', url.pathname);
         return;
     }
     
@@ -140,11 +159,7 @@ self.addEventListener('fetch', (event) => {
                         // Check if should be dynamically cached
                         if (shouldCache(request.url)) {
                             const responseClone = networkResponse.clone();
-                            caches.open(CACHE_DYNAMIC_NAME)
-                                .then((cache) => {
-                                    console.log('[SW] Caching dynamically:', request.url);
-                                    cache.put(request, responseClone);
-                                })
+                            manageDynamicCache(request, responseClone)
                                 .catch((error) => {
                                     console.error('[SW] Dynamic caching failed:', error);
                                 });
@@ -240,6 +255,60 @@ self.addEventListener('notificationclick', (event) => {
  */
 function shouldCache(url) {
     return CACHE_DYNAMIC_PATTERNS.some(pattern => pattern.test(url));
+}
+
+/**
+ * Manage dynamic cache with size limits and security
+ */
+async function manageDynamicCache(request, response) {
+    try {
+        const cache = await caches.open(CACHE_DYNAMIC_NAME);
+        
+        // Check cache size before adding
+        const currentSize = await cacheUtils.getCacheSize();
+        if (currentSize > MAX_CACHE_SIZE) {
+            console.warn('[SW] Cache size limit exceeded, cleaning old entries');
+            await cacheUtils.cleanOldCache();
+        }
+        
+        // Check number of entries
+        const requests = await cache.keys();
+        if (requests.length >= MAX_CACHE_ENTRIES) {
+            console.log('[SW] Max cache entries reached, removing oldest');
+            await cache.delete(requests[0]); // Remove oldest entry
+        }
+        
+        // Add security headers to cached response
+        const secureResponse = addSecurityHeaders(response);
+        
+        console.log('[SW] Caching dynamically:', request.url);
+        await cache.put(request, secureResponse);
+        
+    } catch (error) {
+        console.error('[SW] Dynamic cache management failed:', error);
+        throw error;
+    }
+}
+
+/**
+ * Add security headers to response
+ */
+function addSecurityHeaders(response) {
+    const headers = new Headers(response.headers);
+    
+    // Add security headers
+    Object.entries(SECURITY_HEADERS).forEach(([key, value]) => {
+        headers.set(key, value);
+    });
+    
+    // Add cache control
+    headers.set('Cache-Control', 'public, max-age=86400'); // 24 hours
+    
+    return new Response(response.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers: headers
+    });
 }
 
 /**

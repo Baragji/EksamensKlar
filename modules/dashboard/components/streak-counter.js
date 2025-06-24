@@ -111,14 +111,22 @@ class StreakCounter {
             currentDate.setDate(currentDate.getDate() - 1);
         }
 
-        while (true) {
+        // Safety limit to prevent infinite loops
+        let maxIterations = 365; // Maximum 1 year of streak
+        
+        while (maxIterations > 0) {
             const dateStr = currentDate.toISOString().split('T')[0];
             if (this.streakData.activeDates.includes(dateStr)) {
                 streak++;
                 currentDate.setDate(currentDate.getDate() - 1);
+                maxIterations--;
             } else {
                 break;
             }
+        }
+        
+        if (maxIterations === 0) {
+            console.warn('[StreakCounter] Maximum iterations reached, preventing infinite loop');
         }
 
         this.streakData.currentStreak = streak;
