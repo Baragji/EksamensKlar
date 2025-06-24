@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Indhold Manager - ExamKlar</title>
-    <link rel="stylesheet" href="../../design-system/components/index.css">
+    <link rel="stylesheet" href="../../styles/design-system/components/index.css">
     <link rel="stylesheet" href="content.css">
 </head>
 <body>
@@ -40,6 +40,9 @@
                     <span class="btn__icon">🤖</span>
                     <span>AI Assistant</span>
                 </a>
+                <button class="theme-toggle btn btn--ghost btn--sm" id="themeToggle" aria-label="Skift til mørk/lys tilstand" title="Skift tema">
+                    <span id="themeIcon">🌙</span>
+                </button>
             </div>
         </div>
     </nav>
@@ -145,8 +148,6 @@ Du kan bruge Markdown:
         </section>
     </main>
 
-    <script src="../../core/data-bridge.js"></script>
-    <script src="content.js"></script>
     <!-- Bottom Navigation -->
     <nav class="bottom-nav">
         <a href="../../index.html" class="btn btn--ghost btn--sm">
