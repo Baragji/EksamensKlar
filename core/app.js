@@ -1,6 +1,6 @@
 /**
  * ExamKlar Main Application
- * Core application logic and routing
+ * Core application logic and routing with EventBus integration
  */
 
 const app = {
@@ -8,25 +8,32 @@ const app = {
     currentModule: 'home',
     isInitialized: false,
     modules: {},
+    eventBus: null,
+    integration: null,
 
     /**
      * Initialize the application
      */
-    init() {
+    async init() {
         if (this.isInitialized) return;
         
         console.log('🚀 Initializing ExamKlar...');
+        
+        // Initialize EventBus system first
+        await this.initializeEventBus();
         
         // Check if this is a new user and redirect to onboarding
         const hasCompletedOnboarding = localStorage.getItem('examklar_onboarding_completed');
         if (!hasCompletedOnboarding) {
             console.log('🎯 New user detected, redirecting to onboarding...');
+            this.eventBus.emit('app', 'user.new_detected', { redirecting: true });
             window.location.href = 'modules/onboarding/index.html';
             return;
         }
         
         // Update last active timestamp
         storage.updateLastActive();
+        this.eventBus.emit('app', 'user.activity', { action: 'app_start', timestamp: Date.now() });
         
         // Initialize modules
         this.initializeModules();
@@ -45,9 +52,125 @@ const app = {
         
         this.isInitialized = true;
         console.log('✅ ExamKlar initialized successfully');
+        this.eventBus.emit('app', 'initialized', { timestamp: Date.now(), modules: Object.keys(this.modules) });
         
         // Show welcome message for new users
         this.checkFirstVisit();
+    },
+
+    /**
+     * Initialize EventBus system
+     */
+    async initializeEventBus() {
+        try {
+            // Initialize EventBus with enterprise configuration
+            this.eventBus = new EventBus({
+                debug: true,
+                maxHistory: 500,
+                enablePerformanceTracking: true,
+                defaultNamespace: 'app'
+            });
+            
+            // Initialize integration helper
+            this.integration = new EventBusIntegration(this.eventBus);
+            
+            // Add core middleware
+            this.eventBus.use(EventBusMiddleware.logger({
+                includeData: false,
+                filter: (event) => !event.type.startsWith('internal.')
+            }));
+            
+            this.eventBus.use(EventBusMiddleware.performance({
+                threshold: 100,
+                logSlow: true
+            }));
+            
+            this.eventBus.use(EventBusMiddleware.errorHandler({
+                retryAttempts: 3,
+                retryDelay: 1000
+            }));
+            
+            // Integrate with existing systems
+            if (typeof DataBridge !== 'undefined') {
+                this.integration.integrateWithDataBridge(DataBridge);
+            }
+            
+            this.integration.integrateWithLocalStorage({
+                persistEvents: ['app.state_changed', 'user.progress_updated', 'data.saved'],
+                autoRestore: true
+            });
+            
+            this.integration.integrateWithDOM({
+                autoCapture: ['click', 'submit', 'change'],
+                selector: '[data-event]',
+                namespace: 'ui'
+            });
+            
+            // Initialize DataBridge with EventBus
+            if (window.DataBridge) {
+                window.DataBridge.initEventBus(this.eventBus);
+            }
+            
+            // Setup core event listeners
+            this.setupCoreEventListeners();
+            
+            console.log('🚀 EventBus system initialized');
+            
+        } catch (error) {
+            console.error('❌ Failed to initialize EventBus:', error);
+            // Fallback to basic functionality without EventBus
+            this.eventBus = {
+                emit: () => {},
+                on: () => {},
+                off: () => {}
+            };
+        }
+    },
+    
+    /**
+     * Setup core EventBus listeners
+     */
+    setupCoreEventListeners() {
+        // Navigation events
+        this.eventBus.on('app', 'navigate', (data) => {
+            this.navigateTo(data.module, data.pushState !== false);
+        });
+        
+        // Module events
+        this.eventBus.on('app', 'module.load_start', (data) => {
+            console.log(`📦 Loading module: ${data.module}`);
+        });
+        
+        this.eventBus.on('app', 'module.load_complete', (data) => {
+            console.log(`✅ Module loaded: ${data.module}`);
+        });
+        
+        this.eventBus.on('app', 'module.load_error', (data) => {
+            console.error(`❌ Module load error: ${data.module}`, data.error);
+            utils.showToast(`Fejl ved indlæsning af ${data.module}`, 'error');
+        });
+        
+        // User activity events
+        this.eventBus.on('user', '*', (data, event) => {
+            storage.updateLastActive();
+            console.log(`👤 User event: ${event.type}`, data);
+        });
+        
+        // Data events
+        this.eventBus.on('data', '*', (data, event) => {
+            console.log(`💾 Data event: ${event.type}`, data);
+        });
+        
+        // UI events
+        this.eventBus.on('ui', '*', (data, event) => {
+            console.log(`🖱️ UI event: ${event.type}`, data);
+        });
+        
+        // Error handling
+        this.eventBus.on('app', 'error', (data) => {
+            console.error('Application error:', data);
+            utils.showToast('Der opstod en fejl. Prøv igen.', 'error');
+        });
     },
 
     /**
@@ -146,9 +269,11 @@ const app = {
     navigateTo(module, pushState = true) {
         if (!this.modules[module]) {
             console.warn(`Module '${module}' not found`);
+            this.eventBus.emit('app', 'navigation.error', { module, error: 'Module not found' });
             return;
         }
 
+        this.eventBus.emit('app', 'navigation.start', { from: this.currentModule, to: module });
         this.handleRoute(module, pushState);
     },
 
@@ -161,12 +286,14 @@ const app = {
         if (this.currentModule === module) return;
 
         console.log(`🧭 Navigating to: ${module}`);
+        this.eventBus.emit('app', 'route.change', { from: this.currentModule, to: module });
 
         // Update browser history
         if (pushState) {
             const url = new URL(window.location);
             url.searchParams.set('module', module);
             window.history.pushState({ module }, '', url);
+            this.eventBus.emit('app', 'history.updated', { module, url: url.toString() });
         }
 
         // Update navigation state
@@ -176,6 +303,7 @@ const app = {
         await this.loadModule(module);
 
         this.currentModule = module;
+        this.eventBus.emit('app', 'navigation.complete', { module, timestamp: Date.now() });
     },
 
     /**
@@ -205,8 +333,11 @@ const app = {
         const mainContent = document.getElementById('mainContent');
         
         try {
+            this.eventBus.emit('app', 'module.load_start', { module });
+            
             // Show loading state
             mainContent.innerHTML = this.getLoadingHTML();
+            this.eventBus.emit('ui', 'loading.show', { module });
 
             if (module === 'home') {
                 // Home module is already loaded in index.html
@@ -215,8 +346,12 @@ const app = {
                 // Load external module
                 await this.loadExternalModule(module);
             }
+            
+            this.eventBus.emit('app', 'module.load_complete', { module, timestamp: Date.now() });
+            
         } catch (error) {
             console.error(`Error loading module ${module}:`, error);
+            this.eventBus.emit('app', 'module.load_error', { module, error: error.message });
             mainContent.innerHTML = this.getErrorHTML(module, error.message);
         }
     },

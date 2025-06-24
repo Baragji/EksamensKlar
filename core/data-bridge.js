@@ -4,6 +4,8 @@
  */
 
 const DataBridge = {
+    eventBus: null,
+    
     // Central storage keys
     KEYS: {
         ONBOARDING_DATA: 'examklar_onboarding_data',
@@ -13,10 +15,96 @@ const DataBridge = {
     },
 
     /**
+     * Initialize EventBus connection
+     * @param {Object} eventBus - EventBus instance
+     */
+    initEventBus(eventBus) {
+        this.eventBus = eventBus;
+        this.setupEventListeners();
+        console.log('🌉 DataBridge: EventBus initialized');
+    },
+
+    /**
+     * Setup EventBus listeners
+     */
+    setupEventListeners() {
+        if (!this.eventBus) return;
+
+        // Listen for data requests
+        this.eventBus.on('data', 'request', (data) => {
+            this.handleDataRequest(data);
+        });
+
+        // Listen for data updates
+        this.eventBus.on('data', 'update', (data) => {
+            this.handleDataUpdate(data);
+        });
+
+        // Listen for onboarding completion
+        this.eventBus.on('onboarding', 'complete', (data) => {
+            this.initializeFromOnboarding(data.onboardingData);
+        });
+    },
+
+    /**
+     * Handle data requests from other modules
+     * @param {Object} request - Data request object
+     */
+    handleDataRequest(request) {
+        const { type, key, callback } = request;
+        let data = null;
+
+        switch (type) {
+            case 'onboarding':
+                data = this.getOnboardingData();
+                break;
+            case 'training':
+                data = this.getTrainingData();
+                break;
+            case 'progress':
+                data = this.getProgressSummary();
+                break;
+            default:
+                console.warn('🌉 DataBridge: Unknown data request type:', type);
+        }
+
+        if (this.eventBus) {
+            this.eventBus.emit('data', 'response', { type, key, data, requestId: request.requestId });
+        }
+    },
+
+    /**
+     * Handle data updates from other modules
+     * @param {Object} update - Data update object
+     */
+    handleDataUpdate(update) {
+        const { type, data } = update;
+
+        switch (type) {
+            case 'progress':
+                this.updateProgress(data.module, data.activityType, data.data);
+                break;
+            case 'training':
+                this.saveTrainingData(data);
+                break;
+            default:
+                console.warn('🌉 DataBridge: Unknown data update type:', type);
+        }
+
+        if (this.eventBus) {
+            this.eventBus.emit('data', 'updated', { type, timestamp: Date.now() });
+        }
+    },
+
+    /**
      * Initialize data bridge after onboarding
      */
     initializeFromOnboarding() {
         console.log('🔄 DataBridge: Initializing from onboarding...');
+        
+        if (this.eventBus) {
+            this.eventBus.emit('data', 'initialization_start', { source: 'onboarding' });
+        }
         
         const onboardingData = this.getOnboardingData();
         console.log('🔍 DEBUG: Retrieved onboarding data:', onboardingData);
@@ -107,6 +195,15 @@ const DataBridge = {
         }
         
         console.log('✅ DataBridge: Training data initialized successfully');
+        
+        if (this.eventBus) {
+            this.eventBus.emit('data', 'initialization_complete', { 
+                source: 'onboarding', 
+                trainingData,
+                timestamp: Date.now()
+            });
+        }
+        
         return true;
     },
 
@@ -130,11 +227,23 @@ const DataBridge = {
      * Save unified training data
      */
     saveTrainingData(data) {
-        data.meta.lastUpdated = new Date().toISOString();
-        localStorage.setItem(this.KEYS.USER_TRAINING_DATA, JSON.stringify(data));
-        
-        // Also update cross-module data for backward compatibility
-        this.updateCrossModuleData(data);
+        try {
+            data.meta.lastUpdated = new Date().toISOString();
+            localStorage.setItem(this.KEYS.USER_TRAINING_DATA, JSON.stringify(data));
+            
+            // Also update cross-module data for backward compatibility
+            this.updateCrossModuleData(data);
+            
+            if (this.eventBus) {
+                this.eventBus.emit('data', 'saved', { type: 'training', timestamp: Date.now() });
+            }
+        } catch (error) {
+            console.error('🌉 DataBridge: Error saving training data:', error);
+            
+            if (this.eventBus) {
+                this.eventBus.emit('data', 'save_error', { type: 'training', error: error.message });
+            }
+        }
     },
 
     /**
