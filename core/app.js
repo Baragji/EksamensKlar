@@ -19,7 +19,10 @@ const app = {
         
         console.log('🚀 Initializing ExamKlar...');
         
-        // Initialize EventBus system first
+        // Initialize Enterprise Security & Scalability first
+        await this.initializeEnterpriseSecurity();
+        
+        // Initialize EventBus system
         await this.initializeEventBus();
         
         // Check if this is a new user and redirect to onboarding
@@ -56,6 +59,62 @@ const app = {
         
         // Show welcome message for new users
         this.checkFirstVisit();
+    },
+
+    /**
+     * Initialize Enterprise Security & Scalability
+     */
+    async initializeEnterpriseSecurity() {
+        try {
+            // Initialize Security Manager
+            if (window.SecurityManager) {
+                console.log('🔒 Enterprise Security Manager initialized');
+                
+                // Setup security event listeners
+                if (window.EventBus) {
+                    window.EventBus.on('security', '*', (data, event) => {
+                        console.log(`🔒 Security event: ${event.type}`, data);
+                    });
+                }
+            }
+            
+            // Initialize Audit Logger
+            if (window.AuditLogger) {
+                console.log('📋 Enterprise Audit Logger initialized');
+                
+                // Log application start
+                window.AuditLogger.log('SYSTEM', 'Application initialization started', {
+                    timestamp: Date.now(),
+                    userAgent: navigator.userAgent,
+                    url: window.location.href
+                });
+            }
+            
+            // Initialize Scalability Manager
+            if (window.ScalabilityManager) {
+                console.log('📈 Enterprise Scalability Manager initialized');
+                
+                // Optimize for current device
+                window.ScalabilityManager.optimizeForDevice();
+                
+                // Setup scalability event listeners
+                if (window.EventBus) {
+                    window.EventBus.on('scalability', '*', (data, event) => {
+                        console.log(`📈 Scalability event: ${event.type}`, data);
+                    });
+                }
+            }
+            
+        } catch (error) {
+            console.error('❌ Failed to initialize enterprise features:', error);
+            
+            if (window.AuditLogger) {
+                window.AuditLogger.logError(error, {
+                    context: 'enterprise_initialization',
+                    timestamp: Date.now()
+                });
+            }
+        }
     },
 
     /**
