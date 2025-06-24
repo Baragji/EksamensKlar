@@ -1,0 +1,401 @@
+/* ==========================================================================
+   EXAMENSKLAR DESIGN SYSTEM - MASTER TOKEN IMPORTS
+   ========================================================================== */
+
+/*
+ * This file serves as the central import point for all design system tokens.
+ * Import this single file to access all design tokens across the application.
+ * 
+ * Usage:
+ * @import url('./styles/design-system/tokens/index.css');
+ * 
+ * Or in HTML:
+ * <link rel="stylesheet" href="./styles/design-system/tokens/index.css">
+ */
+
+/* ==========================================================================
+   CORE DESIGN TOKENS
+   ========================================================================== */
+
+/* Color System - Foundation colors, semantic colors, and theme support */
+@import url('./colors.css');
+
+/* Typography System - Font families, sizes, weights, and semantic scales */
+@import url('./typography.css');
+
+/* Spacing System - Margins, padding, gaps, and component spacing */
+@import url('./spacing.css');
+
+/* Shadow System - Elevation, depth, and visual hierarchy */
+@import url('./shadows.css');
+
+/* Border System - Radius, widths, styles, and semantic borders */
+@import url('./borders.css');
+
+/* ==========================================================================
+   DESIGN SYSTEM METADATA
+   ========================================================================== */
+
+:root {
+  /* Design System Version */
+  --design-system-version: "1.0.0";
+  
+  /* Design System Name */
+  --design-system-name: "EksamensKlar Design System";
+  
+  /* Last Updated */
+  --design-system-updated: "2024-01-20";
+  
+  /* ==========================================================================
+     GLOBAL DESIGN SYSTEM SETTINGS
+     ========================================================================== */
+  
+  /* Base Font Size for rem calculations */
+  --base-font-size: 16px;
+  
+  /* Base Line Height for vertical rhythm */
+  --base-line-height: 1.5;
+  
+  /* Base Border Radius for consistent rounding */
+  --base-border-radius: 0.375rem; /* 6px */
+  
+  /* Base Transition Duration */
+  --base-transition-duration: 0.15s;
+  --base-transition-timing: ease-in-out;
+  
+  /* Base Animation Duration */
+  --base-animation-duration: 0.3s;
+  --base-animation-timing: ease-out;
+  
+  /* Base Z-Index Scale */
+  --z-index-dropdown: 1000;
+  --z-index-sticky: 1020;
+  --z-index-fixed: 1030;
+  --z-index-modal-backdrop: 1040;
+  --z-index-modal: 1050;
+  --z-index-popover: 1060;
+  --z-index-tooltip: 1070;
+  --z-index-toast: 1080;
+  
+  /* ==========================================================================
+     RESPONSIVE BREAKPOINTS
+     ========================================================================== */
+  
+  /* Mobile First Breakpoints */
+  --breakpoint-xs: 0;
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --breakpoint-xxl: 1400px;
+  
+  /* Container Max Widths */
+  --container-sm: 540px;
+  --container-md: 720px;
+  --container-lg: 960px;
+  --container-xl: 1140px;
+  --container-xxl: 1320px;
+  
+  /* ==========================================================================
+     ACCESSIBILITY SETTINGS
+     ========================================================================== */
+  
+  /* Focus Ring Settings */
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  --focus-ring-color: var(--color-primary-500);
+  --focus-ring-style: solid;
+  
+  /* Minimum Touch Target Size (44px recommended) */
+  --min-touch-target: 44px;
+  
+  /* Text Contrast Ratios */
+  --contrast-ratio-normal: 4.5; /* WCAG AA */
+  --contrast-ratio-large: 3;    /* WCAG AA Large Text */
+  --contrast-ratio-enhanced: 7; /* WCAG AAA */
+  
+  /* ==========================================================================
+     COMPONENT DEFAULTS
+     ========================================================================== */
+  
+  /* Button Defaults */
+  --button-height-sm: 32px;
+  --button-height-md: 40px;
+  --button-height-lg: 48px;
+  --button-padding-x-sm: var(--spacing-3);
+  --button-padding-x-md: var(--spacing-4);
+  --button-padding-x-lg: var(--spacing-6);
+  
+  /* Input Defaults */
+  --input-height-sm: 32px;
+  --input-height-md: 40px;
+  --input-height-lg: 48px;
+  --input-padding-x: var(--spacing-3);
+  --input-padding-y: var(--spacing-2);
+  
+  /* Card Defaults */
+  --card-padding: var(--spacing-6);
+  --card-padding-sm: var(--spacing-4);
+  --card-padding-lg: var(--spacing-8);
+  
+  /* Modal Defaults */
+  --modal-max-width-sm: 400px;
+  --modal-max-width-md: 600px;
+  --modal-max-width-lg: 800px;
+  --modal-max-width-xl: 1000px;
+  --modal-padding: var(--spacing-6);
+  
+  /* Navigation Defaults */
+  --nav-height: 64px;
+  --nav-padding-x: var(--spacing-4);
+  --nav-item-padding-x: var(--spacing-3);
+  --nav-item-padding-y: var(--spacing-2);
+  
+  /* Sidebar Defaults */
+  --sidebar-width: 280px;
+  --sidebar-width-collapsed: 64px;
+  --sidebar-padding: var(--spacing-4);
+  
+  /* ==========================================================================
+     LAYOUT GRID SYSTEM
+     ========================================================================== */
+  
+  /* Grid Columns */
+  --grid-columns: 12;
+  --grid-gutter-width: var(--spacing-6);
+  --grid-gutter-width-sm: var(--spacing-4);
+  --grid-gutter-width-lg: var(--spacing-8);
+  
+  /* Flexbox Gaps */
+  --flex-gap-xs: var(--spacing-1);
+  --flex-gap-sm: var(--spacing-2);
+  --flex-gap-md: var(--spacing-4);
+  --flex-gap-lg: var(--spacing-6);
+  --flex-gap-xl: var(--spacing-8);
+}
+
+/* ==========================================================================
+   THEME INITIALIZATION
+   ========================================================================== */
+
+/* Ensure proper theme initialization */
+html {
+  /* Set base font size for rem calculations */
+  font-size: var(--base-font-size);
+  
+  /* Set base line height */
+  line-height: var(--base-line-height);
+  
+  /* Enable smooth scrolling */
+  scroll-behavior: smooth;
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ==========================================================================
+   DESIGN SYSTEM UTILITIES
+   ========================================================================== */
+
+/* Screen Reader Only Content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus Visible Polyfill Support */
+.focus-visible {
+  outline: var(--focus-ring-width) var(--focus-ring-style) var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* Skip Link for Accessibility */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: var(--color-background);
+  color: var(--color-text);
+  padding: 8px;
+  text-decoration: none;
+  border-radius: var(--border-radius-md);
+  border: var(--border-focus);
+  z-index: var(--z-index-toast);
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* ==========================================================================
+   DESIGN SYSTEM DEBUGGING (Development Only)
+   ========================================================================== */
+
+/* Add this class to body to visualize spacing */
+.debug-spacing * {
+  outline: 1px solid rgba(255, 0, 0, 0.1) !important;
+}
+
+/* Add this class to body to visualize typography */
+.debug-typography * {
+  background: rgba(0, 255, 0, 0.05) !important;
+}
+
+/* Add this class to body to visualize colors */
+.debug-colors * {
+  border: 1px dashed rgba(0, 0, 255, 0.2) !important;
+}
+
+/* Design System Info Panel (for development) */
+.design-system-info {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: var(--color-background);
+  border: var(--border-default);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-4);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-sm);
+  box-shadow: var(--shadow-lg);
+  z-index: var(--z-index-toast);
+  max-width: 300px;
+}
+
+.design-system-info h4 {
+  margin: 0 0 var(--spacing-2) 0;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.design-system-info p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+
+.design-system-info code {
+  background: var(--color-gray-100);
+  padding: 2px 4px;
+  border-radius: var(--border-radius-xs);
+  font-family: var(--font-family-mono);
+}
+
+[data-theme="dark"] .design-system-info code {
+  background: var(--color-gray-800);
+}
+
+/* ==========================================================================
+   PRINT STYLES
+   ========================================================================== */
+
+@media print {
+  :root {
+    /* Adjust colors for print */
+    --color-background: white;
+    --color-text: black;
+    --color-text-secondary: #666;
+    
+    /* Remove shadows for print */
+    --shadow-sm: none;
+    --shadow-md: none;
+    --shadow-lg: none;
+    --shadow-xl: none;
+  }
+  
+  /* Hide non-essential elements */
+  .no-print {
+    display: none !important;
+  }
+  
+  /* Ensure good contrast */
+  * {
+    color-adjust: exact;
+  }
+}
+
+/* ==========================================================================
+   DESIGN SYSTEM VALIDATION
+   ========================================================================== */
+
+/* This ensures all required CSS custom properties are defined */
+/* If any token is missing, the browser will show the fallback value */
+.design-system-validation {
+  /* Color validation */
+  --validation-primary: var(--color-primary-500, red);
+  --validation-secondary: var(--color-secondary-500, red);
+  --validation-background: var(--color-background, red);
+  --validation-text: var(--color-text, red);
+  
+  /* Typography validation */
+  --validation-font-family: var(--font-family-base, serif);
+  --validation-font-size: var(--font-size-base, 16px);
+  
+  /* Spacing validation */
+  --validation-spacing: var(--spacing-4, 16px);
+  
+  /* Shadow validation */
+  --validation-shadow: var(--shadow-md, none);
+  
+  /* Border validation */
+  --validation-border-radius: var(--border-radius-md, 0);
+  
+  /* Hide this element - it's only for validation */
+  display: none;
+}
+
+/* ==========================================================================
+   END OF DESIGN SYSTEM TOKENS
+   ========================================================================== */
+
+/*
+ * Design System Usage Examples:
+ * 
+ * Colors:
+ * .my-component { background-color: var(--color-primary-500); }
+ * 
+ * Typography:
+ * .my-heading { font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); }
+ * 
+ * Spacing:
+ * .my-card { padding: var(--spacing-6); margin-bottom: var(--spacing-4); }
+ * 
+ * Shadows:
+ * .my-modal { box-shadow: var(--shadow-xl); }
+ * 
+ * Borders:
+ * .my-input { border: var(--border-input); border-radius: var(--border-radius-input); }
+ * 
+ * Semantic Usage:
+ * .success-message { color: var(--color-success-600); background: var(--color-success-50); }
+ * .error-input { border-color: var(--color-error-500); }
+ * 
+ * Component Usage:
+ * .btn { 
+ *   padding: var(--button-padding-y) var(--button-padding-x);
+ *   border-radius: var(--border-radius-button);
+ *   font-size: var(--font-size-base);
+ *   font-weight: var(--font-weight-medium);
+ * }
+ */
